@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 22:18:21 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/09 23:10:57 by marvin           ###   ########.fr       */
+/*   Updated: 2021/11/09 23:59:26 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,51 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 
 int	ft_atoi(const char *nptr)
 {
-	
+	int	i;
+	int	res;
+	int	sign;
+
+	i = 0;
+	res = 0;
+	sign = 1;
+	while (nptr[i] == ' ' || nptr[i] == '\t')
+		i++;
+	while (nptr[i] == '+' || nptr[i] == '-')
+	{
+		if (nptr[i] == '-')
+			sign *= -1;
+		i++;
+	}
+	while ('0' <= nptr[i] && nptr[i] <= '9')
+	{
+		res += res * 10 + (nptr[i] - '0');
+		i++;
+	}
+	return (sign * res);
 }
 
-calloc
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*ptr;
 
-strdup
+	ptr = malloc(nmemb * size);
+	return (ptr);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*ptr;
+	int		s_len;
+	int		i;
+
+	i = 0;
+	s_len = ft_strlen((char *)s);
+	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
+	while (s[i])
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = 0;
+	return (ptr);
+}
