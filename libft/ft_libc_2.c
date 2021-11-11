@@ -5,19 +5,21 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/09 23:11:57 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/09 23:12:00 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/11 22:44:43 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/11 22:44:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(char *str)
+size_t	ft_strlen(const char *s)
 {
 	size_t	cnt;
 
 	cnt = 0;
-	while (str[cnt])
+	if (s == 0)
+		return (0);
+	while (s[cnt])
 		cnt++;
 	return (cnt);
 }
@@ -27,9 +29,11 @@ void	*ft_memset(void *s, int c, size_t n)
 	size_t	i;
 
 	i = 0;
+	if (s == 0)
+		return (s);
 	while (i < n)
 	{
-		*((unsigned char *)s + i) = (unsigned char)c;
+		*((unsigned char *)s + i) = c;
 		i++;
 	}
 	return (s);
@@ -40,6 +44,8 @@ void	ft_bzero(void *s, size_t n)
 	size_t	i;
 
 	i = 0;
+	if (s == 0)
+		return ;
 	while (i < n)
 	{
 		*((unsigned char *)s + i) = 0;
@@ -52,6 +58,8 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	size_t	i;
 
 	i = 0;
+	if (n == 0 || dest == src)
+		return (dest);
 	while (i < n)
 	{
 		*((unsigned char *)dest + i) = *((unsigned char *)src + i);
@@ -63,9 +71,11 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {
 	size_t			i;
-	unsigned char	tmp[10000];
+	unsigned char	tmp[100000];
 
 	i = 0;
+	if (n == 0 || dest == src)
+		return (dest);
 	while (i < n)
 	{
 		tmp[i] = *((unsigned char *)src + i);

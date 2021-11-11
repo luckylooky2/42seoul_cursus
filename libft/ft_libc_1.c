@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/09 23:28:37 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/09 23:28:38 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/11 22:44:34 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/11 22:44:37 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ int	ft_isalnum(int c)
 	unsigned char	ch;
 
 	ch = c;
-	if (ft_isalpha(ch) == 1 || ft_isdigit(ch) == 1)
+	if (ft_isalpha(ch) || ft_isdigit(ch))
 		return (1);
 	else
 		return (0);

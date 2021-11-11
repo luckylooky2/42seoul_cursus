@@ -14,6 +14,8 @@
 # define LIBFT_H
 # include <stddef.h>
 # include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
 
 int		ft_isalpha(int c);
 int		ft_isdigit(int c);
@@ -47,5 +49,10 @@ char	**ft_split_2(char const *s, char c, char **ptr, int i);
 char	*ft_copy(char const *s, char *str1, char *ptr);
 char	*ft_itoa(int n);
 int		ft_create_array(int n);
+char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));
+void	ft_putchar_fd(char c, int fd);
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putendl_fd(char *s, int fd);
+void	ft_putnbr_fd(int n, int fd);
 
 #endif

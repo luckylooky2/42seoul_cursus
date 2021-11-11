@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/09 23:12:13 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/09 23:12:49 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/11 23:20:53 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/11 23:20:53 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,8 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 		dest[i] = src[i];
 		i++;
 	}
-	dest[i] = 0;
+	if (!(size == 0))
+		dest[i] = 0;
 	return (len);
 }
 
@@ -37,39 +38,41 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	size_t	src_len;
 
 	i = 0;
+	src_len = 0;
 	while (src[src_len])
 		src_len++;
 	dest_len = ft_strlen(dest);
-	while ((dest_len + 1 < size) && src[i])
+	while ((dest_len + 1 + i < size) && src[i])
 	{
 		dest[dest_len + i] = src[i];
 		i++;
 	}
-	dest[dest_len + i] = 0;
+	if (!(size == 0))
+		dest[dest_len + i] = 0;
 	if (size < dest_len)
 		return (size + src_len);
 	else
-		return (dest_len + i);
+		return (dest_len + src_len);
 }
 
 int	ft_toupper(int c)
 {
-	unsigned char	ch;
-
-	ch = c;
-	if ('a' <= ch && ch <= 'z')
-		ch -= 'a' - 'A';
-	return (ch);
+	if (c < -1 && c > -129)
+		return ((unsigned char)c);
+	else if ('a' <= c && c <= 'z')
+		return(c - ('a' - 'A'));
+	else
+		return (c);
 }
 
 int	ft_tolower(int c)
 {
-	unsigned char	ch;
-
-	ch = c;
-	if ('A' <= ch && ch <= 'Z')
-		ch += 'a' - 'A';
-	return (ch);
+	if (c < -1 && c > -129)
+		return ((unsigned char)c);
+	else if ('A' <= c && c <= 'Z')
+		return(c + ('a' - 'A'));
+	else
+		return (c);
 }
 
 /*
