@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_libc_5.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 19:41:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/10 19:41:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/12 20:08:25 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,13 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	size_t	cnt;
 
 	i = 0;
-	cnt = 0;
-	if (little[0] == 0)
+	if (*little == 0)
 		return ((char *)big);
 	while (i < len)
 	{
-		if (big[i] == little[0])
+		if (big[i] == *little)
 		{
+			cnt = 0;
 			j = 0;
 			while (little[j])
 			{
@@ -34,7 +34,7 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 				j++;
 			}
 			if (j == cnt)
-				return ((char *)(big + i));
+				return ((char *)big + i);
 		}
 		i++;
 	}
@@ -50,17 +50,18 @@ int	ft_atoi(const char *nptr)
 	i = 0;
 	res = 0;
 	sign = 1;
-	while (nptr[i] == ' ' || nptr[i] == '\t')
+	while ((9 <= nptr[i] && nptr[i] <= 13) || nptr[i] == 32)
 		i++;
-	while (nptr[i] == '+' || nptr[i] == '-')
+	if (nptr[i] == '+')
+		i++;
+	else if (nptr[i] == '-')
 	{
-		if (nptr[i] == '-')
-			sign *= -1;
+		sign = -1;
 		i++;
 	}
 	while ('0' <= nptr[i] && nptr[i] <= '9')
 	{
-		res += res * 10 + (nptr[i] - '0');
+		res = res * 10 + (nptr[i] - '0');
 		i++;
 	}
 	return (sign * res);
@@ -70,8 +71,13 @@ void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
 
+	if (nmemb == 0 || size == 0)
+		return (0);
 	ptr = malloc(nmemb * size);
-	return (ptr);
+	if (!ptr)
+		return (0);
+	else
+		return (ptr);
 }
 
 char	*ft_strdup(const char *s)
@@ -83,6 +89,8 @@ char	*ft_strdup(const char *s)
 	i = 0;
 	s_len = ft_strlen((char *)s);
 	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
+	if (!ptr)
+		return (0);
 	while (s[i])
 	{
 		ptr[i] = s[i];

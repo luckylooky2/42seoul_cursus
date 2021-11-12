@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 23:20:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/11 23:20:53 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/11 23:26:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	ft_toupper(int c)
 	if (c < -1 && c > -129)
 		return ((unsigned char)c);
 	else if ('a' <= c && c <= 'z')
-		return(c - ('a' - 'A'));
+		return (c - ('a' - 'A'));
 	else
 		return (c);
 }
@@ -70,7 +70,7 @@ int	ft_tolower(int c)
 	if (c < -1 && c > -129)
 		return ((unsigned char)c);
 	else if ('A' <= c && c <= 'Z')
-		return(c + ('a' - 'A'));
+		return (c + ('a' - 'A'));
 	else
 		return (c);
 }

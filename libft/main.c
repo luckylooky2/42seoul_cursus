@@ -33,8 +33,6 @@ void	*ft_memset(void *s, int c, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (s == 0)
-		return (s);
 	while (i < n)
 	{
 		*((unsigned char *)s + i) = c;
@@ -48,8 +46,6 @@ void	ft_bzero(void *s, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (s == 0)
-		return ;
 	while (i < n)
 	{
 		*((unsigned char *)s + i) = 0;
@@ -62,7 +58,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (n == 0 || dest == src)
+	if (n == 0 && dest == src)
 		return (dest);
 	while (i < n)
 	{
@@ -78,7 +74,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	unsigned char	tmp[100000];
 
 	i = 0;
-	if (n == 0 || dest == src)
+	if (n == 0 && dest == src)
 		return (dest);
 	while (i < n)
 	{
@@ -157,32 +153,229 @@ int	ft_tolower(int c)
 		return (c);
 }
 
+char	*ft_strchr(const char *s, int c)
+{
+	unsigned char	ch;
+	char			*ptr;
+
+	ch = c;
+	ptr = 0;
+	while (*s)
+	{
+		if (*s == ch)
+		{
+			ptr = (char *)s;
+			break ;
+		}
+		s++;
+	}
+	if (c == 0)
+		ptr = (char *)s;
+	return (ptr);
+}
+
+char	*ft_strrchr(const char *s, int c)
+{
+	unsigned char	ch;
+	char			*ptr;
+
+	ch = c;
+	ptr = 0;
+	while (*s)
+	{
+		if (*s == ch)
+			ptr = (char *)s;
+		s++;
+	}
+	if (c == 0)
+		ptr = (char *)s;
+	return (ptr);
+}
+
+int	ft_strncmp(const char *s1, const char *s2, size_t n)
+{
+	size_t	i;
+	int		res;
+
+	i = 0;
+	res = 0;
+	while (i < n)
+	{
+		res = *s1 - *s2;
+		if (res != 0)
+			break ;
+		if (*s1 == 0 || *s2 == 0)
+			break ;
+		s1++;
+		s2++;
+		i++;
+	}
+	return (res);
+}
+
+void	*ft_memchr(const void *s, int c, size_t n)
+{
+	unsigned char	ch;
+	void			*ptr;
+	size_t			i;
+
+	ch = c;
+	i = 0;
+	ptr = 0;
+	while (i < n)
+	{
+		if (*((unsigned char *)s + i) == ch)
+		{
+			ptr = ((unsigned char *)s + i);
+			break ;
+		}
+		i++;
+	}
+	return (ptr);
+}
+
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
+{
+	size_t	i;
+	int		res;
+
+	i = 0;
+	res = 0;
+	while (i < n)
+	{
+		res = *((unsigned char *)s1 + i) - *((unsigned char *)s2 + i);
+		if (res != 0)
+			break ;
+		i++;
+	}
+	return (res);
+}
+
+char	*ft_strnstr(const char *big, const char *little, size_t len)
+{
+	size_t	i;
+	size_t	j;
+	size_t	cnt;
+
+	i = 0;
+	if (*little == 0)
+		return ((char *)big);
+	while (i < len)
+	{
+		if (big[i] == *little)
+		{
+			cnt = 0;
+			j = 0;
+			while (little[j])
+			{
+				if (big[i + j] == little[j])
+					cnt++;
+				j++;
+			}
+			if (j == cnt)
+				return ((char *)big + i);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	ft_atoi(const char *nptr)
+{
+	int	i;
+	int	res;
+	int	sign;
+
+	i = 0;
+	res = 0;
+	sign = 1;
+	while ((9 <= nptr[i] && nptr[i] <= 13) || nptr[i] == 32)
+		i++;
+	if (nptr[i] == '+')
+		i++;
+	else if (nptr[i] == '-')
+	{
+		sign = -1;
+		i++;
+	}
+	while ('0' <= nptr[i] && nptr[i] <= '9')
+	{
+		res = res * 10 + (nptr[i] - '0');
+		i++;
+	}
+	return (sign * res);
+}
+
+char	*ft_strdup(const char *s)
+{
+	char	*ptr;
+	int		s_len;
+	int		i;
+
+	i = 0;
+	s_len = ft_strlen((char *)s);
+	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
+	if (!ptr)
+		return (0);
+	while (s[i])
+	{
+		ptr[i] = s[i];
+		i++;
+	}
+	ptr[i] = 0;
+	return (ptr);
+}
+
 int main()
 {
-	//char	a[] = "hello";
-	//char	aaa[] = "1";
-	//char	*ccc = 0;
-	//char	*aa = 0;
-	//char	*bb = 0;
-	//size_t i = 0;
-	
+	// char a[] = "";
+	// char b[] = "hello";
+	// char bb[] = " ";
+	// char *c = 0;
 
-	//int		b[] = {1, 2, 3, 4, 5};
-	// printf("%d\n", isalpha(EOF));
-	// printf("%d\n", ft_isalpha(EOF));
+	// printf("%s ", strnstr(c, bb, 1));
+	// //printf("%s", ft_strnstr(c, bb, 1));
 
-	//printf("%ld\n", ft_strlen(a));
+	// char a[] = "----";
+	// char *c = 0;
 
-	//printf("%s\n", (unsigned char *)ft_memset(aaa, -1, 3));
-	//printf("%s\n", (unsigned char *)memset(aaa, -1, 3));
+	// printf("%d\n", atoi(a));
+	// printf("%d\n", ft_atoi(a));
 
-	//ft_bzero(b, 8);
-	//printf("%d\n", b[2]);
-	//bzero(b, 8);
-	//printf("%d\n", b[2]);
+	char a[] = "abc";
+	char *b = 0;
+	char c[] = "";
 
-	//printf("%s\n", (unsigned char *)ft_memcpy(aa, aaa, 0));
-	//printf("%s\n", (unsigned char *)memcpy(bb, ccc, 0));
+	printf("%s ", strdup(c));
+	printf("%s", ft_strdup(c));
+}
+
+/*
+int main()
+{
+	char	a[] = "hello";
+	char	aaa[] = "11251251";
+	char	*ccc = 0;
+	char	*aa = 0;
+	char	bb[] = "";
+	size_t i = 0;
+
+	// //int		b[] = {1, 2, 3, 4, 5};
+	// // printf("%d\n", isalpha(EOF));
+	// // printf("%d\n", ft_isalpha(EOF));
+
+	// //printf("%ld\n", ft_strlen(a));
+
+	// printf("%s ", (unsigned char *)ft_memset(aa, -1, 5));
+	// printf("%s", (unsigned char *)memset(aa, -1, 5));
+
+	ft_bzero(aaa, 3);
+	// printf("%d\n", b[2]);
+	bzero(aaa, 3);
+	// printf("%d\n", b[2]);
+
+	// printf("%s ", (unsigned char *)ft_memmove(aaa, bb, 0));
+	//printf("%s", (unsigned char *)memmove(aaa, bb, 0));
 
 	// i = ft_strlcpy(ccc, a, 1);
 	// //i = strlcpy(ccc, a, 1);
@@ -204,4 +397,42 @@ int main()
 	// printf("%d %d\n", tolower(-129), ft_tolower(-129));
 	// printf("%d %d\n", tolower(-128555), ft_tolower(-128555));
 	// printf("%d %d\n", tolower(128555), ft_tolower(128555));
+
+	// char a[] = "hello";
+	// char c[] = "";
+	// int b = 0;
+
+	// printf("%s", strchr(c, b));
+	// // printf("%s", ft_strchr(c, b));
+
+	// char a[] = "aaa";
+	// char b[] = "aaa";
+	// char *c = 0;
+	// char *d = 0;
+
+	// printf("%d\n", strncmp(b, a, 0));
+	// printf("%d\n", ft_strncmp(, a, 0));
+
+	// int a[] = {0, 1, 1231232, 3, 4 ,5};
+	// char d[] = "hello";
+	// char e[] = "";
+	// char *c = 0;
+	// int b = 'o';
+
+	// printf("%s", (unsigned char *)memchr(e, b, 5));
+	// // printf("%s", (unsigned char *)ft_memchr(e, b, 5));
+
+	// // char a[] = "helloc";
+	// // char b[] = "hellochanhyle";
+	// int c[] = {0, -122, 2, 3};
+	// int d[] = {0, -2, 2, 3};
+
+	// printf("%d\n", memcmp(c, d, 5));
+	// printf("%d\n", ft_memcmp(c, d, 5));
+
+	// char *a = 0;
+	// char b[] = "";
+
+	// printf("%ld", ft_strlen(a));
 }
+*/

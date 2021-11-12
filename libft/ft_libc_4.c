@@ -28,6 +28,8 @@ char	*ft_strchr(const char *s, int c)
 		}
 		s++;
 	}
+	if (c == 0)
+		ptr = (char *)s;
 	return (ptr);
 }
 
@@ -44,6 +46,8 @@ char	*ft_strrchr(const char *s, int c)
 			ptr = (char *)s;
 		s++;
 	}
+	if (c == 0)
+		ptr = (char *)s;
 	return (ptr);
 }
 
@@ -63,6 +67,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 			break ;
 		s1++;
 		s2++;
+		i++;
 	}
 	return (res);
 }
@@ -70,7 +75,7 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 void	*ft_memchr(const void *s, int c, size_t n)
 {
 	unsigned char	ch;
-	unsigned char	*ptr;
+	void			*ptr;
 	size_t			i;
 
 	ch = c;
@@ -99,9 +104,6 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	{
 		res = *((unsigned char *)s1 + i) - *((unsigned char *)s2 + i);
 		if (res != 0)
-			break ;
-		if (*((unsigned char *)s1 + i) == 0 \
-			|| *((unsigned char *)s2 + i) == 0)
 			break ;
 		i++;
 	}

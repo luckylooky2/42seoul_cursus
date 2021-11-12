@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_libc_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/11 22:44:43 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/11 22:44:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/12 15:47:14 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,8 +17,6 @@ size_t	ft_strlen(const char *s)
 	size_t	cnt;
 
 	cnt = 0;
-	if (s == 0)
-		return (0);
 	while (s[cnt])
 		cnt++;
 	return (cnt);
@@ -29,8 +27,6 @@ void	*ft_memset(void *s, int c, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (s == 0)
-		return (s);
 	while (i < n)
 	{
 		*((unsigned char *)s + i) = c;
@@ -44,8 +40,6 @@ void	ft_bzero(void *s, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (s == 0)
-		return ;
 	while (i < n)
 	{
 		*((unsigned char *)s + i) = 0;
@@ -58,7 +52,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (n == 0 || dest == src)
+	if (n == 0 && dest == src)
 		return (dest);
 	while (i < n)
 	{
@@ -74,7 +68,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	unsigned char	tmp[100000];
 
 	i = 0;
-	if (n == 0 || dest == src)
+	if (n == 0 && dest == src)
 		return (dest);
 	while (i < n)
 	{
