@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 23:20:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/11 23:26:06 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/14 17:10:53 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/14 17:10:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,9 +18,7 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	size_t	len;
 
 	i = 0;
-	len = 0;
-	while (src[len])
-		len++;
+	len = ft_strlen((char *)src);
 	while ((i + 1 < size) && src[i] != 0)
 	{
 		dest[i] = src[i];
@@ -38,18 +36,18 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 	size_t	src_len;
 
 	i = 0;
-	src_len = 0;
-	while (src[src_len])
-		src_len++;
+	src_len = ft_strlen((char *)src);
+	if (size == 0)
+		return (size + src_len);
 	dest_len = ft_strlen(dest);
 	while ((dest_len + 1 + i < size) && src[i])
 	{
 		dest[dest_len + i] = src[i];
 		i++;
 	}
-	if (!(size == 0))
+	if (size != 0)
 		dest[dest_len + i] = 0;
-	if (size < dest_len)
+	if (size <= dest_len)
 		return (size + src_len);
 	else
 		return (dest_len + src_len);

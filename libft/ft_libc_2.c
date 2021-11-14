@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_libc_2.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/11 22:44:43 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/12 15:47:14 by marvin           ###   ########.fr       */
+/*   Created: 2021/11/14 17:10:45 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/14 17:10:47 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 		return (dest);
 	while (i < n)
 	{
-		*((unsigned char *)dest + i) = *((unsigned char *)src + i);
+		*((unsigned char *)dest + i) = *((const unsigned char *)src + i);
 		i++;
 	}
 	return (dest);
@@ -72,7 +72,7 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 		return (dest);
 	while (i < n)
 	{
-		tmp[i] = *((unsigned char *)src + i);
+		tmp[i] = *((const unsigned char *)src + i);
 		i++;
 	}
 	i = 0;

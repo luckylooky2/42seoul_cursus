@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_libc_5.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 19:41:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/12 20:08:25 by marvin           ###   ########.fr       */
+/*   Created: 2021/11/14 17:14:15 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/14 17:14:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,14 +70,18 @@ int	ft_atoi(const char *nptr)
 void	*ft_calloc(size_t nmemb, size_t size)
 {
 	void	*ptr;
+	size_t	i;
 
-	if (nmemb == 0 || size == 0)
-		return (0);
+	i = 0;
 	ptr = malloc(nmemb * size);
 	if (!ptr)
 		return (0);
 	else
+	{
+		while (i < nmemb * size)
+			((unsigned char *)ptr)[i++] = 0;
 		return (ptr);
+	}
 }
 
 char	*ft_strdup(const char *s)

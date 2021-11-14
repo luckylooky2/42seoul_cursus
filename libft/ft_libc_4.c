@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/09 23:13:01 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/09 23:13:03 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/14 17:12:27 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 char	*ft_strchr(const char *s, int c)
 {
 	unsigned char	ch;
-	char			*ptr;
+	const char		*ptr;
 
 	ch = c;
 	ptr = 0;
@@ -23,32 +23,32 @@ char	*ft_strchr(const char *s, int c)
 	{
 		if (*s == ch)
 		{
-			ptr = (char *)s;
+			ptr = s;
 			break ;
 		}
 		s++;
 	}
 	if (c == 0)
-		ptr = (char *)s;
-	return (ptr);
+		ptr = s;
+	return ((char *)ptr);
 }
 
 char	*ft_strrchr(const char *s, int c)
 {
 	unsigned char	ch;
-	char			*ptr;
+	const char		*ptr;
 
 	ch = c;
 	ptr = 0;
 	while (*s)
 	{
 		if (*s == ch)
-			ptr = (char *)s;
+			ptr = s;
 		s++;
 	}
 	if (c == 0)
-		ptr = (char *)s;
-	return (ptr);
+		ptr = s;
+	return ((char *)ptr);
 }
 
 int	ft_strncmp(const char *s1, const char *s2, size_t n)
@@ -74,23 +74,23 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 
 void	*ft_memchr(const void *s, int c, size_t n)
 {
-	unsigned char	ch;
-	void			*ptr;
-	size_t			i;
+	unsigned char		ch;
+	const unsigned char	*ptr;
+	size_t				i;
 
 	ch = c;
 	i = 0;
 	ptr = 0;
 	while (i < n)
 	{
-		if (*((unsigned char *)s + i) == ch)
+		if (*((const unsigned char *)s + i) == ch)
 		{
-			ptr = ((unsigned char *)s + i);
+			ptr = ((const unsigned char *)s + i);
 			break ;
 		}
 		i++;
 	}
-	return (ptr);
+	return ((void *)ptr);
 }
 
 int	ft_memcmp(const void *s1, const void *s2, size_t n)
@@ -102,7 +102,7 @@ int	ft_memcmp(const void *s1, const void *s2, size_t n)
 	res = 0;
 	while (i < n)
 	{
-		res = *((unsigned char *)s1 + i) - *((unsigned char *)s2 + i);
+		res = ((const unsigned char *)s1)[i] - ((const unsigned char *)s2)[i];
 		if (res != 0)
 			break ;
 		i++;
