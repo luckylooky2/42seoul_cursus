@@ -1,4 +1,4 @@
-# 42seoul_cursus
+# libft/42seoul_cursus
 
 <꼭 알아야 할 cs지식>
 
