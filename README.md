@@ -1,6 +1,4 @@
-# libft/42seoul_cursus
-
-<꼭 알아야 할 cs지식>
+# libft
 
 -const 예약어\
 =(const char *s)와 (char * const)의 차이점\
