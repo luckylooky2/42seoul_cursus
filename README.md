@@ -77,4 +77,4 @@ printf("%d\n", ft_memcmp(c, d, 7)); //양수(14)\
   if (someStr != NULL)  // or if (someStr)\
   	someStrLen = strlen(someStr);\
   else\
-    // handle error.\
+    // handle error.
