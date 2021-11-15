@@ -1,13 +1,18 @@
-CC=gcc // ar 명령어로 바꿀 것
+CC=gcc
+AR=ar
+OPTIONS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
-NAME=libft
-SOURCE=srcs/ft_main.c srcs/ft_tail.c srcs/ft_option.c srcs/ft_split.c srcs/ft_extra.c srcs/ft_extra_2.c
+NAME=libft.a
+SOURCE=ft_libc_1.c ft_libc_2.c ft_libc_3.c ft_libc_4.c ft_libc_5.c ft_additional_1.c ft_additional_2.c ft_additional_3.c ft_additional_4.c
 OBJECT=$(SOURCE:.c=.o)
 
-$(NAME) :
-	$(CC) $(CFALGS) -c $< -o $(<:.c=.o) -Iincludes
+.c.o :
+	$(CC) $(CFALGS) -c $< -o $(<:.c=.o)
+
+$(NAME) : $(OBJECT)
+	$(AR) $(OPTIONS) $(NAME) $(OBJECT)
 
 all : $(NAME)
 
@@ -16,8 +21,5 @@ clean :
 
 fclean : clean
 	$(RM) $(NAME)
-
-re : ?
-	?
 
 .PHONY : all clean fclean .c.o

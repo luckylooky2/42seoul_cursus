@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_additional_3.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 20:40:43 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/11 14:18:32 by marvin           ###   ########.fr       */
+/*   Created: 2021/11/15 10:28:40 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/15 10:28:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	{
 		ptr[i] = (*f)(i, *s);
 		i++;
+		s++;
 	}
 	ptr[i] = 0;
 	return (ptr);

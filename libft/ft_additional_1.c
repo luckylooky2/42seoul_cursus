@@ -1,7 +1,7 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_substr_strjoin_strtrim.c                        :+:      :+:    :+:   */
+/*   ft_additional_1.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
@@ -20,8 +20,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	i = 0;
 	s_len = ft_strlen(s);
-	if (s == 0)
-		return (0);
 	ptr = (char *)malloc(sizeof(char) * (len + 1));
 	if (!ptr)
 		return (0);
@@ -42,20 +40,23 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*ptr;
 	int		index;
+	int		i;
 
 	index = 0;
+	i = 0;
 	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!ptr)
 		return (0);
-	while (*s1)
+	while (s1[i])
 	{
-		ptr[index++] = *s1;
-		s1++;
+		ptr[index++] = s1[i];
+		i++;
 	}
-	while (*s2)
+	i = 0;
+	while (s2[i])
 	{
-		ptr[index++] = *s2;
-		s2++;
+		ptr[index++] = s2[i];
+		i++;
 	}
 	ptr[index] = 0;
 	return (ptr);
@@ -64,26 +65,28 @@ char	*ft_strjoin(char const *s1, char const *s2)
 char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*ptr;
-	int		i;
+	int		ptr_index;
+	int		set_index;
 	int		cnt;
 
+	ptr_index = 0;
 	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
 	if (!ptr)
 		return (0);
 	while (*s1)
 	{
-		i = 0;
+		set_index = 0;
 		cnt = 0;
-		while (set[i])
+		while (set[set_index])
 		{
-			if (*s1 != set[i])
+			if (*s1 != set[set_index])
 				cnt++;
-			i++;
+			set_index++;
 		}
-		if (i == cnt)
-			(*ptr)++ == *s1;
+		if (set_index == cnt)
+			ptr[ptr_index++] = *s1;
 		s1++;
 	}
-	*ptr = 0;
+	ptr[ptr_index] = 0;
 	return (ptr);
 }

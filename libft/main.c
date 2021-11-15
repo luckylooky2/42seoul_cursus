@@ -335,8 +335,6 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 
 	i = 0;
 	s_len = ft_strlen(s);
-	if (s == 0)
-		return (0);
 	ptr = (char *)malloc(sizeof(char) * (len + 1));
 	if (!ptr)
 		return (0);
@@ -357,20 +355,23 @@ char	*ft_strjoin(char const *s1, char const *s2)
 {
 	char	*ptr;
 	int		index;
+	int		i;
 
 	index = 0;
+	i = 0;
 	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!ptr)
 		return (0);
-	while (*s1)
+	while (s1[i])
 	{
-		ptr[index++] = *s1;
-		s1++;
+		ptr[index++] = s1[i];
+		i++;
 	}
-	while (*s2)
+	i = 0;
+	while (s2[i])
 	{
-		ptr[index++] = *s2;
-		s2++;
+		ptr[index++] = s2[i];
+		i++;
 	}
 	ptr[index] = 0;
 	return (ptr);
@@ -393,23 +394,200 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	}
 }
 
+char	*ft_strtrim(char const *s1, char const *set)
+{
+	char	*ptr;
+	int		ptr_index;
+	int		set_index;
+	int		cnt;
+
+	ptr_index = 0;
+	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s1) + 1));
+	if (!ptr)
+		return (0);
+	while (*s1)
+	{
+		set_index = 0;
+		cnt = 0;
+		while (set[set_index])
+		{
+			if (*s1 != set[set_index])
+				cnt++;
+			set_index++;
+		}
+		if (set_index == cnt)
+			ptr[ptr_index++] = *s1;
+		s1++;
+	}
+	ptr[ptr_index] = 0;
+	return (ptr);
+}
+
+char	*ft_copy(char const *s, char const *str1, char *ptr)
+{
+	int	j;
+
+	j = 0;
+	while (*s != *str1)
+	{
+		ptr[j] = *str1;
+		j++;
+		str1++;
+	}
+	ptr[j] = 0;
+	return ((char *)str1);
+}
+
+char	**ft_split_2(char const *s, char c, char **ptr, int i)
+{
+	char const	*str1;
+
+	str1 = s;
+	while (*s)
+	{
+		if (*s == c || *(s + 1) == 0)
+		{
+			if (*s != c && *(s + 1) == 0)
+				s++;
+			if (*s != *str1)
+			{
+				ptr[i] = (char *)malloc(sizeof(char) * (s - str1 + 1));
+				if (ptr[i] == 0)
+					return (0);
+				str1 = (char const *)ft_copy(s, str1, ptr[i]);
+				i++;
+			}
+			str1++;
+		}
+		if (*s != 0)
+			s++;
+	}
+	return (ptr);
+}
+
+
+char	**ft_split(char const *s, char c)
+{
+	char	**ptr;
+	int		i;
+	int		len;
+
+	i = 0;
+	len = ft_strlen((char *)s) + 1;
+	ptr = (char **)malloc(sizeof(char *) * len);
+	if (ptr == 0)
+	{
+		free(ptr);
+		return (0);
+	}
+	while (len-- >= 0)
+		ptr[len] = 0;
+	ptr = ft_split_2(s, c, ptr, i);
+	if (ptr == 0)
+	{
+		free(ptr);
+		return (0);
+	}
+	else
+		return (ptr);
+}
+
+int	ft_create_array(int n)
+{
+	int		len;
+
+	len = 1;
+	if (n <= 0)
+	{
+		len++;
+		n *= -1;
+	}
+	while (n > 0)
+	{
+		n /= 10;
+		len++;
+	}
+	return (len);
+}
+
+char	*ft_itoa(int n)
+{
+	char	*ptr;
+	int		len;
+
+	if (n == -2147483648)
+		return ("-2147483648");
+	len = ft_create_array(n);
+	ptr = (char *)malloc(sizeof(char) * len);
+	if (!ptr)
+		return (0);
+	ptr[len - 1] = 0;
+	if (n == 0)
+		ptr[0] = '0';
+	if (n < 0)
+	{
+		n *= -1;
+		ptr[0] = '-';
+	}
+	while (n > 0)
+	{
+		ptr[len - 2] = n % 10 + '0';
+		n /= 10;
+		len--;
+	}
+	return (ptr);
+}
+
 int main()
 {
+	char *a;
+	a = ft_itoa(-2147483648);
+	printf("%s ", a);
+	a = ft_itoa(0);
+	printf("%s ", a);
+	a = ft_itoa(-1);
+	printf("%s ", a);
+	a = ft_itoa(1);
+	printf("%s ", a);
+	a = ft_itoa(2147483647);
+	printf("%s ", a);
+	a = ft_itoa(-21523523);
+	printf("%s ", a);
+
+	// char **ptr;
+	// char a[] = "how's the weather?   it's    sunny!  wow? really??? yes!        ";
+	// char b = ' ';
+	// int	i = 0;
+
+	// ptr = ft_split(a, b);
+	// while (ptr[i])
+	// {
+	// 	printf("%d ", i);
+	// 	printf("%s\n", ptr[i++]);
+	// }
+
+// 	char const s1[] = "hello world!";
+// 	char const s2[] = "! ";
+// 	// char const *s3 = 0;
+// 	// char const set[] = "hello world!";
+// 	// char const set2[] = "";
+// 	// char const *set3 = 0;
+
+// 	printf("%s", ft_strtrim(s1, s2));
 	// char *ptr;
 	// char *p;
 
-	printf("%s ", (char *)calloc(0, 0));
-	printf("%s", (char *)ft_calloc(0, 0));
+	// printf("%s ", (char *)calloc(0, 0));
+	// printf("%s", (char *)ft_calloc(0, 0));
 
-
-	// char a[] = "hello ";
-	// char b[] = "world";
-	// char c[] = "";
-	// char d[] = "";
-	// char *e = 0;
+	// char const a[] = "hello ";
+	// // char const b[] = "world     ";
+	// // char const c[] = "";
+	// // char const d[] = "";
+	// // char *e = 0;
 	// char *f = 0;
 
-	// // printf("%s", ft_strjoin(a, a));
+	// printf("%s", ft_strjoin(a, f));
 
 	// // char a[] = "";
 	// char b[] = "hello";
@@ -432,11 +610,11 @@ int main()
 	// // printf("%s ", strdup(b));
 	// printf("%s", ft_strdup(b));
 
-	// char a[] = "hello";
-	// char b[] = "";
-	// char *c = 0;
+	// char a[] = "hellohello";
+	// // char b[] = "";
+	// // char *c = 0;
 	
-	// printf("%s", ft_substr(b, 1, 1));
+	// printf("%s", ft_substr(a, 20, 3));
 }
 
 
@@ -495,12 +673,12 @@ int main()
 // 	// printf("%d %d\n", tolower(128555), ft_tolower(128555));
 
 // 	// const char a[] = "hello";
-// 	// // const char c[] = "";
-// 	// // const char *d = 0;
-// 	// int b = 102;
+// 	// const char c[] = "";
+// 	const char *d = 0;
+// 	int b = 102;
 
-// 	// printf("%s", strchr(a, b));
-// 	// printf("%s", ft_strchr(a, b));
+// 	printf("%s", strchr(d, b));
+// 	printf("%s", ft_strchr(d, b));
 
 // 	// char a[] = "aaa";
 // 	// char b[] = "aaa";

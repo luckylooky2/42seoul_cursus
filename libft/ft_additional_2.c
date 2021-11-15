@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_split_itoa.c                                    :+:      :+:    :+:   */
+/*   ft_additional_2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/10 19:48:09 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/10 19:48:10 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/15 10:28:33 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/15 10:28:34 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,10 @@ char	**ft_split(char const *s, char c)
 	len = ft_strlen((char *)s) + 1;
 	ptr = (char **)malloc(sizeof(char *) * len);
 	if (ptr == 0)
+	{
+		free(ptr);
 		return (0);
+	}
 	while (len-- >= 0)
 		ptr[len] = 0;
 	ptr = ft_split_2(s, c, ptr, i);
@@ -37,9 +40,9 @@ char	**ft_split(char const *s, char c)
 
 char	**ft_split_2(char const *s, char c, char **ptr, int i)
 {
-	char	*str1;
+	char const	*str1;
 
-	str1 = (char *)s;
+	str1 = s;
 	while (*s)
 	{
 		if (*s == c || *(s + 1) == 0)
@@ -51,7 +54,7 @@ char	**ft_split_2(char const *s, char c, char **ptr, int i)
 				ptr[i] = (char *)malloc(sizeof(char) * (s - str1 + 1));
 				if (ptr[i] == 0)
 					return (0);
-				str1 = ft_copy(s, str1, ptr[i]);
+				str1 = (char const *)ft_copy(s, str1, ptr[i]);
 				i++;
 			}
 			str1++;
@@ -62,7 +65,7 @@ char	**ft_split_2(char const *s, char c, char **ptr, int i)
 	return (ptr);
 }
 
-char	*ft_copy(char const *s, char *str1, char *ptr)
+char	*ft_copy(char const *s, char const *str1, char *ptr)
 {
 	int	j;
 
@@ -74,7 +77,7 @@ char	*ft_copy(char const *s, char *str1, char *ptr)
 		str1++;
 	}
 	ptr[j] = 0;
-	return (str1);
+	return ((char *)str1);
 }
 
 char	*ft_itoa(int n)
@@ -107,7 +110,6 @@ char	*ft_itoa(int n)
 
 int	ft_create_array(int n)
 {
-	char	*ptr;
 	int		len;
 
 	len = 1;
@@ -125,21 +127,22 @@ int	ft_create_array(int n)
 }
 
 /*
+#include <stdio.h>
 int main()
 {
-	char **ptr;
-	char a[] = "    how's    the   weather?      it's sunny! wow? really??? yes!";
-	char b = '?';
-	int	i = 0;
+// 	char **ptr;
+// 	char a[] = "how's          theweather?it'ssunny!wow?really???yes!";
+// 	char b = ' ';
+// 	int	i = 0;
 
-	ptr = ft_split(a, b);
-	while (ptr[i])
-	{
-		printf("%d ", i);
-		printf("%s\n", ptr[i++]);
-	}
+// 	ptr = ft_split(a, b);
+// 	while (ptr[i])
+// 	{
+// 		printf("%d ", i);
+// 		printf("%s\n", ptr[i++]);
+// 	}
 
-	char *p;
+	// char *p;
 
 	a = ft_itoa(-2147483648);
 	printf("%s", a);
