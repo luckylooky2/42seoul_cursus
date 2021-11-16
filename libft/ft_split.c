@@ -11,71 +11,89 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
-static char	*ft_copy(char const *s, char const *str1, char *ptr)
+static char	*ft_copy(char const *s, char const *start, char *ptr)
 {
-	int	j;
+	int	i;
 
-	j = 0;
-	while (*s != *str1)
+	i = 0;
+	while (*s != *start)
 	{
-		ptr[j] = *str1;
-		j++;
-		str1++;
+		ptr[i] = *start;
+		i++;
+		start++;
 	}
-	ptr[j] = 0;
-	return ((char *)str1);
+	ptr[i] = 0;
+	return ((char *)start);
 }
 
-static char	**ft_split_2(char const *s, char c, char **ptr, int i)
+static char	*ft_second_malloc(char const *s, char c, char **ptr, int i)
 {
-	char const	*str1;
+	char const	*start;
 
-	str1 = s;
+	start = s;
 	while (*s)
 	{
 		if (*s == c || *(s + 1) == 0)
 		{
 			if (*s != c && *(s + 1) == 0)
 				s++;
-			if (*s != *str1)
+			if (*s != *start)
 			{
-				ptr[i] = (char *)malloc(sizeof(char) * (s - str1 + 1));
+				ptr[i] = (char *)malloc(sizeof(char) * (s - start + 1));
 				if (ptr[i] == 0)
-					return (0);
-				str1 = (char const *)ft_copy(s, str1, ptr[i]);
+					return (ptr[i]);
+				start = (char const *)ft_copy(s, start, ptr[i]);
 				i++;
 			}
-			str1++;
+			start++;
 		}
 		if (*s != 0)
 			s++;
 	}
-	return (ptr);
+	return (ptr[i]);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**ptr;
+	char	*is_ptr_null;
 	int		i;
 	int		len;
 
 	i = 0;
-	len = ft_strlen((char *)s) + 1;
+	len = ft_strlen((char *)s) / 2 + 2;
 	ptr = (char **)malloc(sizeof(char *) * len);
 	if (ptr == 0)
-	{
-		free(ptr);
 		return (0);
-	}
-	while (len-- >= 0)
-		ptr[len] = 0;
-	ptr = ft_split_2(s, c, ptr, i);
-	if (ptr == 0)
+	while (i < len)
+		ptr[i++] = 0;
+	is_ptr_null = ft_second_malloc(s, c, ptr, 0);
+	if (is_ptr_null == 0)
 	{
-		free(ptr);
+		i = 0;
+		while (ptr[i])
+			free(ptr[i++]);
 		return (0);
 	}
 	else
 		return (ptr);
+}
+
+
+int main(void)
+{
+	char a[] = "   ";
+	char b = ' ';
+	char **ptr;
+	int	i;
+
+	i = 0;
+	ptr = ft_split(a, b);
+	while (ptr[i])
+	{
+		printf("%d %s\n", i, ptr[i]);
+		i++;
+	}
 }
