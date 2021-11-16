@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memmove.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:06:31 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/16 11:06:33 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/17 01:17:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 		return (dest);
 	while (i < n)
 	{
-		tmp[i] = *((const unsigned char *)src + i);
+		tmp[i] = ((const unsigned char *)src)[i];
 		i++;
 	}
 	i = 0;
 	while (i < n)
 	{
-		*((unsigned char *)dest + i) = tmp[i];
+		((unsigned char *)dest)[i] = tmp[i];
 		i++;
 	}
 	return (dest);

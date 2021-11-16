@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:13:56 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/16 12:14:16 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/17 01:14:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-static int	ft_create_array(int n)
+static int	ft_number_of_digits(int n)
 {
 	int		len;
 
@@ -36,14 +36,16 @@ char	*ft_itoa(int n)
 	int		len;
 
 	if (n == -2147483648)
-		return ("-2147483648");
-	len = ft_create_array(n);
-	ptr = (char *)malloc(sizeof(char) * len);
+	{
+		ptr = ft_itoa(n + 1);
+		ptr[10] = '8';
+		return (ptr);
+	}
+	len = ft_number_of_digits(n);
+	ptr = (char *)ft_calloc(len, sizeof(char));
 	if (!ptr)
 		return (0);
-	ptr[len - 1] = 0;
-	if (n == 0)
-		ptr[0] = '0';
+	ptr[0] = '0';
 	if (n < 0)
 	{
 		n *= -1;
@@ -51,9 +53,23 @@ char	*ft_itoa(int n)
 	}
 	while (n > 0)
 	{
-		ptr[len - 2] = n % 10 + '0';
+		ptr[len-- - 2] = n % 10 + '0';
 		n /= 10;
-		len--;
 	}
 	return (ptr);
+}
+
+#include <stdio.h>
+int main()
+{
+	printf("%s\n", ft_itoa(-2147483648));
+	printf("%s\n", ft_itoa(-0));
+	printf("%s\n", ft_itoa(-21));
+	printf("%s\n", ft_itoa(1));
+	printf("%s\n", ft_itoa(-1));
+	printf("%s\n", ft_itoa(2147483647));
+	printf("%s\n", ft_itoa(-2147483647));
+	printf("%s\n", ft_itoa(483648111));
+	printf("%s\n", ft_itoa(-218));
+	
 }
