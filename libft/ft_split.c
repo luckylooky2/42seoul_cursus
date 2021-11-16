@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_additional_2.c                                  :+:      :+:    :+:   */
+/*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/15 10:28:33 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/16 09:55:09 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/16 12:13:46 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/16 12:13:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,73 +79,3 @@ char	**ft_split(char const *s, char c)
 	else
 		return (ptr);
 }
-
-static int	ft_create_array(int n)
-{
-	int		len;
-
-	len = 1;
-	if (n <= 0)
-	{
-		len++;
-		n *= -1;
-	}
-	while (n > 0)
-	{
-		n /= 10;
-		len++;
-	}
-	return (len);
-}
-
-char	*ft_itoa(int n)
-{
-	char	*ptr;
-	int		len;
-
-	if (n == -2147483648)
-		return ("-2147483648");
-	len = ft_create_array(n);
-	ptr = (char *)malloc(sizeof(char) * len);
-	if (!ptr)
-		return (0);
-	ptr[len - 1] = 0;
-	if (n == 0)
-		ptr[0] = '0';
-	if (n < 0)
-	{
-		n *= -1;
-		ptr[0] = '-';
-	}
-	while (n > 0)
-	{
-		ptr[len - 2] = n % 10 + '0';
-		n /= 10;
-		len--;
-	}
-	return (ptr);
-}
-
-/*
-#include <stdio.h>
-int main()
-{
-// 	char **ptr;
-// 	char a[] = "how's          theweather?it'ssunny!wow?really???yes!";
-// 	char b = ' ';
-// 	int	i = 0;
-
-// 	ptr = ft_split(a, b);
-// 	while (ptr[i])
-// 	{
-// 		printf("%d ", i);
-// 		printf("%s\n", ptr[i++]);
-// 	}
-
-	// char *p;
-
-	a = ft_itoa(-2147483648);
-	printf("%s", a);
-	return 0;
-}
-*/
