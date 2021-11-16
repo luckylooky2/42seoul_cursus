@@ -6,11 +6,53 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 10:28:33 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/15 10:28:34 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/16 09:55:09 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+
+static char	*ft_copy(char const *s, char const *str1, char *ptr)
+{
+	int	j;
+
+	j = 0;
+	while (*s != *str1)
+	{
+		ptr[j] = *str1;
+		j++;
+		str1++;
+	}
+	ptr[j] = 0;
+	return ((char *)str1);
+}
+
+static char	**ft_split_2(char const *s, char c, char **ptr, int i)
+{
+	char const	*str1;
+
+	str1 = s;
+	while (*s)
+	{
+		if (*s == c || *(s + 1) == 0)
+		{
+			if (*s != c && *(s + 1) == 0)
+				s++;
+			if (*s != *str1)
+			{
+				ptr[i] = (char *)malloc(sizeof(char) * (s - str1 + 1));
+				if (ptr[i] == 0)
+					return (0);
+				str1 = (char const *)ft_copy(s, str1, ptr[i]);
+				i++;
+			}
+			str1++;
+		}
+		if (*s != 0)
+			s++;
+	}
+	return (ptr);
+}
 
 char	**ft_split(char const *s, char c)
 {
@@ -38,46 +80,22 @@ char	**ft_split(char const *s, char c)
 		return (ptr);
 }
 
-char	**ft_split_2(char const *s, char c, char **ptr, int i)
+static int	ft_create_array(int n)
 {
-	char const	*str1;
+	int		len;
 
-	str1 = s;
-	while (*s)
+	len = 1;
+	if (n <= 0)
 	{
-		if (*s == c || *(s + 1) == 0)
-		{
-			if (*s != c && *(s + 1) == 0)
-				s++;
-			if (*s != *str1)
-			{
-				ptr[i] = (char *)malloc(sizeof(char) * (s - str1 + 1));
-				if (ptr[i] == 0)
-					return (0);
-				str1 = (char const *)ft_copy(s, str1, ptr[i]);
-				i++;
-			}
-			str1++;
-		}
-		if (*s != 0)
-			s++;
+		len++;
+		n *= -1;
 	}
-	return (ptr);
-}
-
-char	*ft_copy(char const *s, char const *str1, char *ptr)
-{
-	int	j;
-
-	j = 0;
-	while (*s != *str1)
+	while (n > 0)
 	{
-		ptr[j] = *str1;
-		j++;
-		str1++;
+		n /= 10;
+		len++;
 	}
-	ptr[j] = 0;
-	return ((char *)str1);
+	return (len);
 }
 
 char	*ft_itoa(int n)
@@ -106,24 +124,6 @@ char	*ft_itoa(int n)
 		len--;
 	}
 	return (ptr);
-}
-
-int	ft_create_array(int n)
-{
-	int		len;
-
-	len = 1;
-	if (n <= 0)
-	{
-		len++;
-		n *= -1;
-	}
-	while (n > 0)
-	{
-		n /= 10;
-		len++;
-	}
-	return (len);
 }
 
 /*
