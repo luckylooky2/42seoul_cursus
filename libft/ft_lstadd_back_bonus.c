@@ -13,17 +13,17 @@
 #include "libft.h"
 #include "libft_bonus.h"
 
-void    ft_lstadd_back(t_list **lst, t_list *new)
+void	ft_lstadd_back(t_list **lst, t_list *new)
 {
-    t_list  *ptr;
+	t_list	*ptr;
 
-    ptr = *lst;
-    if (ptr == 0)
-        ft_lstadd_front(lst, new);
-    else
-    {
-        while (ptr->next)
-            ptr = ptr->next;
-        ptr->next = new;
-    }
+	ptr = *lst;
+	if (ptr == 0)
+		ft_lstadd_front(lst, new);
+	else
+	{
+		while (ptr->next)
+			ptr = ptr->next;
+		ptr->next = new;
+	}
 }

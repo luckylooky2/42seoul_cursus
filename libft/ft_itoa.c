@@ -59,6 +59,7 @@ char	*ft_itoa(int n)
 	return (ptr);
 }
 
+/*
 #include <stdio.h>
 int main()
 {
@@ -73,3 +74,4 @@ int main()
 	printf("%s\n", ft_itoa(-218));
 	
 }
+*/

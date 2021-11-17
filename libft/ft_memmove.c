@@ -14,22 +14,40 @@
 
 void	*ft_memmove(void *dest, const void *src, size_t n)
 {
-	size_t			i;
-	unsigned char	tmp[100000];
+	size_t	i;
 
 	i = 0;
 	if (n == 0 && dest == src)
 		return (dest);
-	while (i < n)
+	if (dest > src)
 	{
-		tmp[i] = ((const unsigned char *)src)[i];
-		i++;
+		while (i < n)
+		{
+			((unsigned char *)dest)[n - 1] = \
+			((const unsigned char *)src)[n - 1];
+			n--;
+		}
 	}
-	i = 0;
-	while (i < n)
+	else
 	{
-		((unsigned char *)dest)[i] = tmp[i];
-		i++;
+		while (i < n)
+		{
+			((unsigned char *)dest)[i] = ((const unsigned char *)src)[i];
+			i++;
+		}
 	}
 	return (dest);
 }
+
+/*
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	char a[20] = "abcde";
+	char b[20];
+
+	printf("%s", (unsigned char *)ft_memmove(b, a, 4));
+	// printf("%s", (unsigned char *)memmove(b, a, 4));
+}
+*/

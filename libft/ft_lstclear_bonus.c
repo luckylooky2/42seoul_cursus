@@ -1,29 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstsize_bonus.c                                 :+:      :+:    :+:   */
+/*   ft_lstclear_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 11:27:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/17 11:27:19 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/17 12:01:15 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/17 12:01:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include "libft_bonus.h"
 
-int	ft_lstsize(t_list *lst)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	int		cnt;
 	t_list	*ptr;
+	t_list	*back;
 
-	cnt = 0;
-	ptr = lst;
+	ptr = *lst;
+	back = ptr->next;
 	while (ptr)
 	{
-		ptr = ptr->next;
-		cnt++;
+		(*del)(ptr->content);
+		free(ptr);
+		ptr = back;
+		if (ptr != 0)
+			back = back->next;
 	}
-	return (cnt);
+	*lst = 0;
 }

@@ -91,75 +91,89 @@ char	*ft_strtrim(char const *s1, char const *set)
 	return (ptr);
 }
 
-static char	*ft_copy(char const *s, char const *str1, char *ptr)
+static void	ft_free(char **ptr)
 {
-	int	j;
+	int	i;
 
-	j = 0;
-	while (*s != *str1)
+	i = 0;
+	while (ptr[i])
+		free(ptr[i++]);
+	free(ptr);
+	return ;
+}
+
+static char	*ft_copy(char const *str2, char const *str1, char *ptr_ary)
+{
+	int	i;
+
+	i = 0;
+	while (*str2 != *str1)
 	{
-		ptr[j] = *str1;
-		j++;
+		ptr_ary[i] = *str1;
+		i++;
 		str1++;
 	}
-	ptr[j] = 0;
+	ptr_ary[i] = 0;
 	return ((char *)str1);
 }
 
-static char	**ft_split_2(char const *s, char c, char **ptr, int i)
+static char	*ft_second_malloc(char const *str2, char c, char **ptr, int i)
 {
 	char const	*str1;
 
-	str1 = s;
-	while (*s)
+	str1 = str2;
+	while (*str2)
 	{
-		if (*s == c || *(s + 1) == 0)
+		if (*str2 == c || *(str2 + 1) == 0)
 		{
-			if (*s != c && *(s + 1) == 0)
-				s++;
-			if (*s != *str1)
+			if (*str2 != c && *(str2 + 1) == 0)
+				str2++;
+			if (*str2 != *str1)
 			{
-				ptr[i] = (char *)malloc(sizeof(char) * (s - str1 + 1));
+				ptr[i] = (char *)malloc(sizeof(char) * (str2 - str1 + 1));
 				if (ptr[i] == 0)
-					return (0);
-				str1 = (char const *)ft_copy(s, str1, ptr[i]);
+					return (ptr[i]);
+				str1 = (char const *)ft_copy(str2, str1, ptr[i]);
 				i++;
 			}
 			str1++;
 		}
-		if (*s != 0)
-			s++;
+		if (*str2 != 0)
+			str2++;
 	}
-	return (ptr);
+	if (i == 0)
+		return (ptr[i]);
+	return (ptr[i - 1]);
 }
 
 char	**ft_split(char const *s, char c)
 {
 	char	**ptr;
+	char	*last_ptr;
 	int		i;
 	int		len;
 
 	i = 0;
-	len = ft_strlen((char *)s) + 1;
-	ptr = (char **)malloc(sizeof(char *) * len);
+	len = ft_strlen((char *)s) / 2 + 2;
+	ptr = (char **)ft_calloc(len, sizeof(char *));
 	if (ptr == 0)
+		return (0);
+	last_ptr = ft_second_malloc(s, c, ptr, i);
+	if ((last_ptr == 0) && (ptr[0] != 0))
 	{
-		free(ptr);
+		ft_free(ptr);
 		return (0);
 	}
-	while (len-- >= 0)
-		ptr[len] = 0;
-	ptr = ft_split_2(s, c, ptr, i);
-	if (ptr == 0)
+	else if ((last_ptr == 0) && (ptr[0] == 0))
 	{
 		free(ptr);
-		return (0);
+		return (ptr);
 	}
 	else
 		return (ptr);
 }
 
-static int	ft_create_array(int n)
+static int	ft_number_of_digits(int n)
 {
 	int		len;
 
@@ -183,14 +197,16 @@ char	*ft_itoa(int n)
 	int		len;
 
 	if (n == -2147483648)
-		return ("-2147483648");
-	len = ft_create_array(n);
-	ptr = (char *)malloc(sizeof(char) * len);
+	{
+		ptr = ft_itoa(n + 1);
+		ptr[10] = '8';
+		return (ptr);
+	}
+	len = ft_number_of_digits(n);
+	ptr = (char *)ft_calloc(len, sizeof(char));
 	if (!ptr)
 		return (0);
-	ptr[len - 1] = 0;
-	if (n == 0)
-		ptr[0] = '0';
+	ptr[0] = '0';
 	if (n < 0)
 	{
 		n *= -1;
@@ -198,9 +214,8 @@ char	*ft_itoa(int n)
 	}
 	while (n > 0)
 	{
-		ptr[len - 2] = n % 10 + '0';
+		ptr[len-- - 2] = n % 10 + '0';
 		n /= 10;
-		len--;
 	}
 	return (ptr);
 }

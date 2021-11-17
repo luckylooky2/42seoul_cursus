@@ -13,12 +13,12 @@
 #include "libft.h"
 #include "libft_bonus.h"
 
-t_list  *ft_lstlast(t_list *lst)
+t_list	*ft_lstlast(t_list *lst)
 {
-    t_list  *ptr;
+	t_list	*ptr;
 
-    ptr = lst;
-    while (ptr->next)
-        ptr = ptr->next;
-    return (ptr);
+	ptr = lst;
+	while (ptr->next)
+		ptr = ptr->next;
+	return (ptr);
 }

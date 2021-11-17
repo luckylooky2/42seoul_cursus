@@ -25,7 +25,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	{
 		if (((const unsigned char *)s)[i] == ch)
 		{
-			ptr = ((const unsigned char *)s)[i];
+			ptr = ((const unsigned char *)s + i);
 			break ;
 		}
 		i++;

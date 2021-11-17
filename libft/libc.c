@@ -67,7 +67,6 @@ int	ft_isprint(int c)
 		return (0);
 }
 
-
 size_t	ft_strlen(const char *s)
 {
 	size_t	cnt;
@@ -85,7 +84,7 @@ void	*ft_memset(void *s, int c, size_t n)
 	i = 0;
 	while (i < n)
 	{
-		*((unsigned char *)s + i) = c;
+		((unsigned char *)s)[i] = c;
 		i++;
 	}
 	return (s);
@@ -98,7 +97,7 @@ void	ft_bzero(void *s, size_t n)
 	i = 0;
 	while (i < n)
 	{
-		*((unsigned char *)s + i) = 0;
+		((unsigned char *)s)[i] = 0;
 		i++;
 	}
 }
@@ -118,23 +117,16 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-void	*ft_memmove(void *dest, const void *src, size_t n)
+void	*ft_memcpy(void *dest, const void *src, size_t n)
 {
-	size_t			i;
-	unsigned char	tmp[100000];
+	size_t	i;
 
 	i = 0;
 	if (n == 0 && dest == src)
 		return (dest);
 	while (i < n)
 	{
-		tmp[i] = *((const unsigned char *)src + i);
-		i++;
-	}
-	i = 0;
-	while (i < n)
-	{
-		*((unsigned char *)dest + i) = tmp[i];
+		((unsigned char *)dest)[i] = ((const unsigned char *)src)[i];
 		i++;
 	}
 	return (dest);
@@ -272,7 +264,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	ptr = 0;
 	while (i < n)
 	{
-		if (*((const unsigned char *)s + i) == ch)
+		if (((const unsigned char *)s)[i] == ch)
 		{
 			ptr = ((const unsigned char *)s + i);
 			break ;
@@ -374,12 +366,12 @@ void	*ft_calloc(size_t nmemb, size_t size)
 char	*ft_strdup(const char *s)
 {
 	char	*ptr;
-	int		s_len;
+	int		len;
 	int		i;
 
 	i = 0;
-	s_len = ft_strlen((char *)s);
-	ptr = (char *)malloc(sizeof(char) * (s_len + 1));
+	len = ft_strlen((char *)s);
+	ptr = (char *)malloc(sizeof(char) * (len + 1));
 	if (!ptr)
 		return (0);
 	while (s[i])
