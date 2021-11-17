@@ -19,7 +19,10 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	size_t	cnt;
 
 	i = 0;
-	if (*little == 0)
+	j = ft_strlen((char *)little);
+	if (j > len)
+		j = len;
+	if (j == 0)
 		return ((char *)big);
 	while (i < len)
 	{
@@ -27,11 +30,10 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 		{
 			cnt = 0;
 			j = 0;
-			while (little[j])
+			while (little[j] && i + j <= len)
 			{
 				if (big[i + j] == little[j])
 					cnt++;
-				j++;
 			}
 			if (j == cnt)
 				return ((char *)big + i);
@@ -40,3 +42,16 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	}
 	return (0);
 }
+/*
+#include <string.h>
+#include <stdio.h>
+int main(void)
+{
+	char a[] = "MZIRIBMZIRIBMZE123";
+	char b[] = "MZIRIBMZE";
+	char *c = 0;
+
+	printf("%s ", ft_strnstr(a, b, 10));
+	printf("%s", strnstr(a, b, 10));
+}
+*/

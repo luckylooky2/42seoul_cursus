@@ -21,10 +21,10 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	res = 0;
 	while (i < n)
 	{
-		res = *s1 - *s2;
+		res = *((unsigned char *)s1) - *((unsigned char *)s2);
 		if (res != 0)
 			break ;
-		if (*s1 == 0 || *s2 == 0)
+		if (*((unsigned char *)s1) == 0 || *((unsigned char *)s2) == 0)
 			break ;
 		s1++;
 		s2++;
@@ -32,3 +32,16 @@ int	ft_strncmp(const char *s1, const char *s2, size_t n)
 	}
 	return (res);
 }
+/*
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	char a[10];
+	char b[10];
+
+	a[0] = 256;
+	b[0] = 325;
+	printf("%d %d", ft_strncmp(a, b, 5), strncmp(a, b, 5));
+}
+*/

@@ -17,7 +17,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	size_t	i;
 
 	i = 0;
-	if (n == 0 && dest == src)
+	if (dest == src)
 		return (dest);
 	while (i < n)
 	{
@@ -25,4 +25,15 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 		i++;
 	}
 	return (dest);
+}
+
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	char *a = 0;
+	char *b = 0;
+
+	printf("%s ", ft_memcpy(a, b, 3));
+	// printf("%s", memcpy(a, b, 3));
 }
