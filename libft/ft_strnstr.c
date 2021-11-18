@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strnstr.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:02:13 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/16 12:02:26 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/17 21:22:59 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,12 +19,9 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	size_t	cnt;
 
 	i = 0;
-	j = ft_strlen((char *)little);
-	if (j > len)
-		j = len;
-	if (j == 0)
+	if (ft_strlen((char *)little) == 0)
 		return ((char *)big);
-	while (i < len)
+	while (i < len && big[i])
 	{
 		if (big[i] == *little)
 		{
@@ -34,24 +31,75 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 			{
 				if (big[i + j] == little[j])
 					cnt++;
+				j++;
 			}
-			if (j == cnt)
+			if (ft_strlen((char *)little) == cnt)
 				return ((char *)big + i);
 		}
 		i++;
 	}
 	return (0);
 }
+
 /*
-#include <string.h>
+#include <bsd/string.h>
 #include <stdio.h>
 int main(void)
 {
-	char a[] = "MZIRIBMZIRIBMZE123";
-	char b[] = "MZIRIBMZE";
-	char *c = 0;
+	// char	*s1 = "see FF your FF return FF now FF";
+	// char	*s2 = "FF";
+	// size_t	max = strlen(s1);
 
-	printf("%s ", ft_strnstr(a, b, 10));
-	printf("%s", strnstr(a, b, 10));
+	// char	*s1 = "FF";
+	// char	*s2 = "see F your F return F now F";
+	// size_t	max = strlen(s2);
+
+	// char	*s1 = "MZIRIBMZIRIBMZE123";
+	// char	*s2 = "MZIRIBMZE";
+	// size_t	max = strlen(s2);
+
+	// printf("%s//", ft_strnstr(s1, s2, max));
+	// printf("%s", strnstr(s1, s2, max));
+
+	// char *big = "abcdef";
+	// char *little = "abcdefghijklmnop";
+	// size_t	max = strlen(big);
+
+	// char *	big = "123456789";
+	// char *	little = "9";
+	// size_t	max = 8;
+
+	// printf("%s//", ft_strnstr(big, little, max));
+	// printf("%s", strnstr(big, little, max));
+
+	// char	*s1 = "FF";
+	// char	*s2 = "see F your FF return FF now FF";
+
+	// char	*s1 = "";
+	// char	*s2 = "oh no not the empty string !";
+	// size_t	max = strlen(s2);
+
+	// printf("%s//", ft_strnstr(s1, s2, max));
+	// printf("%s", strnstr(s1, s2, max));
+
+	// char	*s1 = "oh no not the empty string !";
+	// char	*s2 = "";
+	// size_t	max = 0;
+
+	// char	*s1 = "AAAAAAAAAAAAA";
+	// size_t	max = strlen(s1);
+
+	// char	*s1 = "A";
+
+	size_t	size = 20 * 4;
+	char	*s2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB";
+	char	*s1 = malloc(size + 1);
+
+	memset(s1, 'A', size);
+	s1[size] = 0;
+
+	printf("%s//", ft_strnstr(s1, s2, size));
+	printf("%s", strnstr(s1, s2, size));
+
 }
 */
