@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:06:22 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/17 01:17:12 by marvin           ###   ########.fr       */
+/*   Updated: 2021/11/18 19:26:33 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void	*ft_memcpy(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
+/*
 #include <stdio.h>
 #include <string.h>
 int main()
@@ -37,3 +38,4 @@ int main()
 	printf("%s ", ft_memcpy(a, b, 3));
 	// printf("%s", memcpy(a, b, 3));
 }
+*/
