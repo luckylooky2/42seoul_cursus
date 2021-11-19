@@ -22,7 +22,8 @@ void	ft_lstclear(t_list **lst, void (*del)(void *))
 	back = ptr->next;
 	while (ptr)
 	{
-		(*del)(ptr->content);
+		if ((*del) != 0)
+			(*del)(ptr->content);
 		free(ptr);
 		ptr = back;
 		if (ptr != 0)
