@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:57:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/17 01:16:29 by marvin           ###   ########.fr       */
+/*   Updated: 2021/11/20 13:30:52 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,14 @@ void	*ft_memchr(const void *s, int c, size_t n)
 		i++;
 	}
 	return ((void *)ptr);
+}
+
+#include <stdio.h>
+#include <string.h>
+int main()
+{
+	char a[] = "123123123";
+
+	printf("%s ", (char *)memchr(a, 306, 20));
+	printf("%s", (char *)ft_memchr(a, 306, 20));
 }
