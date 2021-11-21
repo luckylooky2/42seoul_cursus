@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:02:13 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/17 21:22:59 by marvin           ###   ########.fr       */
+/*   Updated: 2021/11/21 23:39:13 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,10 +24,10 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 	while (i < len && big[i])
 	{
 		if (big[i] == *little)
-		{
+		{	
 			cnt = 0;
 			j = 0;
-			while (little[j] && i + j <= len)
+			while (little[j] && i + j < len)
 			{
 				if (big[i + j] == little[j])
 					cnt++;
@@ -46,6 +46,12 @@ char	*ft_strnstr(const char *big, const char *little, size_t len)
 #include <stdio.h>
 int main(void)
 {
+	char *s1 = "1234";
+	char	*s3 = "1234";
+	char	*s4 = "11234";
+
+	printf("%s ", ft_strnstr(s3, s2, 4));
+	printf("%s", strnstr(s3, s2, 4));
 	// char	*s1 = "see FF your FF return FF now FF";
 	// char	*s2 = "FF";
 	// size_t	max = strlen(s1);
@@ -91,15 +97,14 @@ int main(void)
 
 	// char	*s1 = "A";
 
-	size_t	size = 20 * 4;
-	char	*s2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB";
-	char	*s1 = malloc(size + 1);
+	// size_t	size = 20 * 4;
+	// char	*s2 = "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAB";
+	// char	*s1 = malloc(size + 1);
 
-	memset(s1, 'A', size);
-	s1[size] = 0;
+	// memset(s1, 'A', size);
+	// s1[size] = 0;
 
-	printf("%s//", ft_strnstr(s1, s2, size));
-	printf("%s", strnstr(s1, s2, size));
-
+	// printf("%s//", ft_strnstr(s1, s2, size));
+	// printf("%s", strnstr(s1, s2, size));
 }
 */

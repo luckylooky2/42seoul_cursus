@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcpy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:12:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/16 11:12:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/21 19:17:28 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,16 @@ size_t	ft_strlcpy(char *dest, const char *src, size_t size)
 	if (!(size == 0))
 		dest[i] = 0;
 	return (len);
+}
+
+#include <stdio.h>
+#include <bsd/string.h>
+int main()
+{
+	char dest[40];
+	char src[] = "hello";
+
+	// ft_strlcpy(dest, src, 20);
+	strlcpy(dest, src, 5);
+	printf("%s", dest);
 }
