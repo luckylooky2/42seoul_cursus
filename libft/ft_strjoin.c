@@ -37,3 +37,13 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	ptr[index] = 0;
 	return (ptr);
 }
+
+#include <stdio.h>
+
+int main()
+{
+	char	s1[] = "";
+	char	*s2 = 0;
+
+	printf("%s", ft_strjoin(s1, s2));
+}

@@ -35,3 +35,15 @@ char	*ft_substr(char const *s, unsigned int start, size_t len)
 	ptr[i] = 0;
 	return (ptr);
 }
+
+#include <stdio.h>
+int main()
+{
+	char	s[20] = "hello world";
+	// char	*n = NULL;
+	char	*ptr;
+
+	ptr = ft_substr(s, 20, 5);
+	printf("%s", ptr);
+	free(ptr); 
+}

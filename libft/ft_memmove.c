@@ -39,15 +39,13 @@ void	*ft_memmove(void *dest, const void *src, size_t n)
 	return (dest);
 }
 
-/*
 #include <stdio.h>
 #include <string.h>
 int main()
 {
-	char a[20] = "abcde";
-	char b[20];
+	char *a = 0;
+	char b[] = "asd";
 
-	printf("%s", (unsigned char *)ft_memmove(b, a, 4));
-	// printf("%s", (unsigned char *)memmove(b, a, 4));
+	// printf("%s", (unsigned char *)ft_memmove(b, a, 1));
+	printf("%s", (unsigned char *)memmove(b, a, 1));
 }
-*/

@@ -18,7 +18,7 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	unsigned int	i;
 
 	i = 0;
-	ptr = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
+	ptr = (char *)ft_calloc((ft_strlen(s) + 1), sizeof(char));
 	if (!ptr)
 		return (0);
 	while (*s)
@@ -30,4 +30,17 @@ char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 	}
 	ptr[i] = 0;
 	return (ptr);
+}
+
+
+char			f_strmapi(unsigned i, char c) { return (c + i); }
+
+#include <stdio.h>
+int main()
+{
+	printf("%s", ft_strmapi("olol", NULL));
+	// printf("%s", ft_strmapi(NULL, NULL));
+	// char	*b = "override this !";
+
+	// printf("%s", ft_strmapi(b, f_strmapi));
 }

@@ -61,6 +61,8 @@ static char	*ft_check_back(char const *s1, char const *set)
 		else
 			index--;
 	}
+	if (index == -1)
+		index = 0;
 	return ((char *)s1 + index);
 }
 

@@ -59,19 +59,22 @@ char	*ft_itoa(int n)
 	return (ptr);
 }
 
-/*
 #include <stdio.h>
+#include <stdlib.h>
 int main()
 {
-	printf("%s\n", ft_itoa(-2147483648));
-	printf("%s\n", ft_itoa(-0));
-	printf("%s\n", ft_itoa(-21));
-	printf("%s\n", ft_itoa(1));
-	printf("%s\n", ft_itoa(-1));
-	printf("%s\n", ft_itoa(2147483647));
-	printf("%s\n", ft_itoa(-2147483647));
-	printf("%s\n", ft_itoa(483648111));
-	printf("%s\n", ft_itoa(-218));
+	long long a = 222222222222222222;
+
+	printf("%s\n", ft_itoa(a));
+	printf("%s\n", itoa(a));
+	// printf("%s\n", ft_itoa(-0));
+	// printf("%s\n", ft_itoa(-21));
+	// printf("%s\n", ft_itoa(1));
+	// printf("%s\n", ft_itoa(-1));
+	// printf("%s\n", ft_itoa(2147483647));
+	// printf("%s\n", ft_itoa(-2147483647));
+	// printf("%s\n", ft_itoa(483648111));
+	// printf("%s\n", ft_itoa(-218));
 	
 }
-*/
+

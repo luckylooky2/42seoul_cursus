@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static char	*ft_check_front(char const *s1, char const *set)
 {
@@ -61,6 +62,8 @@ static char	*ft_check_back(char const *s1, char const *set)
 		else
 			index--;
 	}
+	if (index == -1)
+		index = 0;
 	return ((char *)s1 + index);
 }
 
@@ -75,7 +78,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	s1_front = ft_check_front(s1, set);
 	s1_back = ft_check_back(s1, set);
 	if (s1_front > s1_back)
-		s1_front = s1_back;
+		s1_back = s1_front;
 	ptr = (char *)malloc(sizeof(char) * (s1_back - s1_front + 2));
 	if (!ptr)
 		return (0);
@@ -91,50 +94,56 @@ char	*ft_strtrim(char const *s1, char const *set)
 	return (ptr);
 }
 
-// #include <stdio.h>
+
+#include <stdio.h>
 // #include <string.h>
-// #define TRIM_SET_PLACEHOLDER " \n\t"
+#define TRIM_SET_PLACEHOLDER " \n\t"
 
-// int main()
-// {
-// 	// char	*s1 = "   \t  \n\n \t\t  \n\n\nHello \t  Please\n Trim me !\n   \n \n \t\t\n  ";
-// 	// char	*s2 = "Hello \t  Please\n Trim me !";
-// 	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
+int main()
+{
+	// char s1[] = "";
+	// char s2[] = "abssadas";
 
-// 	// char	*s1 = "Hello \t  Please\n Trim me !";
-// 	// char	*s2 = "Hello \t  Please\n Trim me !";
+	// printf("%s", ft_strtrim(s1, s2));
+	// char	*s1 = "   \t  \n\n \t\t  \n\n\nHello \t  Please\n Trim me !\n   \n \n \t\t\n  ";
+	// char	*s2 = "Hello \t  Please\n Trim me !";
+	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
 
-// 	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
+	char	*s1 = "Hello \t  Please\n Trim me !";
+	char	*s2 = "Hello \t  Please\n Trim me !";
 
-// 	// char	*s1 = "";
-// 	// char	*s2 = "";
+	char	*ret = ft_strtrim(s1, s2);
+	printf("%s", ret);
 
-// 	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
+	// char	*s1 = "";
+	// char	*s2 = "";
 
-// 	// char	*s1 = "  \t \t \n   \n\n\n\t";
-// 	// char	*s2 = "";
-// 	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
+	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
+
+	// char	*s1 = "  \t \t \n   \n\n\n\t";
+	// char	*s2 = "";
+	// char	*ret = ft_strtrim(s1, TRIM_SET_PLACEHOLDER);
 	
-// 	// if (!strcmp(ret, s2))
-// 	// 	printf("good");
-// 	// else
-// 	// 	printf("bad");
+	// if (!strcmp(ret, s2))
+	// 	printf("good");
+	// else
+	// 	printf("bad");
 
-// 	// int size;
-// 	// int r_size;
+	// int size;
+	// int r_size;
 
-// 	char	*s1 = "\t   \n\n\n  \n\n\t    Hello \t  Please\n Trim me !\t\t\t\n  \t\t\t\t  ";
-// 	char	*s2 = "Hello \t  Please\n Trim me !";
+	// char	*s1 = "\t   \n\n\n  \n\n\t    Hello \t  Please\n Trim me !\t\t\t\n  \t\t\t\t  ";
+	// char	*s2 = "Hello \t  Please\n Trim me !";
 
-// 	printf("%s	\n", ft_strtrim(s1, TRIM_SET_PLACEHOLDER));
-// 	printf("%s	\n", s2);
+	// printf("%s	\n", ft_strtrim(s1, TRIM_SET_PLACEHOLDER));
+	// printf("%s	\n", s2);
 	
-// 	// size = ft_strlen(ft_strtrim(s1, TRIM_SET_PLACEHOLDER));
-// 	// r_size = ft_strlen(s2);
-// 	// printf("%d %d", size, r_size);
+	// size = ft_strlen(ft_strtrim(s1, TRIM_SET_PLACEHOLDER));
+	// r_size = ft_strlen(s2);
+	// printf("%d %d", size, r_size);
 
-// 	// if (size == r_size + 1)
-// 	// 	printf("good");
-// 	// else
-// 	// 	printf("bad");
-// }
+	// if (size == r_size + 1)
+	// 	printf("good");
+	// else
+	// 	printf("bad");
+}

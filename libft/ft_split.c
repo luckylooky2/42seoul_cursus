@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <stdio.h>
 
 static void	ft_free(char **ptr)
 {
@@ -19,7 +20,6 @@ static void	ft_free(char **ptr)
 	i = 0;
 	while (ptr[i])
 		free(ptr[i++]);
-	free(ptr);
 	return ;
 }
 
@@ -67,6 +67,25 @@ static char	*ft_second_malloc(char const *str2, char c, char **ptr, int i)
 	return (ptr[i - 1]);
 }
 
+static int	ft_len_first_malloc(char const *s, char c)
+{
+	int	i;
+	int	cnt;
+	int	len;
+
+	i = 0;
+	cnt = 0;
+	len = ft_strlen((char *)s);
+	while (i < len)
+	{
+		if (s[i] == c)
+			cnt++;
+		i++;
+	}
+	cnt += 2;
+	return (cnt);
+}
+
 char	**ft_split(char const *s, char c)
 {
 	char	**ptr;
@@ -75,29 +94,20 @@ char	**ft_split(char const *s, char c)
 	int		len;
 
 	i = 0;
-	len = ft_strlen((char *)s) / 2 + 2;
+	len = ft_len_first_malloc(s, c);
 	ptr = (char **)ft_calloc(len, sizeof(char *));
 	if (ptr == 0)
 		return (0);
 	last_ptr = ft_second_malloc(s, c, ptr, i);
 	if ((last_ptr == 0) && (ptr[0] != 0))
-	{
 		ft_free(ptr);
-		return (0);
-	}
-	else if ((last_ptr == 0) && (ptr[0] == 0))
-	{
-		free(ptr);
-		return (ptr);
-	}
-	else
-		return (ptr);
+	return (ptr);
 }
 
-/*
+#include <stdio.h>
 int main(void)
 {
-	char a[] = "zasdz";
+	char a[] = "";
 	char b = 'z';
 	char **ptr;
 	int	i;
@@ -109,5 +119,5 @@ int main(void)
 		printf("%d %s\n", i, ptr[i]);
 		i++;
 	}
+	free(ptr);
 }
-*/
