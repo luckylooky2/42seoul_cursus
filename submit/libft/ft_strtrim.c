@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:09:01 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/19 15:09:40 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/22 10:51:00 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 	s1_front = ft_check_front(s1, set);
 	s1_back = ft_check_back(s1, set);
 	if (s1_front > s1_back)
-		s1_front = s1_back;
+		s1_back = s1_front;
 	ptr = (char *)malloc(sizeof(char) * (s1_back - s1_front + 2));
 	if (!ptr)
 		return (0);

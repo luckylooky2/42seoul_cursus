@@ -1,6 +1,6 @@
-CC=gcc
+CC=cc
 AR=ar
-OPTIONS=rcs
+ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
@@ -10,16 +10,22 @@ SOURCE_BONUS=ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lst
 OBJECT=$(SOURCE:.c=.o)
 OBJECT_BONUS=$(SOURCE_BONUS:.c=.o)
 
-.c.o :
-	$(CC) $(CFALGS) -c $< -o $(<:.c=.o)
+ifdef WITH_BONUS
+	OBJ = $(OBJECT) $(OBJECT_BONUS)
+else
+	OBJ = $(OBJECT)
+endif
 
-$(NAME) : $(OBJECT)
-	$(AR) $(OPTIONS) $(NAME) $(OBJECT)
+$(NAME) : $(OBJ)
+	$(AR) $(ARFLAGS) $@ $(OBJ)
 
-bonus : $(OBJECT_BONUS)
-	$(AR) $(OPTIONS) $(NAME) $(OBJECT_BONUS)
+%.o : %.c
+	$(CC) $(CFALGS) -c $< -o $@
 
 all : $(NAME)
+
+bonus : 
+	@$(MAKE) WITH_BONUS=1 all
 
 clean :
 	$(RM) $(OBJECT) $(OBJECT_BONUS)
@@ -29,4 +35,5 @@ fclean : clean
 
 re : fclean all
 
-.PHONY : all bonus clean fclean re .c.o
+.PHONY : all clean fclean re bonus
+

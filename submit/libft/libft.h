@@ -6,13 +6,12 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/08 21:47:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/19 15:00:23 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/23 18:42:36 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef LIBFT_H
 # define LIBFT_H
-# include <stddef.h>
 # include <stdlib.h>
 # include <unistd.h>
 

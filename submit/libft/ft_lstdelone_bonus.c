@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 17:26:51 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/16 17:26:56 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/23 19:41:16 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,11 @@
 
 void	ft_lstdelone(t_list *lst, void (*del)(void *))
 {
+	t_list	*ptr;
+
+	ptr = lst->next;
 	if ((*del) != 0)
 		(*del)(lst->content);
 	free(lst);
+	lst = ptr;
 }
