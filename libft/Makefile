@@ -1,3 +1,15 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    Makefile                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2021/11/23 10:46:20 by chanhyle          #+#    #+#              #
+#    Updated: 2021/11/23 10:46:30 by chanhyle         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
 CC=gcc
 AR=ar
 OPTIONS=rcs
@@ -10,16 +22,21 @@ SOURCE_BONUS=ft_lstnew_bonus.c ft_lstadd_front_bonus.c ft_lstsize_bonus.c ft_lst
 OBJECT=$(SOURCE:.c=.o)
 OBJECT_BONUS=$(SOURCE_BONUS:.c=.o)
 
-.c.o :
+ifndef BONUS
+	OBJECT_FILES = $(OBJECT) $(OBJECT_BONUS)
+else
+	OBJECT_FILES = $(OBJECT)
+endif
+
+%.o : %.c
 	$(CC) $(CFALGS) -c $< -o $(<:.c=.o)
 
 $(NAME) : $(OBJECT)
-	$(AR) $(OPTIONS) $(NAME) $(OBJECT)
-
-bonus : $(OBJECT_BONUS)
-	$(AR) $(OPTIONS) $(NAME) $(OBJECT_BONUS)
+	$(AR) $(OPTIONS) $@ $(OBJECT_FILES)
 
 all : $(NAME)
+
+bonus : BONUS=1 all
 
 clean :
 	$(RM) $(OBJECT) $(OBJECT_BONUS)

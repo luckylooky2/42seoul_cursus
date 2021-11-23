@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strlcat.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 11:12:33 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/23 21:50:58 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/19 11:16:02 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,20 +34,4 @@ size_t	ft_strlcat(char *dest, const char *src, size_t size)
 		return (size + src_len);
 	else
 		return (dest_len + src_len);
-}
-
-#include <stdio.h>
-#include <bsd/string.h>
-
-int main()
-{
-	char dest[7] = "hello ";
-	char src[] = "world";
-
-	printf("%ld", strlcat(dest, src, 2));
-	// printf("%ld", strlcat(dest, src, 6));
-	// printf("%ld", strlcat(dest, src, 7));
-	// printf("%ld", strlcat(dest, src, 8));
-	// printf("%ld", strlcat(dest, src, 15));
-	printf("%s", dest);
 }
