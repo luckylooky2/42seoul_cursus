@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstmap_bonus.c                                  :+:      :+:    :+:   */
+/*   ft_lstmap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/17 16:42:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/17 16:42:55 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/24 10:09:22 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/24 10:09:33 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "libft_bonus.h"
 
 static int	ft_lst_count(t_list *ptr)
 {
@@ -41,6 +40,8 @@ t_list	*ft_lstmap(t_list *lst, void *(*f)(void *), void (*del)(void *))
 	{
 		if ((*f) != 0)
 			(ptr + i)->content = (*f)(lst->content);
+		else
+			(ptr + i)->content = lst->content;
 		if ((*del) != 0)
 			(*del)((ptr + i)->content);
 		if (i != cnt - 1)

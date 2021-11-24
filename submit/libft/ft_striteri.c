@@ -17,10 +17,11 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char *))
 	unsigned int	i;
 
 	i = 0;
+	if ((*f) == 0)
+		return ;
 	while (*s)
 	{
-		if ((*f) != 0)
-			(*f)(i, s);
+		(*f)(i, s);
 		i++;
 		s++;
 	}

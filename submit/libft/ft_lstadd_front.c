@@ -1,17 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_lstadd_front_bonus.c                            :+:      :+:    :+:   */
+/*   ft_lstadd_front.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 17:26:42 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/23 19:01:45 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/24 10:07:24 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/24 10:07:35 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "libft_bonus.h"
 
 void	ft_lstadd_front(t_list **lst, t_list *new)
 {
