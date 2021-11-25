@@ -14,20 +14,20 @@
 
 char	*ft_strdup(const char *s)
 {
-	char	*ptr;
+	char	*new_ary;
 	int		len;
 	int		i;
 
 	i = 0;
 	len = ft_strlen((char *)s);
-	ptr = (char *)malloc(sizeof(char) * (len + 1));
-	if (!ptr)
-		return (0);
+	new_ary = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_ary)
+		return (NULL);
 	while (s[i])
 	{
-		ptr[i] = s[i];
+		new_ary[i] = s[i];
 		i++;
 	}
-	ptr[i] = 0;
-	return (ptr);
+	new_ary[i] = '\0';
+	return (new_ary);
 }

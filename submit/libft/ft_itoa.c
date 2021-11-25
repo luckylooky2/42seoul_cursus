@@ -32,29 +32,29 @@ static int	ft_number_of_digits(int n)
 
 char	*ft_itoa(int n)
 {
-	char	*ptr;
+	char	*new_ary;
 	int		len;
 
 	if (n == -2147483648)
 	{
-		ptr = ft_itoa(n + 1);
-		ptr[10] = '8';
-		return (ptr);
+		new_ary = ft_itoa(n + 1);
+		new_ary[10] = '8';
+		return (new_ary);
 	}
 	len = ft_number_of_digits(n);
-	ptr = (char *)ft_calloc(len, sizeof(char));
-	if (!ptr)
-		return (0);
-	ptr[0] = '0';
+	new_ary = (char *)ft_calloc(len, sizeof(char));
+	if (new_ary == NULL)
+		return (NULL);
+	new_ary[0] = '0';
 	if (n < 0)
 	{
 		n *= -1;
-		ptr[0] = '-';
+		new_ary[0] = '-';
 	}
 	while (n > 0)
 	{
-		ptr[len-- - 2] = n % 10 + '0';
+		new_ary[len-- - 2] = n % 10 + '0';
 		n /= 10;
 	}
-	return (ptr);
+	return (new_ary);
 }

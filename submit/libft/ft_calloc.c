@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/16 12:03:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/23 18:45:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/25 17:29:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,17 @@
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*ptr;
+	void	*new_ary;
 	size_t	i;
 
 	i = 0;
-	ptr = malloc(nmemb * size);
-	if (!ptr)
-		return (0);
+	new_ary = malloc(nmemb * size);
+	if (!new_ary)
+		return (NULL);
 	else
 	{
 		while (i < nmemb * size)
-			((unsigned char *)ptr)[i++] = 0;
-		return (ptr);
+			((unsigned char *)new_ary)[i++] = 0;
+		return (new_ary);
 	}
 }

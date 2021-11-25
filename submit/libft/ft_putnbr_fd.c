@@ -14,28 +14,27 @@
 
 void	ft_putnbr_fd(int n, int fd)
 {
-	char	c;
+	char		c;
+	long long	longlong;
 
-	if (n == -2147483648)
-	{
-		write(fd, "-2147483648", 11);
+	if (fd < 0)
 		return ;
-	}
-	if (n < 0)
+	longlong = n;
+	if (longlong < 0)
 	{
 		write(fd, "-", 1);
-		n *= -1;
+		longlong *= -1;
 	}
-	if (n < 10)
+	if (longlong < 10)
 	{
-		c = n + '0';
+		c = longlong + '0';
 		write(fd, &c, 1);
 		return ;
 	}
 	else
 	{
-		c = n % 10 + '0';
-		ft_putnbr_fd(n / 10, fd);
+		c = longlong % 10 + '0';
+		ft_putnbr_fd(longlong / 10, fd);
 		write(fd, &c, 1);
 	}
 }
