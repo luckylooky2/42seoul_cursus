@@ -14,17 +14,17 @@
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
-	void	*new_ary;
+	void	*new_str;
 	size_t	i;
 
 	i = 0;
-	new_ary = malloc(nmemb * size);
-	if (!new_ary)
+	new_str = malloc(nmemb * size);
+	if (!new_str)
 		return (NULL);
 	else
 	{
 		while (i < nmemb * size)
-			((unsigned char *)new_ary)[i++] = 0;
-		return (new_ary);
+			((unsigned char *)new_str)[i++] = 0;
+		return (new_str);
 	}
 }

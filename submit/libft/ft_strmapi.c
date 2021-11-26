@@ -14,21 +14,21 @@
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	char			*new_ary;
+	char			*new_str;
 	unsigned int	i;
 
 	i = 0;
 	if ((*f) == NULL)
 		return (NULL);
-	new_ary = (char *)ft_calloc((ft_strlen(s) + 1), sizeof(char));
-	if (!new_ary)
+	new_str = (char *)ft_calloc((ft_strlen(s) + 1), sizeof(char));
+	if (!new_str)
 		return (NULL);
 	while (*s)
 	{
-		new_ary[i] = (*f)(i, *s);
+		new_str[i] = (*f)(i, *s);
 		i++;
 		s++;
 	}
-	new_ary[i] = '\0';
-	return (new_ary);
+	new_str[i] = '\0';
+	return (new_str);
 }

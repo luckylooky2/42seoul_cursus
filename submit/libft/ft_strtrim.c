@@ -70,7 +70,7 @@ char	*ft_strtrim(char const *s1, char const *set)
 {
 	char	*s1_front;
 	char	*s1_back;
-	char	*ptr;
+	char	*new_str;
 	int		i;
 
 	i = 0;
@@ -78,17 +78,15 @@ char	*ft_strtrim(char const *s1, char const *set)
 	s1_back = ft_check_back(s1, set);
 	if (s1_front > s1_back)
 		s1_back = s1_front;
-	ptr = (char *)malloc(sizeof(char) * (s1_back - s1_front + 2));
-	if (!ptr)
-		return (0);
+	new_str = (char *)ft_calloc((s1_back - s1_front + 2), sizeof(char));
+	if (!new_str)
+		return (NULL);
 	while (s1_front != s1_back)
 	{
-		ptr[i] = *(s1_front);
+		new_str[i] = *(s1_front);
 		i++;
 		s1_front++;
 	}
-	ptr[i] = *(s1_front);
-	if (i != 0)
-		ptr[i + 1] = 0;
-	return (ptr);
+	new_str[i] = *(s1_front);
+	return (new_str);
 }

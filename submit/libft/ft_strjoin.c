@@ -14,25 +14,25 @@
 
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char	*new_ary;
+	char	*new_str;
 	int		index;
 	int		len;
 
 	index = 0;
 	len = ft_strlen(s1) + ft_strlen(s2);
-	new_ary = (char *)malloc(sizeof(char) * (len + 1));
-	if (!new_ary)
+	new_str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!new_str)
 		return (NULL);
 	while (*s1)
 	{
-		new_ary[index++] = *s1;
+		new_str[index++] = *s1;
 		s1++;
 	}
 	while (*s2)
 	{
-		new_ary[index++] = *s2;
+		new_str[index++] = *s2;
 		s2++;
 	}
-	new_ary[index] = '\0';
-	return (new_ary);
+	new_str[index] = '\0';
+	return (new_str);
 }

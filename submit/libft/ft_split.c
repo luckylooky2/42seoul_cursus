@@ -12,13 +12,13 @@
 
 #include "libft.h"
 
-static void	ft_free(char **ptr)
+static void	ft_free(char **str)
 {
 	int	i;
 
 	i = 0;
-	while (ptr[i])
-		free(ptr[i++]);
+	while (str[i])
+		free(str[i++]);
 	return ;
 }
 
@@ -33,72 +33,76 @@ static char	*ft_copy(char const *str2, char const *str1, char *ptr_ary)
 		i++;
 		str1++;
 	}
-	ptr_ary[i] = 0;
+	ptr_ary[i] = '\0';
 	return ((char *)str1);
 }
 
-static char	*ft_second_malloc(char const *str2, char c, char **ptr, int i)
+static char	*ft_second_malloc(char const *str2, char c, char **str, int i)
 {
 	char const	*str1;
 
 	str1 = str2;
 	while (*str2)
 	{
-		if (*str2 == c || *(str2 + 1) == 0)
+		if (*str2 == c || *(str2 + 1) == '\0')
 		{
-			if (*str2 != c && *(str2 + 1) == 0)
+			if (*str2 != c && *(str2 + 1) == '\0')
 				str2++;
 			if (*str2 != *str1)
 			{
-				ptr[i] = (char *)malloc(sizeof(char) * (str2 - str1 + 1));
-				if (ptr[i] == 0)
-					return (ptr[i]);
-				str1 = (char const *)ft_copy(str2, str1, ptr[i]);
+				str[i] = (char *)malloc(sizeof(char) * (str2 - str1 + 1));
+				if (str[i] == NULL)
+					return (str[i]);
+				str1 = (char const *)ft_copy(str2, str1, str[i]);
 				i++;
 			}
 			str1++;
 		}
-		if (*str2 != 0)
+		if (*str2 != '\0')
 			str2++;
 	}
 	if (i == 0)
-		return (ptr[i]);
-	return (ptr[i - 1]);
+		return (str[i]);
+	return (str[i - 1]);
 }
 
 static int	ft_len_first_malloc(char const *s, char c)
 {
-	int	i;
-	int	cnt;
-	int	len;
+	char const	*front;
+	char const	*back;
+	int			i;
+	int			cnt;
+	int			len;
 
 	i = 0;
 	cnt = 0;
 	len = ft_strlen((char *)s);
-	while (i < len)
+	front = s;
+	back = (s + 1);
+	while (i++ < len)
 	{
-		if (s[i] == c)
+		if (*front != c && (*back == c || *back == '\0'))
 			cnt++;
-		i++;
+		front++;
+		back++;
 	}
-	cnt += 2;
 	return (cnt);
 }
 
 char	**ft_split(char const *s, char c)
 {
-	char	**ptr;
-	char	*last_ptr;
+	char	**str;
+	char	*last_str;
 	int		i;
 	int		len;
 
 	i = 0;
 	len = ft_len_first_malloc(s, c);
-	ptr = (char **)ft_calloc(len, sizeof(char *));
-	if (ptr == 0)
-		return (0);
-	last_ptr = ft_second_malloc(s, c, ptr, i);
-	if ((last_ptr == 0) && (ptr[0] != 0))
-		ft_free(ptr);
-	return (ptr);
+	str = (char **)ft_calloc((len + 1), sizeof(char *));
+	if (str == NULL)
+		return (NULL);
+	last_str = ft_second_malloc(s, c, str, i);
+	if ((last_str == NULL) && (str[0] != NULL))
+		ft_free(str);
+	return (str);
 }
