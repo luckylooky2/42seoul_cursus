@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_memchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/19 11:11:01 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/19 11:15:10 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/27 15:01:26 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/27 15:01:35 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ void	*ft_memchr(const void *s, int c, size_t n)
 	size_t				i;
 
 	i = 0;
-	curr = 0;
+	curr = NULL;
 	while (i < n)
 	{
 		if (((const unsigned char *)s)[i] == (unsigned char)c)
