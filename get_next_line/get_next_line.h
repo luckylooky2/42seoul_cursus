@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/28 23:53:01 by marvin           ###   ########.fr       */
+/*   Updated: 2021/11/29 01:21:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 # define GET_NEXT_LINE_H
 # include <stdlib.h>
 # include <unistd.h>
+# include <fcntl.h>
+# include <stdio.h>
 
 typedef struct s_list
 {
@@ -21,7 +23,10 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
+char	*get_next_line(int fd);
 t_list	*ft_lstnew(void *content);
+void	ft_lstadd_front(t_list **lst, t_list *new);
 void	ft_lstadd_back(t_list **lst, t_list *new);
+int		ft_lstsize(t_list *lst);
 
 #endif

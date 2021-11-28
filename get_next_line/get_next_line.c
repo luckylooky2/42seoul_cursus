@@ -6,32 +6,46 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/28 23:52:09 by marvin           ###   ########.fr       */
+/*   Updated: 2021/11/29 01:36:57 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <fcntl.h>
-#include <stdio.h>
 
 char	*get_next_line(int fd)
 {
-	size_t	check;
-	char	buf;
 	char	*new_ary;
+	int		i;
+	int		check;
+	char	buf;
+	t_list	**lst;
+
 
 	i = 0;
-	while (1)
+	*lst = NULL;
+	while (buf != '\n' && check != 0)
 	{
+		buf = '\0';
 		check = read(fd, &buf, 1);
 		if (check != 0)
-		{
-			
-		}
-		else
-			break ;
+			ft_lstadd_back(lst, ft_lstnew(&buf));
 	}
-	return (new_ary);
+	while (*lst)
+	{
+		printf("%c", *((char *)((*lst)->content)));
+		*lst = (*lst)->next;
+	}
+	// new_ary = (char *)malloc(5);
+	// printf("%p", new_ary);
+	// if (new_ary == NULL)
+	// 	return (NULL);
+	// while (*lst)
+	// {
+	// 	new_ary[i++] = *((char *)((*lst)->content));
+	// 	*lst = (*lst)->next;
+	// }
+	// new_ary[i] = '\0';
+	return (NULL);
 }
 
 int main()
@@ -41,9 +55,7 @@ int main()
 
 	i = 0;
 	fd = open("a.txt", O_RDONLY);
-	while (i < 1)
-	{
-		get_next_line(fd);
-		i++;
-	}
+
+	get_next_line(fd);
+
 }
