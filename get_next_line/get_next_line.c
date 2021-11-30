@@ -12,69 +12,62 @@
 
 #include "get_next_line.h"
 
-/*
-static	int	ft_make_linked_list(int fd, t_list	*lst)
+static	t_list	*ft_make_linked_list(int fd, t_list	*lst, char *buf)
 {
 	int		check;
-	char	buf;
-	t_list	*curr;
-	t_list	*new_char;
-	
-	buf = '\0';
-	while (buf != '\n')
-
-}
-*/
-
-char	*get_next_line(int fd)
-{
-	char	*new_ary;
 	char	*new_char;
-	int		i;
-	int		check;
-	char	buf;
-	t_list	*lst;
-	t_list	*curr;
+	t_list	*new_node;
 
-	i = 0;
-	lst = NULL;
-	buf = '\0';
-	while (buf != '\n')
+	while (*buf != '\n')
 	{
-		check = read(fd, &buf, 1);
+		check = read(fd, buf, 1);
 		if (check != 0)
 		{
 			new_char = (char *)malloc(sizeof(char));
-			if (new_char == NULL)
-				return (NULL);
 			*new_char = *buf;
-			curr = ft_lstnew(new_char);
-			if (curr == NULL)
+			new_node = ft_lstnew(new_char);
+			if (new_char == NULL || new_node == NULL)
 			{
 				ft_lstclear(&lst, free);
 				return (NULL);
 			}
-			ft_lstadd_back(&lst, curr);
+			ft_lstadd_back(&lst, new_node);
 		}
 		else
-			return (NULL);
+			return (lst);
 	}
-	curr = lst;
-	new_ary = (char *)malloc(sizeof(char) * (ft_lstsize(curr) + 1));
-	if (new_ary == NULL)
-		return (NULL);
-	curr = lst;
-	while (curr)
-	{
-		new_ary[i] = *((char *)((curr)->content));
-		curr = (curr)->next;
-		i++;
-	}
-	new_ary[i] = '\0';
-	ft_lstclear(&lst, free);
-	return (new_ary);
+	return (lst);
 }
 
+char	*get_next_line(int fd)
+{
+	char	buf[BUFFER_SIZE];
+	char	*new_str;
+	int		i;
+	t_list	*lst;
+	t_list	*curr;
+
+	i = 0;
+	*buf = '\0';
+	lst = NULL;
+	lst = ft_make_linked_list(fd, lst, buf);
+	if (lst == NULL)
+		return (NULL);
+	curr = lst;
+	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(curr) + 1));
+	if (new_str == NULL)
+		return (NULL);
+	while (curr)
+	{
+		new_str[i++] = *((char *)((curr)->content));
+		curr = (curr)->next;
+	}
+	new_str[i] = '\0';
+	ft_lstclear(&lst, free);
+	return (new_str);
+}
+
+/*
 int main()
 {
 	int fd;
@@ -91,7 +84,8 @@ int main()
 		if (str == NULL)
 			break ;
 		printf("%s", str);
+		free(str);
 		i++;
 	}
-	free(str);
 }
+*/
