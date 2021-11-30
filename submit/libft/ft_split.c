@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:10:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/19 15:10:30 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/30 12:40:22 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,8 +101,14 @@ char	**ft_split(char const *s, char c)
 	str = (char **)ft_calloc((len + 1), sizeof(char *));
 	if (str == NULL)
 		return (NULL);
+	if (len == 0)
+		return (str);
 	last_str = ft_second_malloc(s, c, str, i);
-	if ((last_str == NULL) && (str[0] != NULL))
+	if (last_str == NULL)
+	{
 		ft_free(str);
+		free(str);
+		return (NULL);
+	}
 	return (str);
 }
