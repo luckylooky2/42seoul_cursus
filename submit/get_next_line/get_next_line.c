@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/11/30 18:21:36 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/01 01:30:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ static t_list	*ft_make_linked_list(t_list *char_lst, char *buf)
 
 static	t_list	*ft_read_n_check_file(int fd, t_list *char_lst, char *buf)
 {
-	int		check;
+	int	check;
 
 	*buf = '\0';
 	while (*buf != '\n')
@@ -59,15 +59,30 @@ static	t_list	*ft_read_n_check_file(int fd, t_list *char_lst, char *buf)
 	return (char_lst);
 }
 
+static char	*ft_copy_str(char *new_str, t_list *char_lst)
+{
+	int		i;
+	t_list	*curr;
+
+	i = 0;
+	curr = char_lst;
+	while (curr)
+	{
+		new_str[i] = *((char *)((curr)->content));
+		curr = (curr)->next;
+		i++;
+	}
+	new_str[i] = '\0';
+	return (new_str);
+}
+
 char	*get_next_line(int fd)
 {
 	char	buf[BUFFER_SIZE];
 	char	*new_str;
-	int		i;
 	t_list	*char_lst;
 	t_list	*curr;
 
-	i = 0;
 	char_lst = NULL;
 	if (fd < 0)
 		return (NULL);
@@ -77,13 +92,11 @@ char	*get_next_line(int fd)
 	curr = char_lst;
 	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(curr) + 1));
 	if (new_str == NULL)
-		return (NULL);
-	while (curr)
 	{
-		new_str[i++] = *((char *)((curr)->content));
-		curr = (curr)->next;
+		ft_lstclear(&char_lst, free);
+		return (NULL);
 	}
-	new_str[i] = '\0';
+	new_str = ft_copy_str(new_str, char_lst);
 	ft_lstclear(&char_lst, free);
 	return (new_str);
 }
