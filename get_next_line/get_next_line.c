@@ -12,9 +12,24 @@
 
 #include "get_next_line.h"
 
+/*
+static	int	ft_make_linked_list(int fd, t_list	*lst)
+{
+	int		check;
+	char	buf;
+	t_list	*curr;
+	t_list	*new_char;
+	
+	buf = '\0';
+	while (buf != '\n')
+
+}
+*/
+
 char	*get_next_line(int fd)
 {
 	char	*new_ary;
+	char	*new_char;
 	int		i;
 	int		check;
 	char	buf;
@@ -29,7 +44,16 @@ char	*get_next_line(int fd)
 		check = read(fd, &buf, 1);
 		if (check != 0)
 		{
-			curr = ft_lstnew(&buf);
+			new_char = (char *)malloc(sizeof(char));
+			if (new_char == NULL)
+				return (NULL);
+			*new_char = *buf;
+			curr = ft_lstnew(new_char);
+			if (curr == NULL)
+			{
+				ft_lstclear(&lst, free);
+				return (NULL);
+			}
 			ft_lstadd_back(&lst, curr);
 		}
 		else
