@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/01 01:30:21 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/02 15:25:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,6 @@ char	*get_next_line(int fd)
 	return (new_str);
 }
 
-/*
 #include <stdio.h>
 #include <fcntl.h>
 int main()
@@ -112,7 +111,7 @@ int main()
 
 	i = 0;
 	str = "123";
-	fd = open("a.txt", O_RDONLY);
+	fd = open("libft.a", O_RDONLY);
 
 	while (1)
 	{
@@ -124,4 +123,4 @@ int main()
 		i++;
 	}
 }
-*/
+
