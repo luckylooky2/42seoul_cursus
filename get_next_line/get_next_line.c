@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/04 11:23:05 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/04 11:43:05 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,13 +81,14 @@ char	*get_next_line(int fd)
 	{
 		if (index == 0)
 		{
+			i = 0;
 			ft_bzero(buf, BUFFER_SIZE);
 			check = read(fd, buf, BUFFER_SIZE);
 			if (check == 0)
 				return (NULL);
-			printf("%d\n", check); 
-			while (i < BUFFER_SIZE)
-				printf("%c", buf[i++]);
+			// printf("read : %d\n", check); 
+			// while (i < BUFFER_SIZE)
+			// 	printf("read %d : %c\n", i , buf[i++]);
 			if (check == -1)
 			{
 				ft_lstclear(&char_lst, free);
@@ -96,17 +97,19 @@ char	*get_next_line(int fd)
 		}
 		while (index < BUFFER_SIZE)
 		{
-			printf("%d*%c\n", index, buf[index]);
+			// printf("index : %d*%c\n", index, buf[index]);
 			char_lst = ft_make_linked_list(char_lst, &buf[index]);
 			index++;
 			if (buf[index - 1] == '\n' || buf[index - 1] == '\0')
 				break ;
 		}
-		printf("%d\n", index);
+		// printf("%d\n", index);
 		if (index == BUFFER_SIZE)
 		{
 			index = 0;
-			printf("1");
+			if (buf[index - 1] != '\n')
+				break ;
+			// printf("init\n");
 		}
 		else
 			break ;
@@ -140,6 +143,7 @@ int main()
 		str = get_next_line(fd);
 		if (str == NULL)
 			break ;
+		// printf("return : '%s'\n", str);
 		printf("%s", str);
 		free(str);
 		i++;
