@@ -6,24 +6,11 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/04 11:23:05 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/02 15:25:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-
-void	ft_bzero(void *s, size_t n)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)s)[i] = 0;
-		i++;
-	}
-}
 
 static t_list	*ft_make_linked_list(t_list *char_lst, char *buf)
 {
@@ -47,6 +34,31 @@ static t_list	*ft_make_linked_list(t_list *char_lst, char *buf)
 	return (char_lst);
 }
 
+static	t_list	*ft_read_n_check_file(int fd, t_list *char_lst, char *buf)
+{
+	int	check;
+
+	*buf = '\0';
+	while (*buf != '\n')
+	{
+		check = read(fd, buf, 1);
+		if (check == 1)
+		{
+			char_lst = ft_make_linked_list(char_lst, buf);
+			if (char_lst == NULL)
+				return (NULL);
+		}
+		else if (check == 0)
+			return (char_lst);
+		else if (check == -1)
+		{
+			ft_lstclear(&char_lst, free);
+			return (NULL);
+		}
+	}
+	return (char_lst);
+}
+
 static char	*ft_copy_str(char *new_str, t_list *char_lst)
 {
 	int		i;
@@ -66,51 +78,17 @@ static char	*ft_copy_str(char *new_str, t_list *char_lst)
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE];
-	static int	index;
-	char		*new_str;
-	t_list		*char_lst;
-	t_list		*curr;
-	int			check;
-	int			i = 0;
+	char	buf[BUFFER_SIZE];
+	char	*new_str;
+	t_list	*char_lst;
+	t_list	*curr;
 
 	char_lst = NULL;
 	if (fd < 0)
 		return (NULL);
-	while (1)
-	{
-		if (index == 0)
-		{
-			ft_bzero(buf, BUFFER_SIZE);
-			check = read(fd, buf, BUFFER_SIZE);
-			if (check == 0)
-				return (NULL);
-			printf("%d\n", check); 
-			while (i < BUFFER_SIZE)
-				printf("%c", buf[i++]);
-			if (check == -1)
-			{
-				ft_lstclear(&char_lst, free);
-				return (NULL);
-			}
-		}
-		while (index < BUFFER_SIZE)
-		{
-			printf("%d*%c\n", index, buf[index]);
-			char_lst = ft_make_linked_list(char_lst, &buf[index]);
-			index++;
-			if (buf[index - 1] == '\n' || buf[index - 1] == '\0')
-				break ;
-		}
-		printf("%d\n", index);
-		if (index == BUFFER_SIZE)
-		{
-			index = 0;
-			printf("1");
-		}
-		else
-			break ;
-	}
+	char_lst = ft_read_n_check_file(fd, char_lst, buf);
+	if (char_lst == NULL)
+		return (NULL);
 	curr = char_lst;
 	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(curr) + 1));
 	if (new_str == NULL)
@@ -133,7 +111,7 @@ int main()
 
 	i = 0;
 	str = "123";
-	fd = open("a.txt", O_RDONLY);
+	fd = open("libft.a", O_RDONLY);
 
 	while (1)
 	{
@@ -144,12 +122,5 @@ int main()
 		free(str);
 		i++;
 	}
-
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
 }
 
