@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/05 20:38:06 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/05 21:06:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,18 +74,18 @@ char	*get_next_line(int fd)
 			if (buf[index - 1] == '\n')
 				break ;
 		}
-		if (index == BUFFER_SIZE && buf[index - 1] == '\n')
+		if ((index == BUFFER_SIZE || fd == 0) && buf[index - 1] == '\n')
 		{
 			index = 0;
 			break ;
 		}
-		else if (index == BUFFER_SIZE && check > 0) 
+		else if ((index == BUFFER_SIZE || fd == 0) && check > 0) 
 			index = 0;
 		else 
 			break ; 
 	}
 	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(char_lst) + 1));
-	if (new_str == NULL || char_lst == NULL || fd < 0 || check == 0 || check == -1)
+	if (new_str == NULL || char_lst == NULL || fd < 0 || check == -1)
 	{
 		ft_lstclear(&char_lst, free);
 		return (NULL);
@@ -103,24 +103,27 @@ int main()
 	char	*str;
 
 	str = "123";
-	fd = open("a.txt", O_RDONLY);
+	// fd = open("a.txt", O_RDONLY);
+	fd = 0;
 
-	// int i = 0;
-	// while (str != NULL)
-	// {
-	// 	str = get_next_line(fd);
-	// 	// printf("return : '%s'\n", str);
-	// 	printf("%s", str);
-	// 	free(str);
-	// 	i++;
-	// }
+	int i = 0;
+	while (1)
+	{
+		str = get_next_line(fd);
+		if (str == NULL)
+			break ;
+		// printf("return : '%s'\n", str);
+		printf("%s", str);
+		free(str);
+		i++;
+	}
 
 	// fd = 0;
-	str = get_next_line(fd);
-	printf("%s", str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	str = get_next_line(fd);
-	printf("%s", str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
 }
 
