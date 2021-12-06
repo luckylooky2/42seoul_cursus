@@ -35,16 +35,16 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 	return (char_lst);
 }
 
-static int	check_repeat_or_break(char *buf, char **curr, int read_size)
+static int	check_repeat_or_break(char *curr, int read_size)
 {
-	if ((*curr == buf + BUFFER_SIZE) && *(*curr - 1) == '\n')
+	if (*curr == '\0' && *(curr - 1) == '\n')
 	{
-		*curr = *curr - BUFFER_SIZE;
+		// curr = curr - (BUFFER_SIZE + 1);
 		return (1);
 	}
-	else if ((*curr == buf + BUFFER_SIZE) && read_size > 0)
+	else if (*curr == '\0' && read_size > 0)
 	{
-		*curr = *curr - BUFFER_SIZE;
+		// curr = curr - (BUFFER_SIZE + 1);
 		return (0);
 	}
 	else
@@ -97,15 +97,18 @@ static char	*make_new_str(int fd, t_list *char_lst, int read_size)
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
+	int		index; //반복문을 통해서 '\n'을 찾음으로서 static의 기능을 구현
 	char		*new_str;
 	t_list		*char_lst;
 	int			read_size;
 
 	char_lst = NULL;
 	read_size = 0;
+	if (curr == NULL)
+		curr = buf;
 	while (0 <= fd && fd <= OPEN_MAX && BUFFER_SIZE > 0)
 	{
-		if (*buf == '\0')
+		if (curr == buf)
 		{
 			ft_memset(buf, 0, BUFFER_SIZE + 1);
 			read_size = read(fd, buf, BUFFER_SIZE);
@@ -115,19 +118,24 @@ char	*get_next_line(int fd)
 		// printf("%p, %p\n", curr, buf + BUFFER_SIZE);
 		// printf("%d\n", read_size);
 		// printf("%c\n", *curr);
-		while (*buf != '\0' && read_size > 0)
+		// printf("%s", buf);
+		printf("%c\n", *curr);
+		while (*curr != '\0' && read_size > 0)
 		{
 			// printf("%p %p", curr, buf + BUFFER_SIZE);
-			char_lst = make_new_node(char_lst, buf++);
-			// printf("%c", *curr);
+			char_lst = make_new_node(char_lst, curr);
+			printf("%c", *curr);
+			curr++;
 			if (char_lst == NULL || *(curr - 1) == '\n')
 				break ;
 		}
-		if (check_repeat_or_break(buf, &curr, read_size) == 1)
+		if (check_repeat_or_break(curr, read_size) == 1)
 			break ;
 	}
 	new_str = make_new_str(fd, char_lst, read_size);
 	return (new_str);
+	// }
+	// return (NULL);
 }
 
 #include <stdio.h>
