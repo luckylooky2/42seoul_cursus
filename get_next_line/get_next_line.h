@@ -23,7 +23,7 @@ typedef struct s_list
 }					t_list;
 
 char	*get_next_line(int fd);
-void	ft_bzero(void *s, size_t n);
+void	*ft_memset(void *s, int c, size_t n);
 t_list	*ft_lstnew(void *content);
 void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstdelone(t_list *lst, void (*del)(void *));
