@@ -65,8 +65,8 @@ static char	*make_new_str(int fd, t_list *char_lst, int read_byte)
 		lst_len++;
 	}
 	new_str = (char *)malloc(sizeof(char) * (lst_len + 1));
-	if (new_str == NULL || char_lst == NULL ||
-		fd < 0 || fd > OPEN_MAX || read_byte == -1 || BUFFER_SIZE <= 0)
+	if (new_str == NULL || char_lst == NULL
+		|| fd < 0 || fd > OPEN_MAX || read_byte == -1 || BUFFER_SIZE <= 0)
 	{
 		ft_lstclear(&char_lst, free);
 		free(new_str);
@@ -75,6 +75,22 @@ static char	*make_new_str(int fd, t_list *char_lst, int read_byte)
 	new_str = copy_str(new_str, char_lst);
 	ft_lstclear(&char_lst, free);
 	return (new_str);
+}
+
+static int	check_index_n_break(char *buf, int *index, int read_byte)
+{
+	if ((*index == BUFFER_SIZE) && buf[*index - 1] == '\n')
+	{
+		*index = 0;
+		return (1);
+	}
+	else if ((*index == BUFFER_SIZE) && read_byte > 0)
+	{
+		*index = 0;
+		return (0);
+	}
+	else
+		return (1);
 }
 
 char	*get_next_line(int fd)
@@ -99,14 +115,7 @@ char	*get_next_line(int fd)
 			if (buf[index - 1] == '\n')
 				break ;
 		}
-		if ((index == BUFFER_SIZE) && buf[index - 1] == '\n') //check 함수 만들어보기
-		{
-			index = 0;
-			break ;
-		}
-		else if ((index == BUFFER_SIZE) && read_byte > 0)
-			index = 0;
-		else
+		if (check_index_n_break(buf, &index, read_byte) == 1)
 			break ;
 	}
 	new_str = make_new_str(fd, char_lst, read_byte);
