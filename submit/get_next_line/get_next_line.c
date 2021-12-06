@@ -6,13 +6,13 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/02 15:25:20 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/05 21:06:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static t_list	*ft_make_linked_list(t_list *char_lst, char *buf)
+static t_list	*make_new_node(t_list *char_lst, char *buf)
 {
 	char	*new_char;
 	t_list	*new_node;
@@ -34,32 +34,7 @@ static t_list	*ft_make_linked_list(t_list *char_lst, char *buf)
 	return (char_lst);
 }
 
-static	t_list	*ft_read_n_check_file(int fd, t_list *char_lst, char *buf)
-{
-	int	check;
-
-	*buf = '\0';
-	while (*buf != '\n')
-	{
-		check = read(fd, buf, 1);
-		if (check == 1)
-		{
-			char_lst = ft_make_linked_list(char_lst, buf);
-			if (char_lst == NULL)
-				return (NULL);
-		}
-		else if (check == 0)
-			return (char_lst);
-		else if (check == -1)
-		{
-			ft_lstclear(&char_lst, free);
-			return (NULL);
-		}
-	}
-	return (char_lst);
-}
-
-static char	*ft_copy_str(char *new_str, t_list *char_lst)
+static char	*copy_str(char *new_str, t_list *char_lst)
 {
 	int		i;
 	t_list	*curr;
@@ -76,51 +51,73 @@ static char	*ft_copy_str(char *new_str, t_list *char_lst)
 	return (new_str);
 }
 
-char	*get_next_line(int fd)
+static char	*make_new_str(int fd, t_list *char_lst, int read_size)
 {
-	char	buf[BUFFER_SIZE];
 	char	*new_str;
-	t_list	*char_lst;
 	t_list	*curr;
+	int		lst_len;
 
-	char_lst = NULL;
-	if (fd < 0)
-		return (NULL);
-	char_lst = ft_read_n_check_file(fd, char_lst, buf);
-	if (char_lst == NULL)
-		return (NULL);
+	lst_len = 0;
 	curr = char_lst;
-	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(curr) + 1));
-	if (new_str == NULL)
+	while (curr)
+	{
+		curr = curr->next;
+		lst_len++;
+	}
+	new_str = (char *)malloc(sizeof(char) * (lst_len + 1));
+	if (new_str == NULL || char_lst == NULL
+		|| fd < 0 || fd > OPEN_MAX || read_size == -1 || BUFFER_SIZE <= 0)
 	{
 		ft_lstclear(&char_lst, free);
+		free(new_str);
 		return (NULL);
 	}
-	new_str = ft_copy_str(new_str, char_lst);
+	new_str = copy_str(new_str, char_lst);
 	ft_lstclear(&char_lst, free);
 	return (new_str);
 }
 
-#include <stdio.h>
-#include <fcntl.h>
-int main()
+static int	check_index_n_break(char *buf, int *index, int read_size)
 {
-	int fd;
-	int	i;
-	char	*str;
-
-	i = 0;
-	str = "123";
-	fd = open("libft.a", O_RDONLY);
-
-	while (1)
+	if ((*index == BUFFER_SIZE) && buf[*index - 1] == '\n')
 	{
-		str = get_next_line(fd);
-		if (str == NULL)
-			break ;
-		printf("%s", str);
-		free(str);
-		i++;
+		*index = 0;
+		return (1);
 	}
+	else if ((*index == BUFFER_SIZE) && read_size > 0)
+	{
+		*index = 0;
+		return (0);
+	}
+	else
+		return (1);
 }
 
+char	*get_next_line(int fd)
+{
+	static char	buf[BUFFER_SIZE];
+	static int	index;
+	char		*new_str;
+	t_list		*char_lst;
+	int			read_size;
+
+	char_lst = NULL;
+	while (0 <= fd && fd <= OPEN_MAX && BUFFER_SIZE > 0)
+	{
+		if (index == 0)
+		{
+			ft_memset(buf, 0, BUFFER_SIZE);
+			read_size = read(fd, buf, BUFFER_SIZE);
+		}
+		while (index < BUFFER_SIZE && read_size > 0 && buf[index] != '\0')
+		{
+			char_lst = make_new_node(char_lst, &buf[index++]);
+			if (buf[index - 1] == '\n')
+				break ;
+		}
+		if (check_index_n_break(buf, &index, read_size) == 1)
+			break ;
+	}
+	new_str = make_new_str(fd, char_lst, read_size);
+	return (new_str);
+}
