@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "get_next_line_bonus.h"
 
 static t_list	*make_new_node(t_list *char_lst, char *buf)
 {
@@ -34,53 +34,32 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 	return (char_lst);
 }
 
-static int	check_repeat_or_break(char *buf, int *index, int read_size)
+static int	check_repeat_or_break(char *buf, int index)
 {
-	if ((*index == BUFFER_SIZE) && buf[*index - 1] == '\n')
+	if ((buf[index] == '\0' && buf[index - 1] == '\n')
+		|| ((buf[index] == '\0') && buf[index - 1] == '\0'))
 	{
-		*index = 0;
+		ft_memset(buf, 0, BUFFER_SIZE + 1);
 		return (1);
 	}
-	else if ((*index == BUFFER_SIZE) && read_size > 0)
+	else if (buf[index] == '\0')
 	{
-		*index = 0;
+		ft_memset(buf, 0, BUFFER_SIZE + 1);
 		return (0);
 	}
 	else
 		return (1);
 }
 
-static char	*copy_str(char *new_str, t_list *char_lst)
-{
-	int		i;
-	t_list	*curr;
-
-	i = 0;
-	curr = char_lst;
-	while (curr)
-	{
-		new_str[i] = *((char *)((curr)->content));
-		curr = (curr)->next;
-		i++;
-	}
-	new_str[i] = '\0';
-	return (new_str);
-}
-
-static char	*make_new_str(int fd, t_list *char_lst, int read_size)
+static char	*make_new_string(int fd, t_list *char_lst, int read_size)
 {
 	char	*new_str;
 	t_list	*curr;
-	int		lst_len;
+	int		i;
 
-	lst_len = 0;
+	i = 0;
 	curr = char_lst;
-	while (curr)
-	{
-		curr = curr->next;
-		lst_len++;
-	}
-	new_str = (char *)malloc(sizeof(char) * (lst_len + 1));
+	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(char_lst) + 1));
 	if (new_str == NULL || char_lst == NULL
 		|| fd < 0 || fd > OPEN_MAX || read_size == -1 || BUFFER_SIZE <= 0)
 	{
@@ -88,36 +67,91 @@ static char	*make_new_str(int fd, t_list *char_lst, int read_size)
 		free(new_str);
 		return (NULL);
 	}
-	new_str = copy_str(new_str, char_lst);
+	while (curr)
+	{
+		new_str[i] = *((char *)((curr)->content));
+		curr = (curr)->next;
+		i++;
+	}
+	new_str[i] = '\0';
 	ft_lstclear(&char_lst, free);
 	return (new_str);
 }
 
+static int	rearrange_string(char *buf)
+{
+	int	index;
+	int	new_index;
+
+	index = 0;
+	new_index = 0;
+	while (index < BUFFER_SIZE && buf[index] != '\n' && buf[index] != '\0')
+		index++;
+	if (buf[index] == '\n')
+		index++;
+	while (index < BUFFER_SIZE + 1)
+	{
+		buf[new_index] = buf[index];
+		if (buf[index] == '\0')
+			break ;
+		new_index++;
+		index++;
+	}
+	return (0);
+}
+
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE];
-	static int	index;
+	static char	buf[BUFFER_SIZE + 1];
 	char		*new_str;
 	t_list		*char_lst;
-	static int	read_size;
+	int			index;
+	int			read_size;
 
 	char_lst = NULL;
+	read_size = 0;
 	while (0 <= fd && fd <= OPEN_MAX && BUFFER_SIZE > 0)
 	{
-		if (index == 0)
-		{
-			ft_memset(buf, 0, BUFFER_SIZE);
+		index = rearrange_string(buf);
+		if (buf[0] == '\0')
 			read_size = read(fd, buf, BUFFER_SIZE);
-		}
-		while (index < BUFFER_SIZE && read_size > 0 && buf[index] != '\0')
+		while (index < BUFFER_SIZE && buf[index] != '\0')
 		{
 			char_lst = make_new_node(char_lst, &buf[index++]);
 			if (char_lst == NULL || buf[index - 1] == '\n')
 				break ;
 		}
-		if (check_repeat_or_break(buf, &index, read_size) == 1)
+		if (check_repeat_or_break(buf, index) == 1)
 			break ;
 	}
-	new_str = make_new_str(fd, char_lst, read_size);
+	new_str = make_new_string(fd, char_lst, read_size);
 	return (new_str);
 }
+
+/*
+#include <stdio.h>
+#include <fcntl.h>
+int main()
+{
+	char *str = "!23";
+	int fd = open("a.txt", O_RDONLY);
+
+	// while (str != NULL)
+	// {
+	// 	str = get_next_line(fd);
+	// 	printf("%s", str);
+	// 	free(str);
+	// }
+
+
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);	
+}
+*/
