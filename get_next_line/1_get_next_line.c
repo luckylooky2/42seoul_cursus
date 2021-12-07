@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "1_get_next_line.h"
 
 static t_list	*ft_make_linked_list(t_list *char_lst, char *buf)
 {
@@ -111,7 +111,7 @@ int main()
 
 	i = 0;
 	str = "123";
-	fd = open("libft.a", O_RDONLY);
+	fd = open("a.out", O_RDONLY);
 
 	while (1)
 	{

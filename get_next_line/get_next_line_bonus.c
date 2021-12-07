@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include <stdio.h>
 
 static t_list	*make_new_node(t_list *char_lst, char *buf)
 {
@@ -110,6 +111,7 @@ char	*get_next_line(int fd)
 
 	char_lst = NULL;
 	read_size = 0;
+	// printf("fd : %d\n", fd);
 	while (0 <= fd && fd <= OPEN_MAX && BUFFER_SIZE > 0)
 	{
 		index = rearrange_string(buf);
@@ -117,6 +119,7 @@ char	*get_next_line(int fd)
 			read_size = read(fd, buf, BUFFER_SIZE);
 		while (index < BUFFER_SIZE && buf[index] != '\0')
 		{
+			// printf("index : %d, char : %c\n", index, buf[index]);
 			char_lst = make_new_node(char_lst, &buf[index++]);
 			if (char_lst == NULL || buf[index - 1] == '\n')
 				break ;
@@ -125,16 +128,17 @@ char	*get_next_line(int fd)
 			break ;
 	}
 	new_str = make_new_string(fd, char_lst, read_size);
+	printf("str : %s\n", new_str);
 	return (new_str);
 }
 
-/*
 #include <stdio.h>
 #include <fcntl.h>
+#include <string.h>
 int main()
 {
 	char *str = "!23";
-	int fd = open("a.txt", O_RDONLY);
+	// int fd = open("a.out", O_RDONLY);
 
 	// while (str != NULL)
 	// {
@@ -143,15 +147,61 @@ int main()
 	// 	free(str);
 	// }
 
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// free(str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// free(str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// free(str);	
 
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);	
+	int fd[4];
+	
+	fd[0] = open("files/41_with_nl", O_RDWR);
+	str = get_next_line(fd[0]);
+	printf("%s\n", str);
+	if (!strcmp(str, "0123456789012345678901234567890123456789\n"))
+		printf("good\n");
+	else
+		printf("bad\n");
+
+	fd[1] = open("files/42_with_nl", O_RDWR);
+	str = get_next_line(fd[1]);
+	printf("%s\n", str);
+	if (!strcmp(str, "01234567890123456789012345678901234567890\n"))
+		printf("good\n");
+	else
+		printf("bad\n");
+
+	fd[2] = open("files/43_with_nl", O_RDWR);
+	str = get_next_line(fd[2]);
+	printf("%s\n", str);
+	if (!strcmp(str, "012345678901234567890123456789012345678901\n"))
+		printf("good\n");
+	else
+		printf("bad\n");
+
+	// str = get_next_line(fd[0]);
+	// printf("%s\n", str);
+	// if (!strcmp(str, "0"))
+	// 	printf("good\n");
+	// else
+	// 	printf("bad\n");
+
+	// str = get_next_line(fd[1]);
+	// printf("%s\n", str);
+	// if (!strcmp(str, "1"))
+	// 	printf("good\n");
+	// else
+	// 	printf("bad\n");	
+
+	// str = get_next_line(fd[2]);
+	// printf("%s\n", str);
+	// if (!strcmp(str, "2"))
+	// 	printf("good\n");
+	// else
+	// 	printf("bad\n");
+
 }
-*/
