@@ -12,6 +12,28 @@
 
 #include "get_next_line_bonus.h"
 
+static int	rearrange_string(char *buf)
+{
+	int	index;
+	int	new_index;
+
+	index = 0;
+	new_index = 0;
+	while (index < BUFFER_SIZE && buf[index] != '\n' && buf[index] != '\0')
+		index++;
+	if (buf[index] == '\n')
+		index++;
+	while (index < BUFFER_SIZE + 1)
+	{
+		buf[new_index] = buf[index];
+		if (buf[index] == '\0')
+			break ;
+		new_index++;
+		index++;
+	}
+	return (0);
+}
+
 static t_list	*make_new_node(t_list *char_lst, char *buf)
 {
 	char	*new_char;
@@ -78,28 +100,6 @@ static char	*make_new_string(int fd, t_list *char_lst, int read_size)
 	return (new_str);
 }
 
-static int	rearrange_string(char *buf)
-{
-	int	index;
-	int	new_index;
-
-	index = 0;
-	new_index = 0;
-	while (index < BUFFER_SIZE && buf[index] != '\n' && buf[index] != '\0')
-		index++;
-	if (buf[index] == '\n')
-		index++;
-	while (index < BUFFER_SIZE + 1)
-	{
-		buf[new_index] = buf[index];
-		if (buf[index] == '\0')
-			break ;
-		new_index++;
-		index++;
-	}
-	return (0);
-}
-
 char	*get_next_line(int fd)
 {
 	static char	buf[BUFFER_SIZE + 1];
@@ -127,31 +127,3 @@ char	*get_next_line(int fd)
 	new_str = make_new_string(fd, char_lst, read_size);
 	return (new_str);
 }
-
-/*
-#include <stdio.h>
-#include <fcntl.h>
-int main()
-{
-	char *str = "!23";
-	int fd = open("a.txt", O_RDONLY);
-
-	// while (str != NULL)
-	// {
-	// 	str = get_next_line(fd);
-	// 	printf("%s", str);
-	// 	free(str);
-	// }
-
-
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);	
-}
-*/
