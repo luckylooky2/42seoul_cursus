@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/05 21:06:00 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/08 13:44:33 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,7 @@ static char	*make_new_string(int fd, t_list *char_lst, int read_size)
 
 char	*get_next_line(int fd)
 {
-	static char	buf[BUFFER_SIZE + 1];
+	static char	buf[OPEN_MAX][BUFFER_SIZE + 1];
 	char		*new_str;
 	t_list		*char_lst;
 	int			index;
@@ -112,16 +112,17 @@ char	*get_next_line(int fd)
 	read_size = 0;
 	while (0 <= fd && fd <= OPEN_MAX && BUFFER_SIZE > 0)
 	{
-		index = rearrange_string(buf);
-		if (buf[0] == '\0')
-			read_size = read(fd, buf, BUFFER_SIZE);
-		while (index < BUFFER_SIZE && buf[index] != '\0')
+		index = rearrange_string(buf[fd]);
+		if (buf[fd][0] == '\0')
+			read_size = read(fd, buf[fd], BUFFER_SIZE);
+		while (index < BUFFER_SIZE && buf[fd][index] != '\0')
 		{
-			char_lst = make_new_node(char_lst, &buf[index++]);
-			if (char_lst == NULL || buf[index - 1] == '\n')
+			char_lst = make_new_node(char_lst, &buf[fd][index]);
+			index++;
+			if (char_lst == NULL || buf[fd][index - 1] == '\n')
 				break ;
 		}
-		if (check_repeat_or_break(buf, index) == 1)
+		if (check_repeat_or_break(buf[fd], index) == 1)
 			break ;
 	}
 	new_str = make_new_string(fd, char_lst, read_size);
