@@ -36,7 +36,7 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 
 static int	check_repeat_or_break(char *buf, int *index, int read_size)
 {
-	if ((*index == BUFFER_SIZE) && buf[*index - 1] == '\n')
+	if ((*index == BUFFER_SIZE) && buf[*index - 1] == '\n' && read_size > 0)
 	{
 		*index = 0;
 		return (1);
