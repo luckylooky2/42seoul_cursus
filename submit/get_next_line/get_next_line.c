@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/28 20:36:00 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/05 21:06:00 by marvin           ###   ########.fr       */
+/*   Created: 2021/12/08 13:44:09 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/08 13:44:13 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,8 @@ char	*get_next_line(int fd)
 			read_size = read(fd, buf, BUFFER_SIZE);
 		while (index < read_size)
 		{
-			char_lst = make_new_node(char_lst, &buf[index++]);
+			char_lst = make_new_node(char_lst, &buf[index]);
+			index++;
 			if (char_lst == NULL || buf[index - 1] == '\n')
 				break ;
 		}
