@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 14:11:25 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/08 14:11:27 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/09 18:38:41 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ static int	rearrange_string(char *buf)
 
 	index = 0;
 	new_index = 0;
+	if (buf == NULL || buf[index] == '\0')
+		return (0);
 	while (index < BUFFER_SIZE && buf[index] != '\n' && buf[index] != '\0')
 		index++;
 	if (buf[index] == '\n')
@@ -58,13 +60,12 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 
 static int	check_repeat_or_break(char *buf, int index)
 {
-	if ((buf[index] == '\0' && buf[index - 1] == '\n')
-		|| ((buf[index] == '\0') && buf[index - 1] == '\0'))
+	if (buf[index] == '\0' && buf[index - 1] == '\n')
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
 		return (1);
 	}
-	else if (buf[index] == '\0')
+	else if (buf[index] == '\0' && buf[index - 1] != '\n')
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
 		return (0);
@@ -73,7 +74,7 @@ static int	check_repeat_or_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(int fd, t_list *char_lst, int read_size)
+static char	*make_new_string(t_list *char_lst, int read_size)
 {
 	char	*new_str;
 	t_list	*curr;
@@ -82,8 +83,7 @@ static char	*make_new_string(int fd, t_list *char_lst, int read_size)
 	i = 0;
 	curr = char_lst;
 	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(char_lst) + 1));
-	if (new_str == NULL || char_lst == NULL
-		|| fd < 0 || fd > OPEN_MAX || read_size == -1 || BUFFER_SIZE <= 0)
+	if (new_str == NULL || char_lst == NULL || read_size == -1)
 	{
 		ft_lstclear(&char_lst, free);
 		free(new_str);
@@ -99,32 +99,42 @@ static char	*make_new_string(int fd, t_list *char_lst, int read_size)
 	ft_lstclear(&char_lst, free);
 	return (new_str);
 }
-
+#include <stdlib.h>
 char	*get_next_line(int fd)
 {
-	static char	buf[OPEN_MAX][BUFFER_SIZE + 1];
+	static char	*buf[10241];
 	char		*new_str;
 	t_list		*char_lst;
 	int			index;
 	int			read_size;
 
+	if (fd < 0 || fd > 10240 || BUFFER_SIZE <= 0)
+		return (NULL);
 	char_lst = NULL;
-	read_size = 0;
-	while (0 <= fd && fd <= OPEN_MAX && BUFFER_SIZE > 0)
+	index = 0;
+	if (buf[fd] == NULL)
+		buf[fd] = (char *)calloc(sizeof(char), (BUFFER_SIZE + 1));
+	if (buf[fd] == NULL)
+			return (NULL);
+	while (1)
 	{
 		index = rearrange_string(buf[fd]);
 		if (buf[fd][0] == '\0')
 			read_size = read(fd, buf[fd], BUFFER_SIZE);
-		while (index < BUFFER_SIZE && buf[fd][index] != '\0')
+		while (index < BUFFER_SIZE && buf[fd][index] != '\0' && read_size != -1)
 		{
-			char_lst = make_new_node(char_lst, &buf[fd][index]);
-			index++;
+			char_lst = make_new_node(char_lst, &buf[fd][index++]);
 			if (char_lst == NULL || buf[fd][index - 1] == '\n')
 				break ;
 		}
-		if (check_repeat_or_break(buf[fd], index) == 1)
+		if (check_repeat_or_break(buf[fd], index) == 1 || read_size < 1)
 			break ;
 	}
-	new_str = make_new_string(fd, char_lst, read_size);
+	new_str = make_new_string(char_lst, read_size);
+	if (buf[fd][index] == '\0')
+	{
+		free(buf[fd]);
+		buf[fd] = NULL;
+	}
 	return (new_str);
 }
