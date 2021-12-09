@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
+#include <stdio.h>
 
 static int	rearrange_string(char *buf)
 {
@@ -41,6 +42,8 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 	char	*new_char;
 	t_list	*new_node;
 
+	if (buf[0] == '\0')
+		return (NULL);
 	new_char = (char *)malloc(sizeof(char));
 	if (new_char == NULL)
 	{
@@ -60,18 +63,24 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 
 static int	check_repeat_or_break(char *buf, int index)
 {
-	if (buf[index] == '\0' && buf[index - 1] == '\n')
+	if ((buf[index] == '\0' && buf[index - 1] == '\n')
+		|| (buf[index] == '\0' && buf[index - 1] == '\0'))
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
+		// printf("1\n");
 		return (1);
 	}
 	else if (buf[index] == '\0' && buf[index - 1] != '\n')
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
+		// printf("2\n");
 		return (0);
 	}
 	else
+	{
+		// printf("3\n");
 		return (1);
+	}
 }
 
 static char	*make_new_string(t_list *char_lst, int read_size)
@@ -99,7 +108,9 @@ static char	*make_new_string(t_list *char_lst, int read_size)
 	ft_lstclear(&char_lst, free);
 	return (new_str);
 }
+
 #include <stdlib.h>
+#include <stdio.h>
 char	*get_next_line(int fd)
 {
 	static char	*buf[10241];
@@ -111,6 +122,7 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd > 10240 || BUFFER_SIZE <= 0)
 		return (NULL);
 	char_lst = NULL;
+	read_size = 0;
 	index = 0;
 	if (buf[fd] == NULL)
 		buf[fd] = (char *)calloc(sizeof(char), (BUFFER_SIZE + 1));
@@ -119,15 +131,17 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		index = rearrange_string(buf[fd]);
+		// printf("bf : %s\n", buf[fd]);
 		if (buf[fd][0] == '\0')
 			read_size = read(fd, buf[fd], BUFFER_SIZE);
+		// printf("read_size : %d\n", read_size);
 		while (index < BUFFER_SIZE && buf[fd][index] != '\0' && read_size != -1)
 		{
 			char_lst = make_new_node(char_lst, &buf[fd][index++]);
 			if (char_lst == NULL || buf[fd][index - 1] == '\n')
 				break ;
 		}
-		if (check_repeat_or_break(buf[fd], index) == 1 || read_size < 1)
+		if (check_repeat_or_break(buf[fd], index) == 1 || char_lst == NULL)
 			break ;
 	}
 	new_str = make_new_string(char_lst, read_size);
@@ -138,3 +152,28 @@ char	*get_next_line(int fd)
 	}
 	return (new_str);
 }
+/*
+#include <stdio.h>
+#include <fcntl.h>
+int main()
+{
+	int fd = open("files/43_no_nl", O_RDONLY);
+	char *str = "123";
+
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// free(str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// free(str);
+	// str = get_next_line(fd);
+	// printf("%s", str);
+	// free(str);
+}
+*/
