@@ -62,15 +62,12 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 
 static int	check_repeat_or_break(char *buf, int index)
 {
-	if (index == 0)
-		return (1);
-	if ((buf[index] == '\0' && buf[index - 1] == '\n')
-		|| (buf[index] == '\0' && buf[index - 1] == '\0'))
+	if (index != 0 && buf[index] == '\0' && buf[index - 1] == '\n')
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
 		return (1);
 	}
-	else if (buf[index] == '\0' && buf[index - 1] != '\n')
+	else if (index != 0 && buf[index] == '\0' && buf[index - 1] != '\n')
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
 		return (0);
@@ -79,7 +76,7 @@ static int	check_repeat_or_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(t_list *char_lst, int read_size)
+static char	*make_new_string(t_list *char_lst, char **buf, int index)
 {
 	char	*new_str;
 	t_list	*curr;
@@ -87,28 +84,32 @@ static char	*make_new_string(t_list *char_lst, int read_size)
 
 	i = 0;
 	curr = char_lst;
-	new_str = (char *)malloc(sizeof(char) * (ft_lstsize(char_lst) + 1));
-	if (new_str == NULL || char_lst == NULL || read_size == -1)
+	new_str = (char *)calloc(sizeof(char), (ft_lstsize(char_lst) + 1));
+	if (new_str == NULL || char_lst == NULL)
 	{
 		ft_lstclear(&char_lst, free);
 		free(new_str);
+		free(*buf);
+		*buf = NULL;
 		return (NULL);
 	}
 	while (curr)
 	{
-		new_str[i] = *((char *)((curr)->content));
+		new_str[i++] = *((char *)((curr)->content));
 		curr = (curr)->next;
-		i++;
 	}
-	new_str[i] = '\0';
 	ft_lstclear(&char_lst, free);
+	if ((*buf)[index] == '\0')
+	{
+		free(*buf);
+		*buf = NULL;
+	}
 	return (new_str);
 }
 
 char	*get_next_line(int fd)
 {
 	static char	*buf[10241];
-	char		*new_str;
 	t_list		*char_lst;
 	int			index;
 	int			read_size;
@@ -116,11 +117,10 @@ char	*get_next_line(int fd)
 	if (fd < 0 || fd > 10240 || BUFFER_SIZE <= 0)
 		return (NULL);
 	char_lst = NULL;
-	read_size = 0;
 	if (buf[fd] == NULL)
 		buf[fd] = (char *)calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (buf[fd] == NULL)
-			return (NULL);
+		return (NULL);
 	while (1)
 	{
 		index = rearrange_string(buf[fd]);
@@ -132,14 +132,8 @@ char	*get_next_line(int fd)
 			if (char_lst == NULL || buf[fd][index - 1] == '\n')
 				break ;
 		}
-		if (check_repeat_or_break(buf[fd], index) == 1 || char_lst == NULL)
+		if (char_lst == NULL || check_repeat_or_break(buf[fd], index) == 1)
 			break ;
 	}
-	new_str = make_new_string(char_lst, read_size);
-	if (buf[fd][index] == '\0')
-	{
-		free(buf[fd]);
-		buf[fd] = NULL;
-	}
-	return (new_str);
+	return (make_new_string(char_lst, &buf[fd], index));
 }
