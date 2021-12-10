@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
-#include <stdio.h>
 
 static int	rearrange_string(char *buf)
 {
@@ -63,24 +62,21 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 
 static int	check_repeat_or_break(char *buf, int index)
 {
+	if (index == 0)
+		return (1);
 	if ((buf[index] == '\0' && buf[index - 1] == '\n')
 		|| (buf[index] == '\0' && buf[index - 1] == '\0'))
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
-		// printf("1\n");
 		return (1);
 	}
 	else if (buf[index] == '\0' && buf[index - 1] != '\n')
 	{
 		ft_memset(buf, 0, BUFFER_SIZE + 1);
-		// printf("2\n");
 		return (0);
 	}
 	else
-	{
-		// printf("3\n");
 		return (1);
-	}
 }
 
 static char	*make_new_string(t_list *char_lst, int read_size)
@@ -109,8 +105,6 @@ static char	*make_new_string(t_list *char_lst, int read_size)
 	return (new_str);
 }
 
-#include <stdlib.h>
-#include <stdio.h>
 char	*get_next_line(int fd)
 {
 	static char	*buf[10241];
@@ -123,7 +117,6 @@ char	*get_next_line(int fd)
 		return (NULL);
 	char_lst = NULL;
 	read_size = 0;
-	index = 0;
 	if (buf[fd] == NULL)
 		buf[fd] = (char *)calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (buf[fd] == NULL)
@@ -131,10 +124,8 @@ char	*get_next_line(int fd)
 	while (1)
 	{
 		index = rearrange_string(buf[fd]);
-		// printf("bf : %s\n", buf[fd]);
 		if (buf[fd][0] == '\0')
 			read_size = read(fd, buf[fd], BUFFER_SIZE);
-		// printf("read_size : %d\n", read_size);
 		while (index < BUFFER_SIZE && buf[fd][index] != '\0' && read_size != -1)
 		{
 			char_lst = make_new_node(char_lst, &buf[fd][index++]);
@@ -152,28 +143,3 @@ char	*get_next_line(int fd)
 	}
 	return (new_str);
 }
-/*
-#include <stdio.h>
-#include <fcntl.h>
-int main()
-{
-	int fd = open("files/43_no_nl", O_RDONLY);
-	char *str = "123";
-
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);
-	str = get_next_line(fd);
-	printf("%s", str);
-	free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-	// str = get_next_line(fd);
-	// printf("%s", str);
-	// free(str);
-}
-*/
