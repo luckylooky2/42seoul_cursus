@@ -74,25 +74,29 @@ static int	check_repeat_or_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(t_list *char_lst, char **buf, int index)
+static char	*make_new_string(t_list *char_lst, char **buf, int index, int fd)
 {
 	char	*new_str;
 
+	if (buf[fd] == NULL)
+		return (NULL);
 	new_str = (char *)ft_calloc(sizeof(char), (ft_lstsize(char_lst) + 1));
+	if (new_str == NULL)
+		ft_lstclear(&char_lst, free);
+	if (char_lst == NULL)
+		free(new_str);
 	if (new_str == NULL || char_lst == NULL)
 	{
-		ft_lstclear(&char_lst, free);
-		free(new_str);
-		free(*buf);
-		*buf = NULL;
+		free(buf[fd]);
+		buf[fd] = NULL;
 		return (NULL);
 	}
 	new_str = copy_linked_list(char_lst, new_str);
 	ft_lstclear(&char_lst, free);
-	if ((*buf)[index] == '\0')
+	if (buf[fd][index] == '\0')
 	{
-		free(*buf);
-		*buf = NULL;
+		free(buf[fd]);
+		buf[fd] = NULL;
 	}
 	return (new_str);
 }
@@ -109,9 +113,7 @@ char	*get_next_line(int fd)
 	char_lst = NULL;
 	if (buf[fd] == NULL)
 		buf[fd] = (char *)ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
-	if (buf[fd] == NULL)
-		return (NULL);
-	while (1)
+	while (buf[fd] != NULL)
 	{
 		index = rearrange_string(buf[fd]);
 		if (buf[fd][0] == '\0')
@@ -125,5 +127,5 @@ char	*get_next_line(int fd)
 		if (char_lst == NULL || check_repeat_or_break(buf[fd], index) == 1)
 			break ;
 	}
-	return (make_new_string(char_lst, &buf[fd], index));
+	return (make_new_string(char_lst, buf, index, fd));
 }
