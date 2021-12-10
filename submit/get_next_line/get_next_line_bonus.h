@@ -22,10 +22,10 @@ typedef struct s_list
 }					t_list;
 
 char	*get_next_line(int fd);
-void	*ft_memset(void *s, int c, size_t n);
-t_list	*ft_lstnew(void *content);
+void	make_new_node(t_list **char_lst, void *content);
+char	*copy_linked_list(t_list *char_lst, char *new_str);
+void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_lstsize(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 
 #endif

@@ -36,10 +36,9 @@ static int	rearrange_string(char *buf)
 	return (0);
 }
 
-static t_list	*make_new_node(t_list *char_lst, char *buf)
+static t_list	*make_linked_list(t_list *char_lst, char *buf)
 {
 	char	*new_char;
-	t_list	*new_node;
 
 	if (buf[0] == '\0')
 		return (NULL);
@@ -50,26 +49,25 @@ static t_list	*make_new_node(t_list *char_lst, char *buf)
 		return (NULL);
 	}
 	*new_char = *buf;
-	new_node = ft_lstnew(new_char);
-	if (new_node == NULL)
-	{
-		ft_lstclear(&char_lst, free);
-		return (NULL);
-	}
-	ft_lstadd_back(&char_lst, new_node);
+	make_new_node(&char_lst, new_char);
 	return (char_lst);
 }
 
 static int	check_repeat_or_break(char *buf, int index)
 {
+	int	i;
+
+	i = 0;
 	if (index != 0 && buf[index] == '\0' && buf[index - 1] == '\n')
 	{
-		ft_memset(buf, 0, BUFFER_SIZE + 1);
+		while (i < BUFFER_SIZE + 1)
+			buf[i++] = 0;
 		return (1);
 	}
 	else if (index != 0 && buf[index] == '\0' && buf[index - 1] != '\n')
 	{
-		ft_memset(buf, 0, BUFFER_SIZE + 1);
+		while (i < BUFFER_SIZE + 1)
+			buf[i++] = 0;
 		return (0);
 	}
 	else
@@ -79,12 +77,8 @@ static int	check_repeat_or_break(char *buf, int index)
 static char	*make_new_string(t_list *char_lst, char **buf, int index)
 {
 	char	*new_str;
-	t_list	*curr;
-	int		i;
 
-	i = 0;
-	curr = char_lst;
-	new_str = (char *)calloc(sizeof(char), (ft_lstsize(char_lst) + 1));
+	new_str = (char *)ft_calloc(sizeof(char), (ft_lstsize(char_lst) + 1));
 	if (new_str == NULL || char_lst == NULL)
 	{
 		ft_lstclear(&char_lst, free);
@@ -93,11 +87,7 @@ static char	*make_new_string(t_list *char_lst, char **buf, int index)
 		*buf = NULL;
 		return (NULL);
 	}
-	while (curr)
-	{
-		new_str[i++] = *((char *)((curr)->content));
-		curr = (curr)->next;
-	}
+	new_str = copy_linked_list(char_lst, new_str);
 	ft_lstclear(&char_lst, free);
 	if ((*buf)[index] == '\0')
 	{
@@ -118,7 +108,7 @@ char	*get_next_line(int fd)
 		return (NULL);
 	char_lst = NULL;
 	if (buf[fd] == NULL)
-		buf[fd] = (char *)calloc(sizeof(char), (BUFFER_SIZE + 1));
+		buf[fd] = (char *)ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	if (buf[fd] == NULL)
 		return (NULL);
 	while (1)
@@ -128,7 +118,7 @@ char	*get_next_line(int fd)
 			read_size = read(fd, buf[fd], BUFFER_SIZE);
 		while (index < BUFFER_SIZE && buf[fd][index] != '\0' && read_size != -1)
 		{
-			char_lst = make_new_node(char_lst, &buf[fd][index++]);
+			char_lst = make_linked_list(char_lst, &buf[fd][index++]);
 			if (char_lst == NULL || buf[fd][index - 1] == '\n')
 				break ;
 		}
