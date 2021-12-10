@@ -23,9 +23,8 @@ typedef struct s_list
 }					t_list;
 
 char	*get_next_line(int fd);
-t_list	*ft_lstnew(void *content);
+void	make_new_node(t_list **char_lst, void *content);
 int		ft_lstsize(t_list *lst);
-void	ft_lstadd_back(t_list **lst, t_list *new);
 void	ft_lstclear(t_list **lst, void (*del)(void *));
 
 #endif

@@ -12,16 +12,31 @@
 
 #include "get_next_line.h"
 
-t_list	*ft_lstnew(void *content)
+void	make_new_node(t_list **char_lst, void *content)
 {
-	t_list	*new_lst;
+	t_list	*new_node;
+	t_list	*curr;
 
-	new_lst = (t_list *)malloc(sizeof(t_list));
-	if (new_lst == NULL)
-		return (NULL);
-	new_lst->content = content;
-	new_lst->next = NULL;
-	return (new_lst);
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (new_node == NULL)
+	{
+		ft_lstclear(char_lst, free);
+		return ;
+	}
+	new_node->content = content;
+	new_node->next = NULL;
+	curr = *char_lst;
+	if (curr == NULL)
+	{
+		new_node->next = *char_lst;
+		*char_lst = new_node;
+	}
+	else
+	{
+		while (curr->next)
+			curr = curr->next;
+		curr->next = new_node;
+	}
 }
 
 int	ft_lstsize(t_list *lst)
@@ -35,24 +50,6 @@ int	ft_lstsize(t_list *lst)
 		cnt++;
 	}
 	return (cnt);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*curr;
-
-	curr = *lst;
-	if (curr == NULL)
-	{
-		new->next = *lst;
-		*lst = new;
-	}
-	else
-	{
-		while (curr->next)
-			curr = curr->next;
-		curr->next = new;
-	}
 }
 
 void	ft_lstclear(t_list **lst, void (*del)(void *))

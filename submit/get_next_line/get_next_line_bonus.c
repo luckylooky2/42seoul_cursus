@@ -36,7 +36,7 @@ static int	rearrange_string(char *buf)
 	return (0);
 }
 
-static t_list	*make_linked_list(t_list *char_lst, char *buf)
+static t_list	*make_linked_list(char *buf, t_list *char_lst)
 {
 	char	*new_char;
 
@@ -53,7 +53,7 @@ static t_list	*make_linked_list(t_list *char_lst, char *buf)
 	return (char_lst);
 }
 
-static int	check_repeat_or_break(char *buf, int index)
+static int	check_repeat_break(char *buf, int index)
 {
 	int	i;
 
@@ -74,13 +74,15 @@ static int	check_repeat_or_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(t_list *char_lst, char **buf, int index, int fd)
+static char	*make_new_string(char **buf, int fd, t_list *char_lst, int index)
 {
 	char	*new_str;
+	int		lst_len;
 
 	if (buf[fd] == NULL)
 		return (NULL);
-	new_str = (char *)ft_calloc(sizeof(char), (ft_lstsize(char_lst) + 1));
+	lst_len = ft_lstsize(char_lst);
+	new_str = (char *)ft_calloc(sizeof(char), (lst_len + 1));
 	if (new_str == NULL)
 		ft_lstclear(&char_lst, free);
 	if (char_lst == NULL)
@@ -120,12 +122,12 @@ char	*get_next_line(int fd)
 			read_size = read(fd, buf[fd], BUFFER_SIZE);
 		while (index < BUFFER_SIZE && buf[fd][index] != '\0' && read_size != -1)
 		{
-			char_lst = make_linked_list(char_lst, &buf[fd][index++]);
+			char_lst = make_linked_list(&buf[fd][index++], char_lst);
 			if (char_lst == NULL || buf[fd][index - 1] == '\n')
 				break ;
 		}
-		if (char_lst == NULL || check_repeat_or_break(buf[fd], index) == 1)
+		if (char_lst == NULL || check_repeat_break(buf[fd], index) == 1)
 			break ;
 	}
-	return (make_new_string(char_lst, buf, index, fd));
+	return (make_new_string(buf, fd, char_lst, index));
 }
