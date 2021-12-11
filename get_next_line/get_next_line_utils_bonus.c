@@ -1,40 +1,72 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line_utils.c                              :+:      :+:    :+:   */
+/*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/28 20:36:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/05 20:27:32 by marvin           ###   ########.fr       */
+/*   Created: 2021/12/08 14:12:06 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/08 14:12:08 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-void	*ft_memset(void *s, int c, size_t n)
+void	make_new_node(t_list **char_lst, void *content)
 {
+	t_list	*new_node;
+	t_list	*curr;
+
+	new_node = (t_list *)malloc(sizeof(t_list));
+	if (new_node == NULL)
+	{
+		ft_lstclear(char_lst, free);
+		return ;
+	}
+	new_node->content = content;
+	new_node->next = NULL;
+	curr = *char_lst;
+	if (curr == NULL)
+	{
+		new_node->next = *char_lst;
+		*char_lst = new_node;
+	}
+	else
+	{
+		while (curr->next)
+			curr = curr->next;
+		curr->next = new_node;
+	}
+}
+
+char	*copy_linked_list(t_list *char_lst, char *new_str)
+{
+	int		i;
+
+	i = 0;
+	while (char_lst)
+	{
+		new_str[i++] = *((char *)((char_lst)->content));
+		char_lst = (char_lst)->next;
+	}
+	return (new_str);
+}
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*new_str;
 	size_t	i;
 
 	i = 0;
-	while (i < n)
-	{
-		((unsigned char *)s)[i] = c;
-		i++;
-	}
-	return (s);
-}
-
-t_list	*ft_lstnew(void *content)
-{
-	t_list	*new_lst;
-
-	new_lst = (t_list *)malloc(sizeof(t_list));
-	if (new_lst == NULL)
+	new_str = malloc(nmemb * size);
+	if (!new_str)
 		return (NULL);
-	new_lst->content = content;
-	new_lst->next = NULL;
-	return (new_lst);
+	else
+	{
+		while (i < nmemb * size)
+			((unsigned char *)new_str)[i++] = 0;
+		return (new_str);
+	}
 }
 
 int	ft_lstsize(t_list *lst)
@@ -48,24 +80,6 @@ int	ft_lstsize(t_list *lst)
 		cnt++;
 	}
 	return (cnt);
-}
-
-void	ft_lstadd_back(t_list **lst, t_list *new)
-{
-	t_list	*curr;
-
-	curr = *lst;
-	if (curr == NULL)
-	{
-		new->next = *lst;
-		*lst = new;
-	}
-	else
-	{
-		while (curr->next)
-			curr = curr->next;
-		curr->next = new;
-	}
 }
 
 void	ft_lstclear(t_list **lst, void (*del)(void *))
