@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:44:09 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/12 15:40:05 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/12 16:10:58 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,11 +40,7 @@ static int	check_repeat_break(char *buf, int fd, int *index, int read_size)
 		return (0);
 	}
 	else
-	{
-		if (fd == 0 || fd == 1 || fd == 2)
-			*index = 0;
 		return (1);
-	}
 }
 
 static char	*copy_linked_list(t_list *char_lst, char *new_str)
