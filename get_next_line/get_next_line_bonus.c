@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 14:11:25 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/11 20:34:27 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/12 15:39:38 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,12 +74,12 @@ static int	check_repeat_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(char **buf, int fd, t_list *char_lst, int read_size)
+static char	*make_new_string(char **buf, t_list *char_lst, int read_size)
 {
 	char	*new_str;
 	int		lst_len;
 
-	if (buf[fd] == NULL)
+	if (*buf == NULL)
 		return (NULL);
 	lst_len = ft_lstsize(char_lst);
 	new_str = (char *)ft_calloc(sizeof(char), (lst_len + 1));
@@ -89,8 +89,8 @@ static char	*make_new_string(char **buf, int fd, t_list *char_lst, int read_size
 		free(new_str);
 	if (new_str == NULL || char_lst == NULL || read_size == -1)
 	{
-		free(buf[fd]);
-		buf[fd] = NULL;
+		free(*buf);
+		*buf = NULL;
 		return (NULL);
 	}
 	new_str = copy_linked_list(char_lst, new_str);
@@ -124,5 +124,5 @@ char	*get_next_line(int fd)
 		if (char_lst == NULL || check_repeat_break(buf[fd], index) == 1)
 			break ;
 	}
-	return (make_new_string(buf, fd, char_lst, read_size));
+	return (make_new_string(&buf[fd], char_lst, read_size));
 }
