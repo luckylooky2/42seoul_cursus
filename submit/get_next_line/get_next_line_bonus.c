@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 14:11:25 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/09 18:38:41 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/12 16:18:55 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/12 16:19:05 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,43 +74,38 @@ static int	check_repeat_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(char **buf, int fd, t_list *char_lst, int index)
+static char	*make_new_string(char **buf, t_list *char_lst, int read_size)
 {
 	char	*new_str;
 	int		lst_len;
 
-	if (buf[fd] == NULL)
+	if (*buf == NULL)
 		return (NULL);
 	lst_len = ft_lstsize(char_lst);
 	new_str = (char *)ft_calloc(sizeof(char), (lst_len + 1));
-	if (new_str == NULL)
+	if (new_str == NULL || read_size == -1)
 		ft_lstclear(&char_lst, free);
-	if (char_lst == NULL)
+	if (char_lst == NULL || read_size == -1)
 		free(new_str);
-	if (new_str == NULL || char_lst == NULL)
+	if (new_str == NULL || char_lst == NULL || read_size == -1)
 	{
-		free(buf[fd]);
-		buf[fd] = NULL;
+		free(*buf);
+		*buf = NULL;
 		return (NULL);
 	}
 	new_str = copy_linked_list(char_lst, new_str);
 	ft_lstclear(&char_lst, free);
-	if (buf[fd][index] == '\0')
-	{
-		free(buf[fd]);
-		buf[fd] = NULL;
-	}
 	return (new_str);
 }
 
 char	*get_next_line(int fd)
 {
-	static char	*buf[10241];
+	static char	*buf[OPEN_MAX + 1];
 	t_list		*char_lst;
 	int			index;
 	int			read_size;
 
-	if (fd < 0 || fd > 10240 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	char_lst = NULL;
 	if (buf[fd] == NULL)
@@ -129,5 +124,5 @@ char	*get_next_line(int fd)
 		if (char_lst == NULL || check_repeat_break(buf[fd], index) == 1)
 			break ;
 	}
-	return (make_new_string(buf, fd, char_lst, index));
+	return (make_new_string(&buf[fd], char_lst, read_size));
 }

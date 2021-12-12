@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 13:44:09 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/08 13:44:13 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/12 16:18:32 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/12 16:18:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static t_list	*make_linked_list(char *buf, t_list *char_lst)
 
 static int	check_repeat_break(char *buf, int *index, int read_size)
 {
-	if ((*index == BUFFER_SIZE) && buf[*index - 1] == '\n' && read_size > 0)
+	if (*index == BUFFER_SIZE && buf[*index - 1] == '\n' && read_size > 0)
 	{
 		*index = 0;
 		return (1);
 	}
-	else if ((*index == BUFFER_SIZE) && read_size > 0)
+	else if (*index == BUFFER_SIZE && read_size > 0)
 	{
 		*index = 0;
 		return (0);
@@ -66,11 +66,11 @@ static char	*make_new_string(char **buf, t_list *char_lst, int read_size)
 		return (NULL);
 	lst_len = ft_lstsize(char_lst);
 	new_str = (char *)malloc(sizeof(char) * (lst_len + 1));
-	if (new_str == NULL)
+	if (new_str == NULL || read_size == -1)
 		ft_lstclear(&char_lst, free);
-	if (char_lst == NULL)
+	if (char_lst == NULL || read_size == -1)
 		free(new_str);
-	if (new_str == NULL || char_lst == NULL)
+	if (new_str == NULL || char_lst == NULL || read_size == -1)
 	{
 		free(*buf);
 		*buf = NULL;
@@ -78,11 +78,6 @@ static char	*make_new_string(char **buf, t_list *char_lst, int read_size)
 	}
 	new_str = copy_linked_list(char_lst, new_str);
 	ft_lstclear(&char_lst, free);
-	if (read_size == 0)
-	{
-		free(*buf);
-		*buf = NULL;
-	}
 	return (new_str);
 }
 
@@ -93,7 +88,7 @@ char	*get_next_line(int fd)
 	static int	read_size;
 	t_list		*char_lst;
 
-	if (fd < 0 || fd > 10240 || BUFFER_SIZE <= 0)
+	if (fd < 0 || fd > OPEN_MAX || BUFFER_SIZE <= 0)
 		return (NULL);
 	char_lst = NULL;
 	if (buf == NULL)
@@ -108,7 +103,7 @@ char	*get_next_line(int fd)
 			if (char_lst == NULL || buf[index - 1] == '\n')
 				break ;
 		}
-		if (char_lst == NULL || check_repeat_break(buf, &index, read_size) == 1)
+		if (char_lst == NULL || check_repeat_break(buf, &index, read_size))
 			break ;
 	}
 	return (make_new_string(&buf, char_lst, read_size));

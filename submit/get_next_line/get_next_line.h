@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 13:44:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/08 13:44:25 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/12 16:18:48 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/12 16:18:52 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,13 @@
 # include <stdlib.h>
 # include <unistd.h>
 # include <limits.h>
+
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 1024
+# endif
+# ifndef OPEN_MAX
+#  define OPEN_MAX 10240
+# endif
 
 typedef struct s_list
 {
