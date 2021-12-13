@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/13 19:25:39 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/13 19:25:41 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/13 20:34:07 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/13 20:34:11 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ void	make_new_node(t_list **char_lst, void *content)
 	}
 }
 
-char	*copy_linked_list(t_list *char_lst, char *ret_str)
+char	*copy_linked_list(t_list *char_lst, char *next_line)
 {
-	int		i;
+	int	i;
 
 	i = 0;
 	while (char_lst)
 	{
-		ret_str[i++] = *((char *)((char_lst)->content));
+		next_line[i++] = *((char *)((char_lst)->content));
 		char_lst = (char_lst)->next;
 	}
-	return (ret_str);
+	return (next_line);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)
