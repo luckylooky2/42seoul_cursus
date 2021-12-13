@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 14:12:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/08 14:12:08 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/13 18:20:22 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,17 @@ void	make_new_node(t_list **char_lst, void *content)
 	}
 }
 
-char	*copy_linked_list(t_list *char_lst, char *new_str)
+char	*copy_linked_list(t_list *char_lst, char *ret_str)
 {
 	int		i;
 
 	i = 0;
 	while (char_lst)
 	{
-		new_str[i++] = *((char *)((char_lst)->content));
+		ret_str[i++] = *((char *)((char_lst)->content));
 		char_lst = (char_lst)->next;
 	}
-	return (new_str);
+	return (ret_str);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)

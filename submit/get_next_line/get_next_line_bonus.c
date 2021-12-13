@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/12 16:18:55 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/12 16:19:05 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/13 18:55:12 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,28 +74,33 @@ static int	check_repeat_break(char *buf, int index)
 		return (1);
 }
 
-static char	*make_new_string(char **buf, t_list *char_lst, int read_size)
+static char	*make_string(char **buf, int fd, t_list *char_lst, int read_size)
 {
-	char	*new_str;
+	char	*ret_str;
 	int		lst_len;
 
 	if (*buf == NULL)
 		return (NULL);
 	lst_len = ft_lstsize(char_lst);
-	new_str = (char *)ft_calloc(sizeof(char), (lst_len + 1));
-	if (new_str == NULL || read_size == -1)
+	ret_str = (char *)ft_calloc(sizeof(char), (lst_len + 1));
+	if (ret_str == NULL || read_size == -1)
 		ft_lstclear(&char_lst, free);
 	if (char_lst == NULL || read_size == -1)
-		free(new_str);
-	if (new_str == NULL || char_lst == NULL || read_size == -1)
+		free(ret_str);
+	if (ret_str == NULL || char_lst == NULL || read_size == -1)
 	{
 		free(*buf);
 		*buf = NULL;
 		return (NULL);
 	}
-	new_str = copy_linked_list(char_lst, new_str);
+	ret_str = copy_linked_list(char_lst, ret_str);
 	ft_lstclear(&char_lst, free);
-	return (new_str);
+	if (fd == 0 || fd == 1 || fd == 2)
+	{
+		free(*buf);
+		*buf = NULL;
+	}
+	return (ret_str);
 }
 
 char	*get_next_line(int fd)
@@ -124,5 +129,5 @@ char	*get_next_line(int fd)
 		if (char_lst == NULL || check_repeat_break(buf[fd], index) == 1)
 			break ;
 	}
-	return (make_new_string(&buf[fd], char_lst, read_size));
+	return (make_string(&buf[fd], fd, char_lst, read_size));
 }

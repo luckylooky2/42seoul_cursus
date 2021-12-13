@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/12 16:18:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/12 16:18:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/13 18:54:42 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,42 +43,47 @@ static int	check_repeat_break(char *buf, int *index, int read_size)
 		return (1);
 }
 
-static char	*copy_linked_list(t_list *char_lst, char *new_str)
+static char	*copy_linked_list(t_list *char_lst, char *ret_str)
 {
 	int		i;
 
 	i = 0;
 	while (char_lst)
 	{
-		new_str[i++] = *((char *)((char_lst)->content));
+		ret_str[i++] = *((char *)((char_lst)->content));
 		char_lst = (char_lst)->next;
 	}
-	new_str[i] = '\0';
-	return (new_str);
+	ret_str[i] = '\0';
+	return (ret_str);
 }
 
-static char	*make_new_string(char **buf, t_list *char_lst, int read_size)
+static char	*make_string(char **buf, int fd, t_list *char_lst, int read_size)
 {
-	char	*new_str;
+	char	*ret_str;
 	int		lst_len;
 
 	if (*buf == NULL)
 		return (NULL);
 	lst_len = ft_lstsize(char_lst);
-	new_str = (char *)malloc(sizeof(char) * (lst_len + 1));
-	if (new_str == NULL || read_size == -1)
+	ret_str = (char *)malloc(sizeof(char) * (lst_len + 1));
+	if (ret_str == NULL || read_size == -1)
 		ft_lstclear(&char_lst, free);
 	if (char_lst == NULL || read_size == -1)
-		free(new_str);
-	if (new_str == NULL || char_lst == NULL || read_size == -1)
+		free(ret_str);
+	if (ret_str == NULL || char_lst == NULL || read_size == -1)
 	{
 		free(*buf);
 		*buf = NULL;
 		return (NULL);
 	}
-	new_str = copy_linked_list(char_lst, new_str);
+	ret_str = copy_linked_list(char_lst, ret_str);
 	ft_lstclear(&char_lst, free);
-	return (new_str);
+	if (fd == 0 || fd == 1 || fd == 2)
+	{
+		free(*buf);
+		*buf = NULL;
+	}
+	return (ret_str);
 }
 
 char	*get_next_line(int fd)
@@ -106,5 +111,5 @@ char	*get_next_line(int fd)
 		if (char_lst == NULL || check_repeat_break(buf, &index, read_size))
 			break ;
 	}
-	return (make_new_string(&buf, char_lst, read_size));
+	return (make_string(&buf, fd, char_lst, read_size));
 }
