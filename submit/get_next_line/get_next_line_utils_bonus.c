@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_utils_bonus.c                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/08 14:12:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/13 18:20:22 by marvin           ###   ########.fr       */
+/*   Created: 2021/12/13 19:25:39 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/13 19:25:41 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 

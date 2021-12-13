@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/12 16:18:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/13 18:54:42 by marvin           ###   ########.fr       */
+/*   Created: 2021/12/13 19:25:00 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/13 19:25:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,12 +29,12 @@ static t_list	*make_linked_list(char *buf, t_list *char_lst)
 
 static int	check_repeat_break(char *buf, int *index, int read_size)
 {
-	if (*index == BUFFER_SIZE && buf[*index - 1] == '\n' && read_size > 0)
+	if (*index == read_size && buf[*index - 1] == '\n' && read_size > 0)
 	{
 		*index = 0;
 		return (1);
 	}
-	else if (*index == BUFFER_SIZE && read_size > 0)
+	else if (*index == read_size && read_size > 0)
 	{
 		*index = 0;
 		return (0);
