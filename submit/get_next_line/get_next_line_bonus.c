@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/13 20:33:46 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/13 20:33:54 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/16 14:08:19 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/16 14:08:23 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line_bonus.h"
 
-static int	rearrange_string(char *buf)
+static int	rearrange_buffer(char *buf)
 {
 	int	index;
 	int	new_index;
@@ -112,7 +112,7 @@ char	*get_next_line(int fd)
 		buf[fd] = (char *)ft_calloc(sizeof(char), (BUFFER_SIZE + 1));
 	while (buf[fd] != NULL)
 	{
-		index = rearrange_string(buf[fd]);
+		index = rearrange_buffer(buf[fd]);
 		if (buf[fd][0] == '\0')
 			read_size = read(fd, buf[fd], BUFFER_SIZE);
 		while (index < BUFFER_SIZE && buf[fd][index] != '\0' && read_size != -1)
