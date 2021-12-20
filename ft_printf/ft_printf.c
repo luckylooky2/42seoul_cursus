@@ -21,7 +21,6 @@ static char	*char_or_str(const char *format, va_list ap, int *ret)
 	{
 		ch = (char)va_arg(ap, int);
 		write(1, &ch, 1);
-		(*ret)++;
 	}
 	else if (*(format + 1) == 's')
 	{
@@ -30,7 +29,8 @@ static char	*char_or_str(const char *format, va_list ap, int *ret)
 		{
 			write(1, str_ptr, 1);
 			str_ptr++;
-			(*ret)++;
+			if (*(str_ptr + 1) != '\0')
+				(*ret)++;
 		}
 	}
 	return ((char *)(format + 1));
@@ -38,37 +38,24 @@ static char	*char_or_str(const char *format, va_list ap, int *ret)
 
 static char	*address_or_percent(const char *format, va_list ap, int *ret)
 {
-	char		str[14];
-	long long	ptr_addr;
-	int			i;
+	char				*str;
+	unsigned long long	ptr_addr;
+	int					i;
 
 	i = 13;
 	if (*(format + 1) == 'p')
 	{
 		ptr_addr = va_arg(ap, long long);
-		str[0] = '0';
-		str[1] = 'x';
-		while (i > 1)
-		{
-			if (9 < ptr_addr % 16 && ptr_addr % 16 < 16)
-				str[i] = (ptr_addr % 16 - 10) + 'a';
-			else
-				str[i] = ptr_addr % 16 + '0';
-			ptr_addr /= 16;
-			i--;
-			(*ret)++;
-		}
+		str = ft_litoa(ptr_addr, ret);
 		write(1, str, 14);
+		free(str);
 	}
 	else if (*(format + 1) == '%')
-	{
 		write(1, "%%", 1);
-		(*ret)++;
-	}
 	return ((char *)(format + 1));
 }
 
-static char	*signed_or_unsigned_int(const char *format, va_list ap, int *ret)
+static char	*signed_or_unsigned_int(const char *format, va_list ap)
 {
 	char	*dec_ptr;
 	int		i;
@@ -78,25 +65,19 @@ static char	*signed_or_unsigned_int(const char *format, va_list ap, int *ret)
 	{
 		dec_ptr = ft_itoa(va_arg(ap, int));
 		while(dec_ptr[i] != '\0')
-		{
 			write(1, &dec_ptr[i++], 1);
-			(*ret)++;
-		}
 	}
 	else if (*(format + 1) == 'u')
 	{
 		dec_ptr = ft_uitoa(va_arg(ap, int));
 		while (dec_ptr[i] != '\0')
-		{
 			write(1, &dec_ptr[i++], 1);
-			(*ret)++;
-		}
 	}
 	free(dec_ptr);
 	return ((char *)(format + 1));
 }
 
-static char	*upper_or_lower_hex(const char *format, va_list ap, int *ret)
+static char	*upper_or_lower_hex(const char *format, va_list ap)
 {
 	unsigned int	hex;
 	char			hex_char[8];
@@ -116,16 +97,12 @@ static char	*upper_or_lower_hex(const char *format, va_list ap, int *ret)
 		else
 			hex_char[i] = hex % 16 + '0';
 		i--;
-		(*ret)++;
 		hex /= 16;
 	}
 	if (i < 7)
 		write(1, &hex_char[i + 1], 8 - i + 1);
 	else
-	{
 		write(1, "0", 1);
-		*(ret++);
-	}
 	return ((char *)(format + 1));
 }
 
@@ -145,9 +122,9 @@ int	ft_printf(const char *format, ...)
 			else if (*(format + 1) == 'p' || *(format + 1) == '%')
 				format = address_or_percent(format, ap, &ret);
 			else if (*(format + 1) == 'd' || *(format + 1) == 'i' || *(format + 1) == 'u')
-				format = signed_or_unsigned_int(format, ap, &ret);
+				format = signed_or_unsigned_int(format, ap);
 			else if (*(format + 1) == 'x' || *(format + 1) == 'X')
-				format = upper_or_lower_hex(format, ap, &ret);
+				format = upper_or_lower_hex(format, ap);
 		}
 		else
 			write(1, format, 1);
@@ -158,15 +135,19 @@ int	ft_printf(const char *format, ...)
 	return (ret);
 }
 
-int main()
-{
-	char	*name = "chanhyle";
-	char	*city = "seoul";
-	unsigned int		age = -1230;
-	char	grade = 'A';
+// #include <stdio.h>
+// int main()
+// {
+// 	char	*name = "chanhyle";
+// 	char	*city = "seoul";
+// 	unsigned int		age = -1230;
+// 	char	grade = 'A';
+// 	int		a;
 
-	ft_printf("%%%X", age);
-	printf("\n");
-	printf("%%%X", age);
-	printf("\n");
-}
+// 	a = ft_printf(" %s ", name);
+// 	printf("%d", a);
+// 	printf("\n");
+// 	a = printf(" %s ", name);
+// 	printf("%d", a);
+// 	printf("\n");
+// }
