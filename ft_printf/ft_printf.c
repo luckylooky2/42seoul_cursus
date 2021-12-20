@@ -10,14 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include <stdarg.h>
-#include <stdlib.h>
-#include <unistd.h>
-#include <stdio.h>
-#include "libft/libft.h"
-
-int	ft_number_of_digits(unsigned int unsigned_n);
-char	*ft_uitoa(int n);
+#include "ft_printf.h"
 
 static char	*char_or_str(const char *format, va_list ap, int *ret)
 {
