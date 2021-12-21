@@ -29,45 +29,73 @@ void	*ft_calloc(size_t nmemb, size_t size)
 	}
 }
 
-int	ft_number_of_digits_2(unsigned int unsigned_n)
+int	ft_unsigned_number_of_digits(unsigned long long unsigned_n, int flag)
 {
 	int		len;
 
-	len = 1;
-	if (unsigned_n <= 0)
-	{
+	len = 0;
+	if (unsigned_n == 0)
 		len++;
-		unsigned_n *= -1;
+	if (flag == 0)
+	{
+		while (unsigned_n > 0)
+		{
+			unsigned_n /= 10;
+			len++;
+		}
 	}
-	while (unsigned_n > 0)
+	else
 	{
-		unsigned_n /= 10;
-		len++;
+		while (unsigned_n > 0)
+		{
+			unsigned_n /= 16;
+			len++;
+		}
 	}
 	return (len);
 }
 
-char	*ft_uitoa(int n)
+char	*malloc_u(int n)
 {
 	unsigned int	unsigned_n;
 	char			*new_str;
 	int				len;
 
 	unsigned_n = n;
-	len = ft_number_of_digits_2(unsigned_n);
+	len = ft_unsigned_number_of_digits(unsigned_n, 0) + 1;
 	new_str = (char *)ft_calloc(len, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);
 	new_str[0] = '0';
-	if (unsigned_n < 0)
-	{
-		unsigned_n *= -1;
-		new_str[0] = '-';
-	}
 	while (unsigned_n > 0)
 	{
-		new_str[len-- - 2] = unsigned_n % 10 + '0';
+		new_str[len - 2] = unsigned_n % 10 + '0';
 		unsigned_n /= 10;
+		len--;
+	}
+	return (new_str);
+}
+
+char	*malloc_p(unsigned long long n, int len)
+{
+	char	*new_str;
+
+	new_str = (char *)ft_calloc(len, sizeof(char));
+	if (new_str == NULL)
+		return (NULL);
+	new_str[0] = '0';
+	new_str[1] = 'x';
+	new_str[2] = '0';
+	if (n == 0)
+		return (new_str);
+	while (n > 0)
+	{
+		if (9 < n % 16 && n % 16 < 16)
+			new_str[len - 2] = (n % 16 - 10) + 'a';
+		else
+			new_str[len - 2] = n % 16 + '0';
+		n /= 16;
+		len--;
 	}
 	return (new_str);
 }
@@ -115,54 +143,6 @@ char	*ft_itoa(int n)
 	{
 		new_str[len-- - 2] = n % 10 + '0';
 		n /= 10;
-	}
-	return (new_str);
-}
-
-int	ft_number_of_digits_3(unsigned long long n)
-{
-	int		len;
-
-	len = 1;
-	if (n <= 0)
-	{
-		len++;
-		n *= -1;
-	}
-	while (n > 0)
-	{
-		n /= 16;
-		len++;
-	}
-	return (len);
-}
-
-#include <stdio.h>
-char	*ft_litoa(unsigned long long n, int len, int *ret)
-{
-	char	*new_str;
-
-	new_str = (char *)ft_calloc(len, sizeof(char));
-	if (new_str == NULL)
-		return (NULL);
-	new_str[0] = '0';
-	new_str[1] = 'x';
-	new_str[2] = '0';
-	*ret += 2;
-	if (n == 0)
-	{
-		(*ret)++;
-		return (new_str);
-	}
-	while (n > 0)
-	{
-		if (9 < n % 16 && n % 16 < 16)
-			new_str[len] = (n % 16 - 10) + 'a';
-		else
-			new_str[len] = n % 16 + '0';
-		n /= 16;
-		len--;
-		(*ret)++;
 	}
 	return (new_str);
 }
