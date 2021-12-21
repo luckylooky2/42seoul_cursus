@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 14:53:21 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/21 16:37:36 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/21 16:52:41 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,6 @@ int		ft_unsigned_number_of_digits(unsigned long long unsigned_n, int flag);
 char	*malloc_u(int n);
 char	*malloc_p(unsigned long long n, int len);
 int		ft_number_of_digits(int n);
-char	*print_hex(const char *format, va_list ap, int *ret);
+char	*ft_itoa(int n);
 
 #endif

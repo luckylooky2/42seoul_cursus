@@ -19,7 +19,7 @@ char	*print_unsigned_int(const char *format, va_list ap, int *ret)
 
 	i = 0;
 	uint_ptr = malloc_u(va_arg(ap, int));
-	if (unit_ptr == NULL)
+	if (uint_ptr == NULL)
 		return (NULL);
 	while (uint_ptr[i] != '\0')
 	{
@@ -52,22 +52,22 @@ char	*print_hex(const char *format, va_list ap, int *ret)
 
 	hex = va_arg(ap, int);
 	len = ft_unsigned_number_of_digit(hex, 1) + 1;
-	hex_ptr = (char *)ft_calloc(sizeof(char) * len);
+	hex_ptr = (char *)ft_calloc(sizeof(char), len);
 	if (hex_ptr == NULL)
 		return (NULL);
 	hex_ptr[0] = '0';
 	while (hex > 0)
 	{
 		if (9 < hex % 16 && hex % 16 < 16 && *(format + 1) == 'x')
-			hex_char[len - 2] = (hex % 16 - 10) + 'a';
+			hex_ptr[len - 2] = (hex % 16 - 10) + 'a';
 		else if (9 < hex % 16 && hex % 16 < 16 && *(format + 1) == 'X')
-			hex_char[len - 2] = (hex % 16 - 10) + 'A';
+			hex_ptr[len - 2] = (hex % 16 - 10) + 'A';
 		else
-			hex_char[len - 2] = hex % 16 + '0';
+			hex_ptr[len - 2] = hex % 16 + '0';
 		hex /= 16;
 		len--;
 	}
-	printf_hex_ptr(hex_ptr, ret);
+	print_hex_ptr(hex_ptr, ret);
 	free(hex_ptr);
 	return ((char *)(format + 1));
 }

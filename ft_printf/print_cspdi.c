@@ -14,13 +14,13 @@
 
 char	*print_char_or_str(const char *format, va_list ap, int *ret)
 {
-	char	*ch_ptr;
+	char	ch;
 	char	*str_ptr;
 
 	if (*(format + 1) == 'c')
 	{
 		ch = (char)va_arg(ap, int);
-		write(1, ch, 1);
+		write(1, &ch, 1);
 		(*ret)++;
 	}
 	else if (*(format + 1) == 's')
@@ -50,7 +50,7 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 	i = 0;
 	if (*(format + 1) == 'p')
 	{
-		ptr_addr = va_arg(ap, long long);
+		addr = va_arg(ap, long long);
 		addr_ptr = malloc_p(addr, ft_unsigned_number_of_digits(addr, 1) + 3);
 		if (addr_ptr == NULL)
 			return (NULL);

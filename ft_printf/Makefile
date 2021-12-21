@@ -5,7 +5,7 @@ CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
 NAME=libftprintf.a
-SOURCE=ft_printf.c ft_print_cspdi.c ft_print_uxX.c ft_printf_utils.c
+SOURCE=ft_printf.c print_cspdi.c print_uxX.c ft_printf_utils.c
 SOURCE_BONUS=
 OBJECT=$(SOURCE:.c=.o)
 OBJECT_BONUS=$(SOURCE_BONUS:.c=.o)
