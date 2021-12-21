@@ -51,7 +51,7 @@ char	*print_hex(const char *format, va_list ap, int *ret)
 	int				len;
 
 	hex = va_arg(ap, int);
-	len = ft_unsigned_number_of_digit(hex, 1) + 1;
+	len = ft_unsigned_number_of_digits(hex, 1) + 1;
 	hex_ptr = (char *)ft_calloc(sizeof(char), len);
 	if (hex_ptr == NULL)
 		return (NULL);
