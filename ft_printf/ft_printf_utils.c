@@ -166,6 +166,5 @@ char	*ft_litoa(long long n, int *ret)
 		len--;
 		(*ret)++;
 	}
-	(*ret)--;
 	return (new_str);
 }

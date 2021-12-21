@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:48:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/19 17:06:36 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/21 10:39:50 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,8 +29,7 @@ static char	*char_or_str(const char *format, va_list ap, int *ret)
 		{
 			write(1, str_ptr, 1);
 			str_ptr++;
-			if (*(str_ptr + 1) != '\0')
-				(*ret)++;
+			(*ret)++;
 		}
 	}
 	return ((char *)(format + 1));
@@ -127,9 +126,11 @@ int	ft_printf(const char *format, ...)
 				format = upper_or_lower_hex(format, ap);
 		}
 		else
+		{
 			write(1, format, 1);
+			ret++;
+		}
 		format++;
-		ret++;
 	}
 	va_end(ap);
 	return (ret);
@@ -144,10 +145,10 @@ int	ft_printf(const char *format, ...)
 // 	char	grade = 'A';
 // 	int		a;
 
-// 	a = ft_printf(" %s ", name);
+// 	a = ft_printf(" %p ", NULL + 100000000);
 // 	printf("%d", a);
 // 	printf("\n");
-// 	a = printf(" %s ", name);
+// 	a = printf(" %p ", NULL + 100000000);
 // 	printf("%d", a);
 // 	printf("\n");
 // }
