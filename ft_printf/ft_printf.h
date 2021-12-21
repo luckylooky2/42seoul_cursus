@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/20 14:53:21 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/20 14:53:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/21 11:04:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ char	*ft_uitoa(int n);
 void	*ft_calloc(size_t nmemb, size_t size);
 int	    ft_number_of_digits(int n);
 char	*ft_itoa(int n);
-int	    ft_number_of_digits_3(long long n);
-char	*ft_litoa(long long n, int *ret);
+int	    ft_number_of_digits_3(unsigned long long n);
+char	*ft_litoa(unsigned long long n, int len, int *ret);
 
 #endif

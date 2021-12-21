@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:48:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/21 10:39:50 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/21 11:12:21 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,10 +21,17 @@ static char	*char_or_str(const char *format, va_list ap, int *ret)
 	{
 		ch = (char)va_arg(ap, int);
 		write(1, &ch, 1);
+		(*ret)++;
 	}
 	else if (*(format + 1) == 's')
 	{
 		str_ptr = va_arg(ap, char *);
+		if (str_ptr == NULL)
+		{
+			write(1, "(null)", 6);
+			*ret += 6;
+			return ((char *)(format + 1));
+		}
 		while (*str_ptr != '\0')
 		{
 			write(1, str_ptr, 1);
@@ -39,14 +46,16 @@ static char	*address_or_percent(const char *format, va_list ap, int *ret)
 {
 	char				*str;
 	unsigned long long	ptr_addr;
+	int					len;
 	int					i;
 
 	i = 13;
 	if (*(format + 1) == 'p')
 	{
 		ptr_addr = va_arg(ap, long long);
-		str = ft_litoa(ptr_addr, ret);
-		write(1, str, 14);
+		len = ft_number_of_digits_3(ptr_addr);
+		str = ft_litoa(ptr_addr, len, ret);
+		write(1, str, len + 1);
 		free(str);
 	}
 	else if (*(format + 1) == '%')
@@ -136,19 +145,20 @@ int	ft_printf(const char *format, ...)
 	return (ret);
 }
 
-// #include <stdio.h>
-// int main()
-// {
-// 	char	*name = "chanhyle";
-// 	char	*city = "seoul";
-// 	unsigned int		age = -1230;
-// 	char	grade = 'A';
-// 	int		a;
+#include <stdio.h>
+#include <limits.h>
+int main()
+{
+	char	*name = "chanhyle";
+	char	*city = "seoul";
+	unsigned int		age = -1230;
+	char	grade = 'A';
+	int		a;
 
-// 	a = ft_printf(" %p ", NULL + 100000000);
-// 	printf("%d", a);
-// 	printf("\n");
-// 	a = printf(" %p ", NULL + 100000000);
-// 	printf("%d", a);
-// 	printf("\n");
-// }
+	a = ft_printf(" %p %p ", 0, 0);
+	printf("%d", a);
+	printf("\n");
+	a = printf(" %p %p ", 0, 0);
+	printf("%d", a);
+	printf("\n");
+}

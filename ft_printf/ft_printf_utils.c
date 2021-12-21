@@ -119,7 +119,7 @@ char	*ft_itoa(int n)
 	return (new_str);
 }
 
-int	ft_number_of_digits_3(long long n)
+int	ft_number_of_digits_3(unsigned long long n)
 {
 	int		len;
 
@@ -138,12 +138,10 @@ int	ft_number_of_digits_3(long long n)
 }
 
 #include <stdio.h>
-char	*ft_litoa(long long n, int *ret)
+char	*ft_litoa(unsigned long long n, int len, int *ret)
 {
 	char	*new_str;
-	int		len;
 
-	len = ft_number_of_digits_3(n);
 	new_str = (char *)ft_calloc(len, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);
