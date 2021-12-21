@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:48:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/21 11:12:21 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/21 11:29:18 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,11 +59,14 @@ static char	*address_or_percent(const char *format, va_list ap, int *ret)
 		free(str);
 	}
 	else if (*(format + 1) == '%')
+	{
 		write(1, "%%", 1);
+		(*ret)++;
+	}
 	return ((char *)(format + 1));
 }
 
-static char	*signed_or_unsigned_int(const char *format, va_list ap)
+static char	*signed_or_unsigned_int(const char *format, va_list ap, int *ret)
 {
 	char	*dec_ptr;
 	int		i;
@@ -73,19 +76,25 @@ static char	*signed_or_unsigned_int(const char *format, va_list ap)
 	{
 		dec_ptr = ft_itoa(va_arg(ap, int));
 		while(dec_ptr[i] != '\0')
+		{
 			write(1, &dec_ptr[i++], 1);
+			(*ret)++;
+		}
 	}
 	else if (*(format + 1) == 'u')
 	{
 		dec_ptr = ft_uitoa(va_arg(ap, int));
 		while (dec_ptr[i] != '\0')
+		{
 			write(1, &dec_ptr[i++], 1);
+			(*ret)++;
+		}
 	}
 	free(dec_ptr);
 	return ((char *)(format + 1));
 }
 
-static char	*upper_or_lower_hex(const char *format, va_list ap)
+static char	*upper_or_lower_hex(const char *format, va_list ap, int *ret)
 {
 	unsigned int	hex;
 	char			hex_char[8];
@@ -108,9 +117,14 @@ static char	*upper_or_lower_hex(const char *format, va_list ap)
 		hex /= 16;
 	}
 	if (i < 7)
+	{
 		write(1, &hex_char[i + 1], 8 - i + 1);
+		*ret += (8 - i + 1);
 	else
+	{
 		write(1, "0", 1);
+		(*ret)++;
+	}
 	return ((char *)(format + 1));
 }
 
@@ -130,9 +144,9 @@ int	ft_printf(const char *format, ...)
 			else if (*(format + 1) == 'p' || *(format + 1) == '%')
 				format = address_or_percent(format, ap, &ret);
 			else if (*(format + 1) == 'd' || *(format + 1) == 'i' || *(format + 1) == 'u')
-				format = signed_or_unsigned_int(format, ap);
+				format = signed_or_unsigned_int(format, ap, &ret);
 			else if (*(format + 1) == 'x' || *(format + 1) == 'X')
-				format = upper_or_lower_hex(format, ap);
+				format = upper_or_lower_hex(format, ap, &ret);
 		}
 		else
 		{
@@ -145,20 +159,20 @@ int	ft_printf(const char *format, ...)
 	return (ret);
 }
 
-#include <stdio.h>
-#include <limits.h>
-int main()
-{
-	char	*name = "chanhyle";
-	char	*city = "seoul";
-	unsigned int		age = -1230;
-	char	grade = 'A';
-	int		a;
+// #include <stdio.h>
+// #include <limits.h>
+// int main()
+// {
+// 	char	*name = "chanhyle";
+// 	char	*city = "seoul";
+// 	unsigned int		age = -1230;
+// 	char	grade = 'A';
+// 	int		a;
 
-	a = ft_printf(" %p %p ", 0, 0);
-	printf("%d", a);
-	printf("\n");
-	a = printf(" %p %p ", 0, 0);
-	printf("%d", a);
-	printf("\n");
-}
+// 	a = ft_printf(" %p %p ", 0, 0);
+// 	printf("%d", a);
+// 	printf("\n");
+// 	a = printf(" %p %p ", 0, 0);
+// 	printf("%d", a);
+// 	printf("\n");
+// }
