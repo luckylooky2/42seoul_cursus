@@ -6,11 +6,12 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/17 11:48:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/21 11:29:18 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/21 12:06:00 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
+#include <stdio.h>
 
 static char	*char_or_str(const char *format, va_list ap, int *ret)
 {
@@ -118,8 +119,9 @@ static char	*upper_or_lower_hex(const char *format, va_list ap, int *ret)
 	}
 	if (i < 7)
 	{
-		write(1, &hex_char[i + 1], 8 - i + 1);
-		*ret += (8 - i + 1);
+		write(1, &hex_char[i + 1], 7 - i);
+		*ret += (7 - i);
+	}
 	else
 	{
 		write(1, "0", 1);
@@ -159,20 +161,20 @@ int	ft_printf(const char *format, ...)
 	return (ret);
 }
 
-// #include <stdio.h>
-// #include <limits.h>
-// int main()
-// {
-// 	char	*name = "chanhyle";
-// 	char	*city = "seoul";
-// 	unsigned int		age = -1230;
-// 	char	grade = 'A';
-// 	int		a;
+#include <stdio.h>
+#include <limits.h>
+int main()
+{
+	char	*name = "chanhyle";
+	char	*city = "seoul";
+	unsigned int		age = -1230;
+	char	grade = 'A';
+	int		a;
 
-// 	a = ft_printf(" %p %p ", 0, 0);
-// 	printf("%d", a);
-// 	printf("\n");
-// 	a = printf(" %p %p ", 0, 0);
-// 	printf("%d", a);
-// 	printf("\n");
-// }
+	a = ft_printf(" %x ", -101);
+	printf("%d", a);
+	printf("\n");
+	a = printf(" %x ", -101);
+	printf("%d", a);
+	printf("\n");
+}
