@@ -48,6 +48,8 @@ int	ft_printf(const char *format, ...)
 	int		ret;
 
 	ret = 0;
+	if (format == NULL)
+		return (0);
 	va_start(ap, format);
 	flag = read_format(format, ap, &ret);
 	va_end(ap);
