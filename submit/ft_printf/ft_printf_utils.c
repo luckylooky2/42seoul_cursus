@@ -12,7 +12,7 @@
 
 #include "ft_printf.h"
 
-int	ft_unsigned_number_of_digits(unsigned long long unsigned_n, int flag)
+int	unsigned_digits(unsigned long long unsigned_n, int flag)
 {
 	int		len;
 
@@ -38,14 +38,12 @@ int	ft_unsigned_number_of_digits(unsigned long long unsigned_n, int flag)
 	return (len);
 }
 
-char	*malloc_u(int n)
+char	*make_uint_string(unsigned int unsigned_n)
 {
-	unsigned int	unsigned_n;
-	char			*new_str;
-	int				len;
+	char	*new_str;
+	int		len;
 
-	unsigned_n = n;
-	len = ft_unsigned_number_of_digits(unsigned_n, 0) + 1;
+	len = unsigned_digits(unsigned_n, 0) + 1;
 	new_str = (char *)ft_calloc(len, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);
@@ -59,7 +57,7 @@ char	*malloc_u(int n)
 	return (new_str);
 }
 
-char	*malloc_p(unsigned long long n, int len)
+char	*make_hex_string(unsigned long long n, int len, int flag)
 {
 	char	*new_str;
 
@@ -67,14 +65,14 @@ char	*malloc_p(unsigned long long n, int len)
 	if (new_str == NULL)
 		return (NULL);
 	new_str[0] = '0';
-	new_str[1] = 'x';
-	new_str[2] = '0';
 	if (n == 0)
 		return (new_str);
 	while (n > 0)
 	{
-		if (9 < n % 16 && n % 16 < 16)
+		if (9 < n % 16 && n % 16 < 16 && flag == 0)
 			new_str[len - 2] = (n % 16 - 10) + 'a';
+		else if (9 < n % 16 && n % 16 < 16 && flag == 1)
+			new_str[len - 2] = (n % 16 - 10) + 'A';
 		else
 			new_str[len - 2] = n % 16 + '0';
 		n /= 16;

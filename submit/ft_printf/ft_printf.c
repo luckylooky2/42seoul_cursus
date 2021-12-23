@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/22 13:07:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/23 14:09:06 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/23 20:03:18 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/23 20:03:21 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
