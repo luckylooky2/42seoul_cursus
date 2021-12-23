@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 13:07:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/22 13:07:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/23 14:09:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,13 +48,11 @@ int	ft_printf(const char *format, ...)
 	int		ret;
 
 	ret = 0;
-	if (format == NULL)
-		return (0);
 	va_start(ap, format);
 	flag = read_format(format, ap, &ret);
 	va_end(ap);
 	if (flag == 1)
-		return (0);
+		return (-1);
 	else
 		return (ret);
 }
