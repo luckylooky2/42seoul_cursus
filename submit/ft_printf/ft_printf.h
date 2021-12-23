@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/23 20:03:27 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/23 20:03:29 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/23 20:54:27 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ char	*print_hex(const char *format, va_list ap, int *ret);
 int		unsigned_digits(unsigned long long unsigned_n, int flag);
 char	*make_uint_string(unsigned int unsigned_n);
 char	*make_hex_string(unsigned long long n, int len, int flag);
+void	print_prefix(int flag);
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_number_of_digits(int n);
 char	*ft_itoa(int n);

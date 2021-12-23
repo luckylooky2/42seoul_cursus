@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 13:07:43 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/22 13:07:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/23 20:54:56 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,4 +79,21 @@ char	*make_hex_string(unsigned long long n, int len, int flag)
 		len--;
 	}
 	return (new_str);
+}
+
+void	print_prefix(int flag)
+{
+	char	prefix[3];
+	int		i;
+
+	i = 0;
+	prefix[0] = '0';
+	prefix[2] = '\0';
+	if (flag == 0)
+		prefix[1] = 'x';
+	while (prefix[i] != '\0')
+	{
+		write(1, &prefix[i], 1);
+		i++;
+	}
 }

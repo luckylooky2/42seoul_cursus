@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/22 13:07:58 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/22 13:08:01 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/23 20:54:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 		addr_ptr = make_hex_string(addr, unsigned_digits(addr, 1) + 1, 0);
 		if (addr_ptr == NULL)
 			return (NULL);
-		write(1, "0x", 1);
+		print_prefix(0);
 		while (addr_ptr[i] != '\0')
 		{
 			write(1, &addr_ptr[i++], 1);
