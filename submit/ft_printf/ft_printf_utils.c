@@ -81,7 +81,7 @@ char	*make_hex_string(unsigned long long n, int len, int flag)
 	return (new_str);
 }
 
-char	*add_prefix(char **str, int flag)
+char	*add_prefix(const char **str, int flag)
 {
 	char	*new_str;
 	int		i;
@@ -102,4 +102,17 @@ char	*add_prefix(char **str, int flag)
 		new_str[1] = 'x';
 	}
 	return (new_str);
+}
+
+void	print_string(const char *str, int *ret)
+{
+	int	i;
+
+	i = 0;
+	while (str[i] != '\0')
+	{
+		write(1, &str[i], 1);
+		i++;
+		(*ret)++;
+	}
 }
