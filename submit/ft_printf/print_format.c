@@ -52,9 +52,9 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 	{
 		addr = va_arg(ap, long long);
 		addr_ptr = make_hex_string(addr, unsigned_digits(addr, 1) + 1, 0);
+		addr_ptr = add_prefix(&addr_ptr, 0);
 		if (addr_ptr == NULL)
 			return (NULL);
-		print_prefix(0);
 		while (addr_ptr[i] != '\0')
 		{
 			write(1, &addr_ptr[i++], 1);

@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/23 20:03:27 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/23 20:54:27 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/26 17:50:10 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/26 17:50:14 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ int		unsigned_digits(unsigned long long unsigned_n, int flag);
 char	*make_uint_string(unsigned int unsigned_n);
 char	*make_hex_string(unsigned long long n, int len, int flag);
 void	print_prefix(int flag);
+size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_number_of_digits(int n);
 char	*ft_itoa(int n);

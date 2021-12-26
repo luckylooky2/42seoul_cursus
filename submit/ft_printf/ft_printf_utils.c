@@ -81,19 +81,23 @@ char	*make_hex_string(unsigned long long n, int len, int flag)
 	return (new_str);
 }
 
-void	print_prefix(int flag)
+char	*add_prefix(char **str, int flag)
 {
-	char	prefix[3];
+	char	new_str;
 	int		i;
 
 	i = 0;
-	prefix[0] = '0';
-	prefix[2] = '\0';
-	if (flag == 0)
-		prefix[1] = 'x';
-	while (prefix[i] != '\0')
+	if (*str == NULL)
+		return (NULL);
+	new_str = (char *)ft_calloc(sizeof(char) * (ft_strlen(*str) + 2));
+	while (new_str != NULL && **str != '\0')
 	{
-		write(1, &prefix[i], 1);
+		new_str[i + 2] = (*str)[i];
 		i++;
 	}
+	free(*str);
+	new_str[0] = '0';
+	if (new_str != NULL && flag == 0)
+		new_str[1] = 'x';
+	return (new_str);
 }
