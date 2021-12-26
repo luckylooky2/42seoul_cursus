@@ -81,7 +81,6 @@ char	*make_hex_string(unsigned long long n, int len, int flag)
 	return (new_str);
 }
 
-#include <stdio.h>
 char	*add_prefix(char **str, int flag)
 {
 	char	*new_str;
