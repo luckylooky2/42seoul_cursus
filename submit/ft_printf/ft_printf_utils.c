@@ -83,13 +83,13 @@ char	*make_hex_string(unsigned long long n, int len, int flag)
 
 char	*add_prefix(char **str, int flag)
 {
-	char	new_str;
+	char	*new_str;
 	int		i;
 
 	i = 0;
 	if (*str == NULL)
 		return (NULL);
-	new_str = (char *)ft_calloc(sizeof(char) * (ft_strlen(*str) + 2));
+	new_str = (char *)ft_calloc(sizeof(char), (ft_strlen(*str) + 2));
 	while (new_str != NULL && **str != '\0')
 	{
 		new_str[i + 2] = (*str)[i];
