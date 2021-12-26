@@ -45,7 +45,7 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 	if (*(format + 1) == 'p')
 	{
 		addr = va_arg(ap, long long);
-		addr_ptr = make_hex_string(addr, unsigned_digits(addr, 1) + 1, 0);
+		addr_ptr = make_hex_string(addr, 0);
 		addr_ptr = add_prefix(&addr_ptr, 0);
 		if (addr_ptr == NULL)
 			return (NULL);
@@ -91,11 +91,10 @@ char	*print_hex(const char *format, va_list ap, int *ret)
 	int				len;
 
 	hex = va_arg(ap, int);
-	len = unsigned_digits(hex, 1) + 1;
 	if (*(format + 1) == 'x')
-		hex_ptr = make_hex_string(hex, len, 0);
+		hex_ptr = make_hex_string(hex, 0);
 	else if (*(format + 1) == 'X')
-		hex_ptr = make_hex_string(hex, len, 1);
+		hex_ptr = make_hex_string(hex, 1);
 	if (hex_ptr == NULL)
 		return (NULL);
 	print_string(hex_ptr, ret);

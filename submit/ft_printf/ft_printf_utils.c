@@ -12,55 +12,46 @@
 
 #include "ft_printf.h"
 
-int	unsigned_digits(unsigned long long unsigned_n, int flag)
+int	unsigned_digits(unsigned long long n, int base)
 {
-	int		len;
+	int	len;
 
 	len = 0;
-	if (unsigned_n == 0)
+	if (n == 0)
 		len++;
-	if (flag == 0)
+	while (n > 0)
 	{
-		while (unsigned_n > 0)
-		{
-			unsigned_n /= 10;
-			len++;
-		}
-	}
-	else
-	{
-		while (unsigned_n > 0)
-		{
-			unsigned_n /= 16;
-			len++;
-		}
+		n /= base;
+		len++;
 	}
 	return (len);
 }
 
-char	*make_uint_string(unsigned int unsigned_n)
+char	*make_uint_string(unsigned int n)
 {
 	char	*new_str;
 	int		len;
 
-	len = unsigned_digits(unsigned_n, 0) + 1;
+	len = unsigned_digits(n, 10) + 1;
 	new_str = (char *)ft_calloc(len, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);
 	new_str[0] = '0';
-	while (unsigned_n > 0)
+	while (n > 0)
 	{
-		new_str[len - 2] = unsigned_n % 10 + '0';
-		unsigned_n /= 10;
+		new_str[len - 2] = n % 10 + '0';
+		n /= 10;
 		len--;
 	}
 	return (new_str);
 }
 
-char	*make_hex_string(unsigned long long n, int len, int flag)
+char	*make_hex_string(unsigned long long n, int flag)
 {
 	char	*new_str;
+	int		len;
 
+	len = unsigned_digits(n, 16) + 1;
 	new_str = (char *)ft_calloc(len, sizeof(char));
 	if (new_str == NULL)
 		return (NULL);

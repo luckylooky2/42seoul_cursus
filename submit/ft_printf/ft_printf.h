@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/26 20:29:05 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/26 20:29:08 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/26 20:52:47 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/26 20:52:53 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret);
 char	*print_signed_int(const char *format, va_list ap, int *ret);
 char	*print_unsigned_int(const char *format, va_list ap, int *ret);
 char	*print_hex(const char *format, va_list ap, int *ret);
-int		unsigned_digits(unsigned long long unsigned_n, int flag);
-char	*make_uint_string(unsigned int unsigned_n);
-char	*make_hex_string(unsigned long long n, int len, int flag);
+int		unsigned_digits(unsigned long long n, int base);
+char	*make_uint_string(unsigned int n);
+char	*make_hex_string(unsigned long long n, int flag);
 char	*add_prefix(char **str, int flag);
 void	print_string(const char *str, int *ret);
 size_t	ft_strlen(const char *s);
