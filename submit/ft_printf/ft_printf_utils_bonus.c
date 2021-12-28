@@ -118,6 +118,6 @@ int	print_string(const char *str, int *ret, int (*opt)[9])
 		}
 	}
 	else
-		write(1, str, 1);
+		write(1, &str[i++], 1);
 	return (i);
 }
