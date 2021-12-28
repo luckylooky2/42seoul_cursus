@@ -5,14 +5,14 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/28 14:57:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/28 14:57:07 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/28 16:02:04 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/28 16:02:07 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf_bonus.h"
 
-static char	*read_flag(const char *format, int (*opt)[8])
+static char	*read_flag(const char *format, int (*opt)[9])
 {
 	while (*format == '-' || *format == ' ' || *format == '+'
 		|| *format == '#' || *format == '0')
@@ -32,7 +32,7 @@ static char	*read_flag(const char *format, int (*opt)[8])
 	return ((char *)format);
 }
 
-static char	*read_width_and_precision(const char *format, int (*opt)[8])
+static char	*read_width_and_precision(const char *format, int (*opt)[9])
 {
 	while ('0' <= *format && *format <= '9')
 	{
@@ -52,7 +52,7 @@ static char	*read_width_and_precision(const char *format, int (*opt)[8])
 	return ((char *)format);
 }
 
-static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[8])
+static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
 	if (*format == 'c' || *format == 's')
 		format = print_cs(format, ap, ret, opt);
@@ -69,14 +69,14 @@ static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[8])
 	return ((char *)format);
 }
 
-static int	read_format(const char *format, va_list ap, int *ret, int (*opt)[8])
+static int	read_format(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
 	while (*format != '\0')
 	{
 		if (*format == '%')
 		{
 			format++;
-			ft_memset(*opt, 0, sizeof(int) * 8);
+			ft_memset(*opt, 0, sizeof(int) * 9);
 			format = read_flag(format, opt);
 			format = read_width_and_precision(format, opt);
 			format = read_type(format, ap, ret, opt);
@@ -98,7 +98,7 @@ int	ft_printf(const char *format, ...)
 	va_list	ap;
 	int		flag;
 	int		ret;
-	int		opt[8];
+	int		opt[9];
 
 	ret = 0;
 	va_start(ap, format);

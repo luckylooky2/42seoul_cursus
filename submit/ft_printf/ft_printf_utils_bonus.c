@@ -95,7 +95,7 @@ char	*add_prefix(char **str, int flag)
 	return (new_str);
 }
 
-int	print_string(const char *str, int *ret, int (*opt)[8])
+int	print_string(const char *str, int *ret, int (*opt)[9])
 {
 	int	i;
 
@@ -104,19 +104,20 @@ int	print_string(const char *str, int *ret, int (*opt)[8])
 	{
 		while (i < (*opt)[7] && str[i] != '\0')
 		{
-			write(1, &str[i], 1);
-			i++;
+			write(1, &str[i++], 1);
+			(*ret)++;
+		}
+		return (i);
+	}
+	if ((*opt)[8] == 0)
+	{
+		while (str[i] != '\0')
+		{
+			write(1, &str[i++], 1);
 			(*ret)++;
 		}
 	}
 	else
-	{
-		while (str[i] != '\0')
-		{
-			write(1, &str[i], 1);
-			i++;
-			(*ret)++;
-		}
-	}
+		write(1, str, 1);
 	return (i);
 }

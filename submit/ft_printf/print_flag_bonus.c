@@ -12,7 +12,7 @@
 
 #include "ft_printf_bonus.h"
 
-int	flag_print_space(int *ret, int (*opt)[8], int len, int i)
+int	flag_print_space(int *ret, int (*opt)[9], int len, int i)
 {
 	while ((*opt)[5] - len - i > 0)
 	{
@@ -23,7 +23,7 @@ int	flag_print_space(int *ret, int (*opt)[8], int len, int i)
 	return (i);
 }
 
-void	flag_print_string(const char *str, int *ret, int (*opt)[8], int flag)
+void	flag_print_string(const char *str, int *ret, int (*opt)[9], int flag)
 {
 	int	i;
 	int	len;

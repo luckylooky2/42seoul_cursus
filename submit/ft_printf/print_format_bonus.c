@@ -12,16 +12,17 @@
 
 #include "ft_printf_bonus.h"
 
-char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[8])
+char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
-	char	ch[2];
+	char	ch;
 	char	*str_ptr;
 
 	if (*format == 'c')
 	{
-		ch[0] = (char)va_arg(ap, int);
-		ch[1] = '\0';
-		flag_print_string(ch, ret, opt, 0);
+		ch = (char)va_arg(ap, int);
+		(*opt)[8] = 1;
+		flag_print_string(&ch, ret, opt, 0);
+		(*ret)++;
 	}
 	else if (*format == 's')
 	{
@@ -40,7 +41,7 @@ char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[8])
 	return ((char *)format);
 }
 
-char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[8])
+char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
 	unsigned long long	addr;
 	char				*addr_ptr;
@@ -66,7 +67,7 @@ char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[8])
 	return ((char *)format);
 }
 
-char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[8])
+char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
 	char	*int_ptr;
 
@@ -78,7 +79,7 @@ char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[8])
 	return ((char *)format);
 }
 
-char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[8])
+char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
 	char	*uint_ptr;
 
@@ -90,7 +91,7 @@ char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[8])
 	return ((char *)format);
 }
 
-char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[8])
+char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[9])
 {
 	unsigned int	hex;
 	char			*hex_ptr;
