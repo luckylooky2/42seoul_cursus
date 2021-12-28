@@ -12,16 +12,16 @@
 
 #include "ft_printf_bonus.h"
 
-char	*print_char_or_str(const char *format, va_list ap, int *ret)
+char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[8])
 {
-	char	ch;
+	char	ch[2];
 	char	*str_ptr;
 
 	if (*format == 'c')
 	{
-		ch = (char)va_arg(ap, int);
-		write(1, &ch, 1);
-		(*ret)++;
+		ch[0] = (char)va_arg(ap, int);
+		ch[1] = '\0';
+		flag_print_string(ch, ret, opt, 0);
 	}
 	else if (*format == 's')
 	{
@@ -32,12 +32,15 @@ char	*print_char_or_str(const char *format, va_list ap, int *ret)
 			*ret += 6;
 			return ((char *)format);
 		}
-		print_string(str_ptr, ret);
+		if ((*opt)[5] == 0)
+			print_string(str_ptr, ret, opt);
+		else
+			flag_print_string(str_ptr, ret, opt, (*opt)[6]);
 	}
 	return ((char *)format);
 }
 
-char	*print_address_or_percent(const char *format, va_list ap, int *ret)
+char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[8])
 {
 	unsigned long long	addr;
 	char				*addr_ptr;
@@ -49,7 +52,10 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 		addr_ptr = add_prefix(&addr_ptr, 0);
 		if (addr_ptr == NULL)
 			return (NULL);
-		print_string(addr_ptr, ret);
+		if ((*opt)[5] == 0)
+			print_string(addr_ptr, ret, opt);
+		else
+			flag_print_string(addr_ptr, ret, opt, 0);
 		free(addr_ptr);
 	}
 	else if (*format == '%')
@@ -60,31 +66,31 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 	return ((char *)format);
 }
 
-char	*print_signed_int(const char *format, va_list ap, int *ret)
+char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[8])
 {
 	char	*int_ptr;
 
 	int_ptr = ft_itoa(va_arg(ap, int));
 	if (int_ptr == NULL)
 		return (NULL);
-	print_string(int_ptr, ret);
+	print_string(int_ptr, ret, opt);
 	free(int_ptr);
 	return ((char *)format);
 }
 
-char	*print_unsigned_int(const char *format, va_list ap, int *ret)
+char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[8])
 {
 	char	*uint_ptr;
 
 	uint_ptr = make_uint_string(va_arg(ap, int));
 	if (uint_ptr == NULL)
 		return (NULL);
-	print_string(uint_ptr, ret);
+	print_string(uint_ptr, ret, opt);
 	free(uint_ptr);
 	return ((char *)format);
 }
 
-char	*print_hex(const char *format, va_list ap, int *ret)
+char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[8])
 {
 	unsigned int	hex;
 	char			*hex_ptr;
@@ -97,7 +103,7 @@ char	*print_hex(const char *format, va_list ap, int *ret)
 		hex_ptr = make_hex_string(hex, 1);
 	if (hex_ptr == NULL)
 		return (NULL);
-	print_string(hex_ptr, ret);
+	print_string(hex_ptr, ret, opt);
 	free(hex_ptr);
 	return ((char *)format);
 }

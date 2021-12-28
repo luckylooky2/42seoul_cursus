@@ -8,19 +8,19 @@ LIBFT_OBJECT=libft/ft_atoi.o libft/ft_bzero.o libft/ft_calloc.o libft/ft_isalnum
 
 NAME=libftprintf.a
 SOURCE=ft_printf.c print_format.c ft_printf_utils.c
-SOURCE_BONUS=
+SOURCE_BONUS=ft_printf_bonus.c print_format_bonus.c print_flag_bonus.c ft_printf_utils_bonus.c
 OBJECT=$(SOURCE:.c=.o)
 OBJECT_BONUS=$(SOURCE_BONUS:.c=.o)
 
 ifdef WITH_BONUS
-	OBJ = $(OBJECT) $(OBJECT_BONUS)
+	OBJ = $(OBJECT_BONUS)
 else
 	OBJ = $(OBJECT)
 endif
 
-$(NAME) : $(OBJECT)
+$(NAME) : $(OBJ)
 	@$(MAKE) bonus -C ./libft
-	$(AR) $(ARFLAGS) $@ $(OBJECT) $(LIBFT_OBJECT)
+	$(AR) $(ARFLAGS) $@ $(OBJ) $(LIBFT_OBJECT)
 
 %.o : %.c
 	@$(CC) $(CFALGS) -c $< -o $@

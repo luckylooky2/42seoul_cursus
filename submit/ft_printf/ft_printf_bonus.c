@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/27 22:26:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/27 22:26:35 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/28 14:57:03 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/28 14:57:07 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,18 +52,18 @@ static char	*read_width_and_precision(const char *format, int (*opt)[8])
 	return ((char *)format);
 }
 
-static char	*read_type(const char *format, va_list ap, int *ret)
+static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[8])
 {
 	if (*format == 'c' || *format == 's')
-		format = print_char_or_str(format, ap, ret);
+		format = print_cs(format, ap, ret, opt);
 	else if (*format == 'p' || *format == '%')
-		format = print_address_or_percent(format, ap, ret);
+		format = print_p(format, ap, ret, opt);
 	else if (*format == 'd' || *format == 'i')
-		format = print_signed_int(format, ap, ret);
+		format = print_int(format, ap, ret, opt);
 	else if (*format == 'u')
-		format = print_unsigned_int(format, ap, ret);
+		format = print_uint(format, ap, ret, opt);
 	else if (*format == 'x' || *format == 'X')
-		format = print_hex(format, ap, ret);
+		format = print_hex(format, ap, ret, opt);
 	if (format == NULL)
 		return (NULL);
 	return ((char *)format);
@@ -79,7 +79,7 @@ static int	read_format(const char *format, va_list ap, int *ret, int (*opt)[8])
 			ft_memset(*opt, 0, sizeof(int) * 8);
 			format = read_flag(format, opt);
 			format = read_width_and_precision(format, opt);
-			format = read_type(format, ap, ret);
+			format = read_type(format, ap, ret, opt);
 		}
 		else
 		{
@@ -112,7 +112,13 @@ int	ft_printf(const char *format, ...)
 
 // int main()
 // {
-// 	int a = 12334;
-// 	ft_printf("%-020.1283s  %#+-20.12s\n%p\n", "Hello, world!", "12345", a);
-// 	printf("%-020.1283s  %#+-20.12s\n%p\n", "Hello, world!", "12345", a);
+// 	// int a = 12334;
+// 	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
+// 	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
+
+// 	ft_printf("%-20p\n", "123");
+// 	printf("%-20p\n", "123");
+
+// // 	ft_printf("%2.12s\n", "12345");
+// // 	printf("%2.12s\n", "12345");
 // }
