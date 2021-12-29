@@ -109,7 +109,7 @@ int	print_string(const char *str, int *ret, int (*opt)[9])
 		}
 		return (i);
 	}
-	if ((*opt)[8] == 0)
+	if ((*opt)[8] != 1)
 	{
 		while (str[i] != '\0')
 		{

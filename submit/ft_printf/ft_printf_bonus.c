@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 16:02:04 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/28 16:02:07 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/12/29 12:25:43 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,8 +116,8 @@ int	ft_printf(const char *format, ...)
 // 	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 // 	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 
-// 	ft_printf("%-20p\n", "123");
-// 	printf("%-20p\n", "123");
+// 	ft_printf("%+ 010d\n", 123125);
+// 	printf("%+ 010d\n", 123125);
 
 // // 	ft_printf("%2.12s\n", "12345");
 // // 	printf("%2.12s\n", "12345");

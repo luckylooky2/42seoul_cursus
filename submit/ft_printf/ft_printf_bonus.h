@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 14:57:24 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/28 16:03:40 by marvin           ###   ########.fr       */
+/*   Updated: 2021/12/29 12:15:11 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,9 @@ char	*make_uint_string(unsigned int n);
 char	*make_hex_string(unsigned long long n, int flag);
 char	*add_prefix(char **str, int flag);
 int		print_string(const char *str, int *ret, int (*opt)[9]);
-int		flag_print_space(int *ret, int (*opt)[9], int len, int i);
+void	flag_switch_fuction(int *ret, int (*opt)[9], int len, int i);
+int		flag_print_plus(int *ret, int (*opt)[9], int i);
+int		flag_print_space_or_zero(int *ret, int (*opt)[9], int len, int i);
 void	flag_print_string(const char *str, int *ret, int (*opt)[9], int flag);
 void	*ft_memset(void *s, int c, size_t n);
 size_t	ft_strlen(const char *s);

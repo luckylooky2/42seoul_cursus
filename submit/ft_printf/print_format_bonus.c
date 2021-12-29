@@ -72,9 +72,13 @@ char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[9])
 	char	*int_ptr;
 
 	int_ptr = ft_itoa(va_arg(ap, int));
+	(*opt)[8] = 2;
 	if (int_ptr == NULL)
 		return (NULL);
-	print_string(int_ptr, ret, opt);
+	if ((*opt)[4] == 0 && (*opt)[5] == 0)
+		print_string(int_ptr, ret, opt);
+	else
+		flag_print_string(int_ptr, ret, opt, 0);
 	free(int_ptr);
 	return ((char *)format);
 }
