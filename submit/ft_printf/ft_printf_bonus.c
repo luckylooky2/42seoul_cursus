@@ -12,7 +12,7 @@
 
 #include "ft_printf_bonus.h"
 
-static char	*read_flag(const char *format, int (*opt)[9])
+static char	*read_flag(const char *format, int (*opt)[10])
 {
 	while (*format == '-' || *format == ' ' || *format == '+'
 		|| *format == '#' || *format == '0')
@@ -32,7 +32,7 @@ static char	*read_flag(const char *format, int (*opt)[9])
 	return ((char *)format);
 }
 
-static char	*read_width_and_precision(const char *format, int (*opt)[9])
+static char	*read_width_and_precision(const char *format, int (*opt)[10])
 {
 	while ('0' <= *format && *format <= '9')
 	{
@@ -52,7 +52,7 @@ static char	*read_width_and_precision(const char *format, int (*opt)[9])
 	return ((char *)format);
 }
 
-static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[9])
+static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	if (*format == 'c' || *format == 's')
 		format = print_cs(format, ap, ret, opt);
@@ -69,7 +69,7 @@ static char	*read_type(const char *format, va_list ap, int *ret, int (*opt)[9])
 	return ((char *)format);
 }
 
-static int	read_format(const char *format, va_list ap, int *ret, int (*opt)[9])
+static int	read_format(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	while (*format != '\0')
 	{
@@ -98,7 +98,7 @@ int	ft_printf(const char *format, ...)
 	va_list	ap;
 	int		flag;
 	int		ret;
-	int		opt[9];
+	int		opt[10];
 
 	ret = 0;
 	va_start(ap, format);
@@ -110,14 +110,15 @@ int	ft_printf(const char *format, ...)
 		return (ret);
 }
 
+// #include <limits.h>
 // int main()
 // {
 // 	// int a = 12334;
 // 	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 // 	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 
-// 	ft_printf("%+ 010d\n", 123125);
-// 	printf("%+ 010d\n", 123125);
+// 	ft_printf(" %02d \n", -1);
+// 	printf(" %02d \n", -1);
 
 // // 	ft_printf("%2.12s\n", "12345");
 // // 	printf("%2.12s\n", "12345");

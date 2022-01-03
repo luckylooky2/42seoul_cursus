@@ -19,20 +19,20 @@
 # include <stdio.h>
 
 int		ft_printf(const char *format, ...);
-char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[9]);
-char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[9]);
-char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[9]);
-char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[9]);
-char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[9]);
+char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[10]);
+char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[10]);
+char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[10]);
+char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[10]);
+char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10]);
 int		unsigned_digits(unsigned long long n, int base);
 char	*make_uint_string(unsigned int n);
 char	*make_hex_string(unsigned long long n, int flag);
 char	*add_prefix(char **str, int flag);
-int		print_string(const char *str, int *ret, int (*opt)[9]);
-void	flag_switch_fuction(int *ret, int (*opt)[9], int len, int i);
-int		flag_print_plus(int *ret, int (*opt)[9], int i);
-int		flag_print_space_or_zero(int *ret, int (*opt)[9], int len, int i);
-void	flag_print_string(const char *str, int *ret, int (*opt)[9], int flag);
+int		print_string(char *str, int *ret, int (*opt)[10]);
+void	flag_switch_fuction(int *ret, int (*opt)[10], int len, int i);
+int		flag_print_plus(int *ret, int (*opt)[10], int i);
+int		flag_print_space_or_zero(int *ret, int (*opt)[10], int len, int i);
+void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag);
 void	*ft_memset(void *s, int c, size_t n);
 size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t nmemb, size_t size);

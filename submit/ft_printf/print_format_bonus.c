@@ -12,7 +12,7 @@
 
 #include "ft_printf_bonus.h"
 
-char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[9])
+char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	char	ch;
 	char	*str_ptr;
@@ -41,7 +41,7 @@ char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[9])
 	return ((char *)format);
 }
 
-char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[9])
+char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	unsigned long long	addr;
 	char				*addr_ptr;
@@ -67,7 +67,7 @@ char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[9])
 	return ((char *)format);
 }
 
-char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[9])
+char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	char	*int_ptr;
 
@@ -75,27 +75,30 @@ char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[9])
 	(*opt)[8] = 2;
 	if (int_ptr == NULL)
 		return (NULL);
-	if ((*opt)[4] == 0 && (*opt)[5] == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
 		print_string(int_ptr, ret, opt);
 	else
-		flag_print_string(int_ptr, ret, opt, 0);
+		flag_print_string(int_ptr, ret, opt, 1);
 	free(int_ptr);
 	return ((char *)format);
 }
 
-char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[9])
+char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	char	*uint_ptr;
 
 	uint_ptr = make_uint_string(va_arg(ap, int));
 	if (uint_ptr == NULL)
 		return (NULL);
-	print_string(uint_ptr, ret, opt);
+	if ((*opt)[4] == 0 && (*opt)[5] == 0)
+		print_string(uint_ptr, ret, opt);
+	else
+		flag_print_string(uint_ptr, ret, opt, 0);
 	free(uint_ptr);
 	return ((char *)format);
 }
 
-char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[9])
+char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	unsigned int	hex;
 	char			*hex_ptr;
@@ -108,7 +111,10 @@ char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[9])
 		hex_ptr = make_hex_string(hex, 1);
 	if (hex_ptr == NULL)
 		return (NULL);
-	print_string(hex_ptr, ret, opt);
+	if ((*opt)[4] == 0 && (*opt)[5] == 0)
+		print_string(hex_ptr, ret, opt);
+	else
+		flag_print_string(hex_ptr, ret, opt, 0);
 	free(hex_ptr);
 	return ((char *)format);
 }

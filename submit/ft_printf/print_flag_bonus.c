@@ -12,7 +12,7 @@
 
 #include "ft_printf_bonus.h"
 
-void	flag_switch_fuction(int *ret, int (*opt)[9], int len, int i)
+void	flag_switch_fuction(int *ret, int (*opt)[10], int len, int i)
 {
 	if ((*opt)[0] == 0 && (*opt)[4] == 1)
 	{
@@ -24,7 +24,7 @@ void	flag_switch_fuction(int *ret, int (*opt)[9], int len, int i)
 	flag_print_plus(ret, opt, i);
 }
 
-int	flag_print_plus(int *ret, int (*opt)[9], int i)
+int	flag_print_plus(int *ret, int (*opt)[10], int i)
 {
 	if ((*opt)[2] == 1)
 	{
@@ -41,17 +41,25 @@ int	flag_print_plus(int *ret, int (*opt)[9], int i)
 	return (i);
 }
 
-int	flag_print_space_or_zero(int *ret, int (*opt)[9], int len, int i)
+int	flag_print_space_or_zero(int *ret, int (*opt)[10], int len, int i)
 {
 	int	flag;
+	int	opt_nb;
 
+	opt_nb = 5;
 	flag = 0;
 	if (((*opt)[0] != 0 || (*opt)[4] != 1)
 		&& (*opt)[8] == 2 && ((*opt)[1] == 1 || (*opt)[2] == 1))
 		flag = 1;
-	while ((*opt)[5] - len - flag - i > 0)
+	if ((*opt)[8] == 2 && (*opt)[6] == 1)
+		opt_nb = 7;
+	// printf("%d\n", (*opt)[opt_nb]);
+	// printf("%d\n", len);
+	// printf("%d\n", flag);
+	// printf("%d\n", i);
+	while ((*opt)[opt_nb] - len - flag - i > 0)
 	{
-		if ((*opt)[0] == 0 && (*opt)[4] == 1)
+		if ((*opt)[0] == 0 && ((*opt)[4] == 1 || (*opt)[6] == 1))
 			write(1, "0", 1);
 		else
 			write(1, " ", 1);
@@ -61,7 +69,7 @@ int	flag_print_space_or_zero(int *ret, int (*opt)[9], int len, int i)
 	return (i);
 }
 
-void	flag_print_string(const char *str, int *ret, int (*opt)[9], int flag)
+void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 {
 	int	i;
 	int	len;
@@ -70,18 +78,45 @@ void	flag_print_string(const char *str, int *ret, int (*opt)[9], int flag)
 	i = 0;
 	opt_nb = 5;
 	len = (int)ft_strlen(str);
+	if (str[0] == '-')
+		len--;
+	if ((*opt)[6] == 1 && len > (*opt)[7])
+	{
+		(*opt)[7] = len;
+		if (str[0] == '-' && (*opt)[8] == 2)
+		{
+			write(1, "-", 1);
+			(*ret)++;
+		}
+		print_string(str, ret, opt);
+		return ;	
+	}
 	if ((*opt)[0] == 1)
 	{
 		i = flag_print_plus(ret, opt, i);
+		if (str[0] == '-' && (*opt)[8] == 2)
+		{
+			write(1, "-", 1);
+			(*ret)++;
+			(*opt)[9] = 1;
+		}
 		i = print_string(str, ret, opt);
 		flag_print_space_or_zero(ret, opt, 0, i);
 	}
 	else if ((*opt)[0] == 0)
 	{
-		if (flag == 1)
+		// printf("len : %d\n", len);
+		if (flag == 1 && (*opt)[6] == 1)
 			opt_nb = 7;
-		if ((int)ft_strlen(str) > (*opt)[opt_nb])
+		if (len > (*opt)[opt_nb])
 			len = (*opt)[opt_nb];
+		if (str[0] == '-' && (*opt)[8] == 2)
+		{
+			write(1, "-", 1);
+			(*ret)++;
+			(*opt)[9] = 1;
+		}
+		// printf("len : %d\n", len);
 		flag_switch_fuction(ret, opt, len, i);
 		print_string(str, ret, opt);
 	}
