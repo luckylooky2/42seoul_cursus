@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 16:02:04 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/29 12:25:43 by marvin           ###   ########.fr       */
+/*   Updated: 2022/01/04 11:55:34 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ static int	read_format(const char *format, va_list ap, int *ret, int (*opt)[10])
 		if (*format == '%')
 		{
 			format++;
-			ft_memset(*opt, 0, sizeof(int) * 9);
+			ft_memset(*opt, 0, sizeof(int) * 10);
 			format = read_flag(format, opt);
 			format = read_width_and_precision(format, opt);
 			format = read_type(format, ap, ret, opt);
@@ -110,16 +110,16 @@ int	ft_printf(const char *format, ...)
 		return (ret);
 }
 
-// #include <limits.h>
-// int main()
-// {
-// 	// int a = 12334;
-// 	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
-// 	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
+#include <limits.h>
+int main()
+{
+	// int a = 12334;
+	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
+	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 
-// 	ft_printf(" %02d \n", -1);
-// 	printf(" %02d \n", -1);
+	ft_printf(" %.2u \n", -1);
+	printf(" %.2u \n", -1);
 
-// // 	ft_printf("%2.12s\n", "12345");
-// // 	printf("%2.12s\n", "12345");
-// }
+// 	ft_printf("%2.12s\n", "12345");
+// 	printf("%2.12s\n", "12345");
+}
