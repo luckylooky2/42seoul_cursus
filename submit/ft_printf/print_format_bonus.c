@@ -27,6 +27,7 @@ char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[10])
 	else if (*format == 's')
 	{
 		str_ptr = va_arg(ap, char *);
+		(*opt)[8] = 3;
 		if (str_ptr == NULL)
 		{
 			write(1, "(null)", 6);

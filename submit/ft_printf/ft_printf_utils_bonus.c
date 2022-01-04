@@ -100,7 +100,9 @@ int	print_string(char *str, int *ret, int (*opt)[10])
 	int	i;
 
 	i = 0;
-	if ((*opt)[6] == 1 && (*opt)[8] == 2)
+	if ((*opt)[6] == 1 && (*opt)[8] == 3)
+		return (i);
+	else if ((*opt)[6] == 1 && (*opt)[8] == 2)
 	{
 		if ((str[i] == '-' && (*opt)[8] == 2))
 			str++;
@@ -110,9 +112,8 @@ int	print_string(char *str, int *ret, int (*opt)[10])
 			(*ret)++;
 			i++;
 		}
-		return (i);
 	}
-	if ((*opt)[8] != 1)
+	else if ((*opt)[8] != 1)
 	{
 		while (str[i] != '\0')
 		{
