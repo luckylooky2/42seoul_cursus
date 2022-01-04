@@ -89,9 +89,10 @@ char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[10])
 	char	*uint_ptr;
 
 	uint_ptr = make_uint_string(va_arg(ap, int));
+	(*opt)[8] = 4;
 	if (uint_ptr == NULL)
 		return (NULL);
-	if ((*opt)[4] == 0 && (*opt)[5] == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[7] == 0)
 		print_string(uint_ptr, ret, opt);
 	else
 		flag_print_string(uint_ptr, ret, opt, 0);
