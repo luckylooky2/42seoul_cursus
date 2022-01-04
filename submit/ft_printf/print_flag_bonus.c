@@ -113,7 +113,7 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 		// printf("len : %d\n", len);
 		if (flag == 1 && (*opt)[6] == 1 || (*opt)[8] == 4)
 			opt_nb = 7;
-		if (len > (*opt)[opt_nb])
+		if (len > (*opt)[opt_nb] && (*opt)[8] != 4)
 			len = (*opt)[opt_nb];
 		if (str[0] == '-' && (*opt)[8] == 2)
 		{
