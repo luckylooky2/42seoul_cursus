@@ -34,7 +34,7 @@ char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[10])
 			*ret += 6;
 			return ((char *)format);
 		}
-		if ((*opt)[5] == 0)
+		if ((*opt)[5] == 0 && (*opt)[6] == 0)
 			print_string(str_ptr, ret, opt);
 		else
 			flag_print_string(str_ptr, ret, opt, (*opt)[6]);

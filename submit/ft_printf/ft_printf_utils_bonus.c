@@ -102,7 +102,7 @@ int	print_string(char *str, int *ret, int (*opt)[10])
 	i = 0;
 	if ((*opt)[6] == 1 && (*opt)[8] == 3 && (*opt)[7] == 0)
 		return (i);
-	else if ((*opt)[6] == 1 && (*opt)[8] == 2)
+	else if ((*opt)[6] == 1 && ((*opt)[8] == 2 || (*opt)[8] == 3))
 	{
 		if ((str[i] == '-' && (*opt)[8] == 2))
 			str++;

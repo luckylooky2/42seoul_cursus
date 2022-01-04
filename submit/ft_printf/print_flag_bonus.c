@@ -83,7 +83,7 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 	len = (int)ft_strlen(str);
 	if (str[0] == '-' && (*opt)[8] == 2)
 		len--;
-	if ((*opt)[6] == 1 && len > (*opt)[7])
+	if ((*opt)[8] != 3 && (*opt)[6] == 1 && len > (*opt)[7])
 	{
 		// printf("1\n");
 		(*opt)[7] = len;
