@@ -107,13 +107,14 @@ char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 	int				len;
 
 	hex = va_arg(ap, int);
+	(*opt)[8] = 5;
 	if (*format == 'x')
 		hex_ptr = make_hex_string(hex, 0);
 	else if (*format == 'X')
 		hex_ptr = make_hex_string(hex, 1);
 	if (hex_ptr == NULL)
 		return (NULL);
-	if ((*opt)[4] == 0 && (*opt)[5] == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
 		print_string(hex_ptr, ret, opt);
 	else
 		flag_print_string(hex_ptr, ret, opt, 0);
