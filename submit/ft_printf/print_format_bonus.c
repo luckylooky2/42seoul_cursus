@@ -107,7 +107,10 @@ char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 	int				len;
 
 	hex = va_arg(ap, int);
-	(*opt)[8] = 5;
+	if (*format == 'x')
+		(*opt)[8] = 5;
+	else if (*format == 'X')
+		(*opt)[8] = 6;
 	if (*format == 'x')
 		hex_ptr = make_hex_string(hex, 0);
 	else if (*format == 'X')
@@ -115,7 +118,7 @@ char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 	if (hex_ptr == NULL)
 		return (NULL);
 	if ((*opt)[3] == 1 && hex_ptr[0] != '0')
-		print_sharp(ret);
+		print_sharp(ret, opt);
 	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
 		print_string(hex_ptr, ret, opt);
 	else

@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 16:02:04 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/05 11:16:51 by marvin           ###   ########.fr       */
+/*   Updated: 2022/01/05 11:27:53 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,8 +117,8 @@ int	ft_printf(const char *format, ...)
 // 	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 // 	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
 
-// 	printf("%d\n", ft_printf(" %#x%#x ", INT_MAX, INT_MIN));
-// 	printf("%d\n", printf(" %#x%#x ", INT_MAX, INT_MIN));
+// 	printf("%d\n", ft_printf(" %#X ", -1));
+// 	printf("%d\n", printf(" %#X ", -1));
 
 // // 	ft_printf("%2.12s\n", "12345");
 // // 	printf("%2.12s\n", "12345");

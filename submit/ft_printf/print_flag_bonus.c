@@ -129,8 +129,11 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 	}
 }
 
-void	print_sharp(int *ret)
+void	print_sharp(int *ret, int (*opt)[10])
 {
-	write(1, "0x", 2);
+	if ((*opt)[8] == 5)
+		write(1, "0x", 2);
+	else if ((*opt)[8] == 6)
+		write(1, "0X", 2);
 	*ret += 2;
 }
