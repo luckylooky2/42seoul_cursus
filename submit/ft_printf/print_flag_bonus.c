@@ -54,7 +54,7 @@ int	flag_print_space_or_zero(int *ret, int (*opt)[10], int len, int i)
 	if ((*opt)[8] == 2 && (*opt)[9] == 1 && (*opt)[0] == 0 && (*opt)[6] == 0)
 		flag++;
 	if (((*opt)[8] == 2 && (*opt)[6] == 1) || ((*opt)[8] == 4 && (*opt)[6] == 1)
-		|| ((*opt)[8] == 5 && (*opt)[6] == 1))
+		|| ((*opt)[8] == 5 && (*opt)[6] == 1) || ((*opt)[8] == 6 && (*opt)[6] == 1))
 		opt_nb = 7;
 	// printf("opt : %d\n", opt_nb);
 	// printf("%d\n", (*opt)[opt_nb]);
@@ -114,7 +114,7 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 		// printf("len : %d\n", len);
 		if (flag == 1 && (*opt)[6] == 1 || (*opt)[8] == 4)
 			opt_nb = 7;
-		if (len > (*opt)[opt_nb] && (*opt)[8] != 4 && (*opt)[8] != 5)
+		if (len > (*opt)[opt_nb] && (*opt)[8] != 4 && (*opt)[8] != 5 && (*opt)[8] != 6)
 			len = (*opt)[opt_nb];
 		if (str[0] == '-' && (*opt)[8] == 2)
 		{
