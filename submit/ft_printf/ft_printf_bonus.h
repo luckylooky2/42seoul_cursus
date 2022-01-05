@@ -6,7 +6,7 @@
 /*   By: marvin <marvin@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/28 14:57:24 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/29 12:15:11 by marvin           ###   ########.fr       */
+/*   Updated: 2022/01/05 11:13:15 by marvin           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	flag_switch_fuction(int *ret, int (*opt)[10], int len, int i);
 int		flag_print_plus(int *ret, int (*opt)[10], int i);
 int		flag_print_space_or_zero(int *ret, int (*opt)[10], int len, int i);
 void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag);
+void	print_sharp(int *ret);
 void	*ft_memset(void *s, int c, size_t n);
 size_t	ft_strlen(const char *s);
 void	*ft_calloc(size_t nmemb, size_t size);

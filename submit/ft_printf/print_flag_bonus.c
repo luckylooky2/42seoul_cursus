@@ -128,3 +128,9 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 		print_string(str, ret, opt);
 	}
 }
+
+void	print_sharp(int *ret)
+{
+	write(1, "0x", 2);
+	*ret += 2;
+}

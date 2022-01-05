@@ -114,6 +114,8 @@ char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 		hex_ptr = make_hex_string(hex, 1);
 	if (hex_ptr == NULL)
 		return (NULL);
+	if ((*opt)[3] == 1 && hex_ptr[0] != '0')
+		print_sharp(ret);
 	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
 		print_string(hex_ptr, ret, opt);
 	else
