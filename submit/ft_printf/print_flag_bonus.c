@@ -93,7 +93,7 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 			write(1, "-", 1);
 			(*ret)++;
 		}
-		print_string(str, ret, opt);
+		ft_print_string(str, ret, opt);
 	}
 	else if ((*opt)[0] == 1)
 	{
@@ -105,7 +105,7 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 			(*ret)++;
 			(*opt)[9] = 1;
 		}
-		i = print_string(str, ret, opt);
+		i = ft_print_string(str, ret, opt);
 		flag_print_space_or_zero(ret, opt, 0, i);
 	}
 	else if ((*opt)[0] == 0)
@@ -125,7 +125,7 @@ void	flag_print_string(char *str, int *ret, int (*opt)[10], int flag)
 		// printf("len : %d\n", len);
 		// printf("s : %s\n", str);
 		flag_switch_fuction(ret, opt, len, i);
-		print_string(str, ret, opt);
+		ft_print_string(str, ret, opt);
 	}
 }
 

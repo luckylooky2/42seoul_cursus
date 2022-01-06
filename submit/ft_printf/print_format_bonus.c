@@ -35,7 +35,7 @@ char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[10])
 			return ((char *)format);
 		}
 		if ((*opt)[5] == 0 && (*opt)[6] == 0)
-			print_string(str_ptr, ret, opt);
+			ft_print_string(str_ptr, ret, opt);
 		else
 			flag_print_string(str_ptr, ret, opt, (*opt)[6]);
 	}
@@ -55,7 +55,7 @@ char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[10])
 		if (addr_ptr == NULL)
 			return (NULL);
 		if ((*opt)[5] == 0)
-			print_string(addr_ptr, ret, opt);
+			ft_print_string(addr_ptr, ret, opt);
 		else
 			flag_print_string(addr_ptr, ret, opt, 0);
 		free(addr_ptr);
@@ -77,7 +77,7 @@ char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[10])
 	if (int_ptr == NULL)
 		return (NULL);
 	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0 && (*opt)[1] != 1 && (*opt)[2] != 1)
-		print_string(int_ptr, ret, opt);
+		ft_print_string(int_ptr, ret, opt);
 	else
 		flag_print_string(int_ptr, ret, opt, 1);
 	free(int_ptr);
@@ -93,7 +93,7 @@ char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[10])
 	if (uint_ptr == NULL)
 		return (NULL);
 	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[7] == 0)
-		print_string(uint_ptr, ret, opt);
+		ft_print_string(uint_ptr, ret, opt);
 	else
 		flag_print_string(uint_ptr, ret, opt, 0);
 	free(uint_ptr);
@@ -120,7 +120,7 @@ char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 	if ((*opt)[3] == 1 && hex_ptr[0] != '0')
 		print_sharp(ret, opt);
 	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
-		print_string(hex_ptr, ret, opt);
+		ft_print_string(hex_ptr, ret, opt);
 	else
 		flag_print_string(hex_ptr, ret, opt, 0);
 	free(hex_ptr);
