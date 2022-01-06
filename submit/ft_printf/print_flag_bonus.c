@@ -26,13 +26,13 @@ void	flag_switch_fuction(int *ret, int (*opt)[10], int len, int i)
 
 int	flag_print_plus(int *ret, int (*opt)[10], int i)
 {
-	if ((*opt)[2] == 1)
+	if ((*opt)[2] == 1 && (*opt)[9] != 1)
 	{
 		write(1, "+", 1);
 		i++;
 		(*ret)++;
 	}
-	else if ((*opt)[1] == 1)
+	else if ((*opt)[1] == 1 && (*opt)[9] != 1)
 	{
 		write(1, " ", 1);
 		i++;

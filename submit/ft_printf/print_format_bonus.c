@@ -76,7 +76,7 @@ char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[10])
 	(*opt)[8] = 2;
 	if (int_ptr == NULL)
 		return (NULL);
-	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0 && (*opt)[1] != 1)
 		print_string(int_ptr, ret, opt);
 	else
 		flag_print_string(int_ptr, ret, opt, 1);
