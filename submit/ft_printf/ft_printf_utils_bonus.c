@@ -95,33 +95,26 @@ char	*add_prefix(char **str, int flag)
 	return (new_str);
 }
 
-int	print_string(char *str, int *ret, int (*opt)[10])
+int	ft_print_string(char *str, int *ret, t_option *opt)
 {
 	int	i;
 
 	i = 0;
-	if ((*opt)[6] == 1 && (*opt)[8] == 3 && (*opt)[7] == 0)
+	if (opt->dot && opt->type == 's' && opt->prcs == 0)
 		return (i);
-	else if ((*opt)[6] == 1 && ((*opt)[8] == 2 || (*opt)[8] == 3))
+	else if (opt->dot && (opt->type == 'd' || opt->type == 's'))
 	{
-		if ((str[i] == '-' && (*opt)[8] == 2))
+		if (str[i] == '-' && opt->type == 'd')
 			str++;
-		while (i < (*opt)[7] && str[i] != '\0')
-		{
-			write(1, &str[i], 1);
-			(*ret)++;
-			i++;
-		}
+		while (i < opt->prcs && str[i] != '\0')
+			write_and_plus(&str[i++], ret, 1);
 	}
-	else if ((*opt)[8] != 1)
+	else if (opt->type != 'c')
 	{
 		while (str[i] != '\0')
 		{
-			if (!(str[i] == '-' && (*opt)[8] == 2))
-			{
-				write(1, &str[i], 1);
-				(*ret)++;
-			}
+			if (!(str[i] == '-' && opt->type == 'd'))
+				write_and_plus(&str[i], ret, 1);
 			i++;
 		}
 	}

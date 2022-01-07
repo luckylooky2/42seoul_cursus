@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/22 13:07:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/22 13:07:14 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/12/26 18:08:24 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/12/26 18:08:26 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,25 +52,7 @@ int	ft_printf(const char *format, ...)
 	flag = read_format(format, ap, &ret);
 	va_end(ap);
 	if (flag == 1)
-		return (0);
+		return (-1);
 	else
 		return (ret);
 }
-
-// #include <stdio.h>
-// #include <limits.h>
-// int main()
-// {
-// 	char	*name = "chanhyle";
-// 	char	*city = "seoul";
-// 	unsigned int		age = -1230;
-// 	char	grade = 'A';
-// 	int		a;
-
-// 	a = ft_printf(" %x ", -101);
-// 	printf("%d", a);
-// 	printf("\n");
-// 	a = printf(" %x ", -101);
-// 	printf("%d", a);
-// 	printf("\n");
-// }

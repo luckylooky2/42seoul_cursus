@@ -10,7 +10,7 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf.h"
+#include "ft_printf_bonus.h"
 
 int	unsigned_digits(unsigned long long n, int base)
 {
@@ -95,15 +95,37 @@ char	*add_prefix(char **str, int flag)
 	return (new_str);
 }
 
-void	print_string(const char *str, int *ret)
+int	print_string(char *str, int *ret, int (*opt)[10])
 {
 	int	i;
 
 	i = 0;
-	while (str[i] != '\0')
+	if ((*opt)[6] == 1 && (*opt)[8] == 3 && (*opt)[7] == 0)
+		return (i);
+	else if ((*opt)[6] == 1 && ((*opt)[8] == 2 || (*opt)[8] == 3))
 	{
-		write(1, &str[i], 1);
-		i++;
-		(*ret)++;
+		if ((str[i] == '-' && (*opt)[8] == 2))
+			str++;
+		while (i < (*opt)[7] && str[i] != '\0')
+		{
+			write(1, &str[i], 1);
+			(*ret)++;
+			i++;
+		}
 	}
+	else if ((*opt)[8] != 1)
+	{
+		while (str[i] != '\0')
+		{
+			if (!(str[i] == '-' && (*opt)[8] == 2))
+			{
+				write(1, &str[i], 1);
+				(*ret)++;
+			}
+			i++;
+		}
+	}
+	else
+		write(1, &str[i++], 1);
+	return (i);
 }

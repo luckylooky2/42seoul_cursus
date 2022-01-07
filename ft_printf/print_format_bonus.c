@@ -12,7 +12,7 @@
 
 #include "ft_printf_bonus.h"
 
-char	*print_cs(const char *format, va_list ap, int *ret, t_option *opt)
+char	*print_cs(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	char	ch;
 	char	*str_ptr;
@@ -20,28 +20,29 @@ char	*print_cs(const char *format, va_list ap, int *ret, t_option *opt)
 	if (*format == 'c')
 	{
 		ch = (char)va_arg(ap, int);
-		opt->type = 'c';
+		(*opt)[8] = 1;
 		flag_print_string(&ch, ret, opt, 0);
 		(*ret)++;
 	}
 	else if (*format == 's')
 	{
 		str_ptr = va_arg(ap, char *);
-		opt->type = 's';
+		(*opt)[8] = 3;
 		if (str_ptr == NULL)
 		{
-			write_and_plus(str_ptr, ret, 0);
+			write(1, "(null)", 6);
+			*ret += 6;
 			return ((char *)format);
 		}
-		if (opt->width == 0 && opt->dot)
+		if ((*opt)[5] == 0 && (*opt)[6] == 0)
 			ft_print_string(str_ptr, ret, opt);
 		else
-			flag_print_string(str_ptr, ret, opt, opt->dot);
+			flag_print_string(str_ptr, ret, opt, (*opt)[6]);
 	}
 	return ((char *)format);
 }
 
-char	*print_p(const char *format, va_list ap, int *ret, t_option *opt)
+char	*print_p(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	unsigned long long	addr;
 	char				*addr_ptr;
@@ -49,12 +50,11 @@ char	*print_p(const char *format, va_list ap, int *ret, t_option *opt)
 	if (*format == 'p')
 	{
 		addr = va_arg(ap, long long);
-		opt->type = 'p';
 		addr_ptr = make_hex_string(addr, 0);
 		addr_ptr = add_prefix(&addr_ptr, 0);
 		if (addr_ptr == NULL)
 			return (NULL);
-		if (opt->width == 0)
+		if ((*opt)[5] == 0)
 			ft_print_string(addr_ptr, ret, opt);
 		else
 			flag_print_string(addr_ptr, ret, opt, 0);
@@ -62,22 +62,21 @@ char	*print_p(const char *format, va_list ap, int *ret, t_option *opt)
 	}
 	else if (*format == '%')
 	{
-		opt->type = '%';
-		write_and_plus("%%", ret, 1);
+		write(1, "%%", 1);
+		(*ret)++;
 	}
 	return ((char *)format);
 }
 
-char	*print_int(const char *format, va_list ap, int *ret, t_option *opt)
+char	*print_int(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	char	*int_ptr;
 
 	int_ptr = ft_itoa(va_arg(ap, int));
-	opt->type = 'd';
+	(*opt)[8] = 2;
 	if (int_ptr == NULL)
 		return (NULL);
-	if (opt->f_zero == 0 && opt->width == 0 && opt->dot == 0
-		&& opt->f_space == 0 && opt->f_plus == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0 && (*opt)[1] != 1 && (*opt)[2] != 1)
 		ft_print_string(int_ptr, ret, opt);
 	else
 		flag_print_string(int_ptr, ret, opt, 1);
@@ -85,15 +84,15 @@ char	*print_int(const char *format, va_list ap, int *ret, t_option *opt)
 	return ((char *)format);
 }
 
-char	*print_uint(const char *format, va_list ap, int *ret, t_option *opt)
+char	*print_uint(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	char	*uint_ptr;
 
 	uint_ptr = make_uint_string(va_arg(ap, int));
-	opt->type = 'u';
+	(*opt)[8] = 4;
 	if (uint_ptr == NULL)
 		return (NULL);
-	if (opt->f_zero == 0 && opt->width == 0 && opt->prcs == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[7] == 0)
 		ft_print_string(uint_ptr, ret, opt);
 	else
 		flag_print_string(uint_ptr, ret, opt, 0);
@@ -101,7 +100,7 @@ char	*print_uint(const char *format, va_list ap, int *ret, t_option *opt)
 	return ((char *)format);
 }
 
-char	*print_hex(const char *format, va_list ap, int *ret, t_option *opt)
+char	*print_hex(const char *format, va_list ap, int *ret, int (*opt)[10])
 {
 	unsigned int	hex;
 	char			*hex_ptr;
@@ -109,18 +108,18 @@ char	*print_hex(const char *format, va_list ap, int *ret, t_option *opt)
 
 	hex = va_arg(ap, int);
 	if (*format == 'x')
-		opt->type = 'x';
+		(*opt)[8] = 5;
 	else if (*format == 'X')
-		opt->type = 'X';
+		(*opt)[8] = 6;
 	if (*format == 'x')
 		hex_ptr = make_hex_string(hex, 0);
 	else if (*format == 'X')
 		hex_ptr = make_hex_string(hex, 1);
 	if (hex_ptr == NULL)
 		return (NULL);
-	if (opt->f_sharp && hex_ptr[0] != '0')
+	if ((*opt)[3] == 1 && hex_ptr[0] != '0')
 		print_sharp(ret, opt);
-	if (opt->f_zero == 0 && opt->width == 0 && opt->dot == 0)
+	if ((*opt)[4] == 0 && (*opt)[5] == 0 && (*opt)[6] == 0)
 		ft_print_string(hex_ptr, ret, opt);
 	else
 		flag_print_string(hex_ptr, ret, opt, 0);
