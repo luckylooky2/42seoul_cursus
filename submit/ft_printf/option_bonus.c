@@ -12,36 +12,22 @@
 
 #include "ft_printf_bonus.h"
 
-void	flag_switch_fuction(int *ret, t_option *opt, int len, int i)
-{
-	if (opt->f_minus == 0 && opt->f_zero)
-	{
-		i = flag_print_plus(ret, opt, i);
-		flag_print_space_or_zero(ret, opt, len, i);
-	}
-	else
-	{
-		i = flag_print_space_or_zero(ret, opt, len, i);
-		flag_print_plus(ret, opt, i);
-	}
-}
-
-int	flag_print_plus(int *ret, t_option *opt, int i)
+int	print_sign(int *ret, t_option *opt, int i)
 {
 	if (opt->f_plus && opt->neg == 0 && opt->type != 's')
 	{
-		write_and_plus("+", ret, 1);
+		print_stdin("+", ret, 1);
 		i++;
 	}
 	else if (opt->f_space && opt->neg == 0 && opt->type != 's')
 	{
-		write_and_plus(" ", ret, 1);
+		print_stdin(" ", ret, 1);
 		i++;
 	}
 	return (i);
 }
 
-int	flag_print_space_or_zero(int *ret, t_option *opt, int len, int i)
+int	print_padding(int *ret, t_option *opt, int len, int i)
 {
 	int	flag;
 	int	tot;
@@ -59,55 +45,33 @@ int	flag_print_space_or_zero(int *ret, t_option *opt, int len, int i)
 	while (tot - len - flag - i > 0)
 	{
 		if (opt->f_minus == 0 && (opt->f_zero || opt->dot))
-			write_and_plus("0", ret, 1);
+			print_stdin("0", ret, 1);
 		else
-			write_and_plus(" ", ret, 1);
+			print_stdin(" ", ret, 1);
 		i++;
 	}
 	return (i);
 }
 
-void	flag_print_string(char *str, int *ret, t_option *opt, int flag)
+void	print_base(int *ret, t_option *opt)
 {
-	int	i;
-	int	len;
-	int	sw;
+	if (opt->type == 'x')
+		write(1, "0x", 2);
+	else if (opt->type == 'X')
+		write(1, "0X", 2);
+	*ret += 2;
+}
 
-	i = 0;
-	sw = opt->width;
-	len = (int)ft_strlen(str);
-	if (str[0] == '-' && opt->type == 'd')
-		len--;
-	if (opt->type != 's' && opt->dot && len > opt->prcs)
+void	print_stdin(char *sg_char, int *ret, int flag)
+{
+	if (flag == 1)
 	{
-		opt->prcs = len;
-		if (str[0] == '-' && opt->type == 'd')
-			write_and_plus("-", ret, 1);
-		ft_print_string(str, ret, opt);
+		write(1, sg_char, 1);
+		(*ret)++;
 	}
-	else if (opt->f_minus)
+	else if (flag == 0)
 	{
-		i = flag_print_plus(ret, opt, i);
-		if (str[0] == '-' && opt->type == 'd')
-		{
-			write_and_plus("-", ret, 1);
-			opt->neg = 1;
-		}
-		i = ft_print_string(str, ret, opt);
-		flag_print_space_or_zero(ret, opt, 0, i);
-	}
-	else if (opt->f_minus == 0)
-	{
-		if ((flag == 1 && opt->dot) || opt->type == 'u')
-			sw = opt->prcs;
-		if (len > sw && opt->type != 'u' && opt->type != 'x' && opt->type != 'X')
-			len = sw;
-		if (str[0] == '-' && opt->type == 'd')
-		{
-			write_and_plus("-", ret, 1);
-			opt->neg = 1;
-		}
-		flag_switch_fuction(ret, opt, len, i);
-		ft_print_string(str, ret, opt);
+		write(1, "(null)", 6);
+		*ret += 6;
 	}
 }

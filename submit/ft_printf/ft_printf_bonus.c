@@ -55,15 +55,15 @@ static char	*read_width_and_precision(const char *format, t_option *opt)
 static char	*read_type(const char *format, va_list ap, int *ret, t_option *opt)
 {
 	if (*format == 'c' || *format == 's')
-		format = print_cs(format, ap, ret, opt);
+		format = type_cs(format, ap, ret, opt);
 	else if (*format == 'p' || *format == '%')
-		format = print_p(format, ap, ret, opt);
+		format = type_p(format, ap, ret, opt);
 	else if (*format == 'd' || *format == 'i')
-		format = print_int(format, ap, ret, opt);
+		format = type_int(format, ap, ret, opt);
 	else if (*format == 'u')
-		format = print_uint(format, ap, ret, opt);
+		format = type_uint(format, ap, ret, opt);
 	else if (*format == 'x' || *format == 'X')
-		format = print_hex(format, ap, ret, opt);
+		format = type_hex(format, ap, ret, opt);
 	if (format == NULL)
 		return (NULL);
 	return ((char *)format);
@@ -82,7 +82,7 @@ static int	read_format(const char *format, va_list ap, int *ret, t_option *opt)
 			format = read_type(format, ap, ret, opt);
 		}
 		else
-			write_and_plus((char *)format, ret, 1);
+			print_stdin((char *)format, ret, 1);
 		if (format == NULL)
 			return (1);
 		format++;

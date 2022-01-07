@@ -8,7 +8,7 @@ LIBFT_OBJECT=libft/ft_atoi.o libft/ft_bzero.o libft/ft_calloc.o libft/ft_isalnum
 
 NAME=libftprintf.a
 SOURCE=ft_printf.c print_format.c ft_printf_utils.c
-SOURCE_BONUS=ft_printf_bonus.c print_format_bonus.c print_flag_bonus.c print_write_bonus.c ft_printf_utils_bonus.c 
+SOURCE_BONUS=ft_printf_bonus.c ft_printf_utils_bonus.c type_bonus.c string_bonus.c option_bonus.c
 OBJECT=$(SOURCE:.c=.o)
 OBJECT_BONUS=$(SOURCE_BONUS:.c=.o)
 

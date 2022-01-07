@@ -94,31 +94,3 @@ char	*add_prefix(char **str, int flag)
 	}
 	return (new_str);
 }
-
-int	ft_print_string(char *str, int *ret, t_option *opt)
-{
-	int	i;
-
-	i = 0;
-	if (opt->dot && opt->type == 's' && opt->prcs == 0)
-		return (i);
-	else if (opt->dot && (opt->type == 'd' || opt->type == 's'))
-	{
-		if (str[i] == '-' && opt->type == 'd')
-			str++;
-		while (i < opt->prcs && str[i] != '\0')
-			write_and_plus(&str[i++], ret, 1);
-	}
-	else if (opt->type != 'c')
-	{
-		while (str[i] != '\0')
-		{
-			if (!(str[i] == '-' && opt->type == 'd'))
-				write_and_plus(&str[i], ret, 1);
-			i++;
-		}
-	}
-	else
-		write(1, &str[i++], 1);
-	return (i);
-}
