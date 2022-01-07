@@ -28,6 +28,7 @@ $(NAME) : $(OBJ)
 all : $(NAME)
 
 bonus : 
+	@$(MAKE) fclean
 	@$(MAKE) WITH_BONUS=1 all
 
 clean :
