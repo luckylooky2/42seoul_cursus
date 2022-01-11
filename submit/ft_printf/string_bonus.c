@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/11 13:35:29 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/11 13:35:32 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/11 13:48:36 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/11 13:48:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,12 +58,18 @@ void	from_front(char *str, int *ret, t_option *opt, int flag)
 void	from_back(char *str, int *ret, t_option *opt, int flag)
 {
 	int	i;
+	int	swtch;
+	int	len;
 
 	i = 0;
+	swtch = opt->width;
+	len = (int)ft_strlen(str);
+	if (str[0] == '-' && opt->type == 'd')
+		len--;
 	if ((flag == 1 && opt->dot) || opt->type == 'u')
-		sw = opt->prcs;
-	if (len > sw && opt->type != 'u' && opt->type != 'x' && opt->type != 'X')
-		len = sw;
+		swtch = opt->prcs;
+	if (len > swtch && opt->type != 'u' && opt->type != 'x' && opt->type != 'X')
+		len = swtch;
 	if (str[0] == '-' && opt->type == 'd')
 	{
 		print_stdin("-", ret, 1);
@@ -76,9 +82,7 @@ void	from_back(char *str, int *ret, t_option *opt, int flag)
 void	print_string_with_option(char *str, int *ret, t_option *opt, int flag)
 {
 	int	len;
-	int	sw;
 
-	sw = opt->width;
 	len = (int)ft_strlen(str);
 	if (str[0] == '-' && opt->type == 'd')
 		len--;
