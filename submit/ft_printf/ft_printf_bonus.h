@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 18:45:17 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/07 18:45:22 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/11 13:35:19 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/11 13:35:22 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,8 @@ int		print_padding(int *ret, t_option *opt, int len, int i);
 void	print_base(int *ret, t_option *opt);
 void	print_stdin(char *sg_char, int *ret, int flag);
 int		print_string(char *str, int *ret, t_option *opt);
+void	from_front(char *str, int *ret, t_option *opt, int flag);
+void	from_back(char *str, int *ret, t_option *opt, int flag);
 void	print_string_with_option(char *str, int *ret, t_option *opt, int flag);
 void	switch_fuction(int *ret, t_option *opt, int len, int i);
 void	*ft_memset(void *s, int c, size_t n);

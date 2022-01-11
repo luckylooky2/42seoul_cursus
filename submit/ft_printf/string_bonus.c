@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   string_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 18:46:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/07 18:46:24 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/11 13:35:29 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/11 13:35:32 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,13 +40,44 @@ int	print_string(char *str, int *ret, t_option *opt)
 	return (i);
 }
 
-void	print_string_with_option(char *str, int *ret, t_option *opt, int flag)
+void	from_front(char *str, int *ret, t_option *opt, int flag)
 {
 	int	i;
+
+	i = 0;
+	i = print_sign(ret, opt, i);
+	if (str[0] == '-' && opt->type == 'd')
+	{
+		print_stdin("-", ret, 1);
+		opt->neg = 1;
+	}
+	i = print_string(str, ret, opt);
+	print_padding(ret, opt, 0, i);
+}
+
+void	from_back(char *str, int *ret, t_option *opt, int flag)
+{
+	int	i;
+
+	i = 0;
+	if ((flag == 1 && opt->dot) || opt->type == 'u')
+		sw = opt->prcs;
+	if (len > sw && opt->type != 'u' && opt->type != 'x' && opt->type != 'X')
+		len = sw;
+	if (str[0] == '-' && opt->type == 'd')
+	{
+		print_stdin("-", ret, 1);
+		opt->neg = 1;
+	}
+	switch_fuction(ret, opt, len, i);
+	print_string(str, ret, opt);
+}
+
+void	print_string_with_option(char *str, int *ret, t_option *opt, int flag)
+{
 	int	len;
 	int	sw;
 
-	i = 0;
 	sw = opt->width;
 	len = (int)ft_strlen(str);
 	if (str[0] == '-' && opt->type == 'd')
@@ -59,30 +90,9 @@ void	print_string_with_option(char *str, int *ret, t_option *opt, int flag)
 		print_string(str, ret, opt);
 	}
 	else if (opt->f_minus)
-	{
-		i = print_sign(ret, opt, i);
-		if (str[0] == '-' && opt->type == 'd')
-		{
-			print_stdin("-", ret, 1);
-			opt->neg = 1;
-		}
-		i = print_string(str, ret, opt);
-		print_padding(ret, opt, 0, i);
-	}
+		from_front(str, ret, opt, flag);
 	else if (opt->f_minus == 0)
-	{
-		if ((flag == 1 && opt->dot) || opt->type == 'u')
-			sw = opt->prcs;
-		if (len > sw && opt->type != 'u' && opt->type != 'x' && opt->type != 'X')
-			len = sw;
-		if (str[0] == '-' && opt->type == 'd')
-		{
-			print_stdin("-", ret, 1);
-			opt->neg = 1;
-		}
-		switch_fuction(ret, opt, len, i);
-		print_string(str, ret, opt);
-	}
+		from_back(str, ret, opt, flag);
 }
 
 void	switch_fuction(int *ret, t_option *opt, int len, int i)
