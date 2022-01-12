@@ -86,11 +86,11 @@ char	*type_unsigned_int(const char *format, va_list ap, int *ret)
 
 char	*type_hex(const char *format, va_list ap, int *ret)
 {
-	unsigned long long	hex;
-	char				*hex_ptr;
-	int					len;
+	unsigned int	hex;
+	char			*hex_ptr;
+	int				len;
 
-	hex = va_arg(ap, unsigned long long);
+	hex = va_arg(ap, unsigned int);
 	if (*(format + 1) == 'x')
 		hex_ptr = make_hex_string(hex, 0);
 	else if (*(format + 1) == 'X')
