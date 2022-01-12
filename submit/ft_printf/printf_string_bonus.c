@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   string_bonus.c                                     :+:      :+:    :+:   */
+/*   printf_string_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/11 13:48:36 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/11 13:48:39 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 11:11:20 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 11:11:26 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "printf_bonus.h"
 
 int	print_string(char *str, int *ret, t_option *opt)
 {

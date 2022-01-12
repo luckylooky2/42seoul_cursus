@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_bonus.h                                  :+:      :+:    :+:   */
+/*   printf_bonus.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/11 13:35:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/11 13:35:22 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 11:10:53 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 11:11:07 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef FT_PRINTF_BONUS_H
-# define FT_PRINTF_BONUS_H
+#ifndef PRINTF_BONUS_H
+# define PRINTF_BONUS_H
 
 # include <stdarg.h>
 # include <stdlib.h>

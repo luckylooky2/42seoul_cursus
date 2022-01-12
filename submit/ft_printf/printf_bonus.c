@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_printf_bonus.c                                  :+:      :+:    :+:   */
+/*   printf_bonus.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 18:45:05 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/07 18:45:10 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 11:10:41 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 11:10:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "printf_bonus.h"
 
 static char	*read_flag(const char *format, t_option *opt)
 {

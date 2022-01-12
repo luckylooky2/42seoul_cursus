@@ -1,25 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   print_format.c                                     :+:      :+:    :+:   */
+/*   ft_printf_type.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/12/22 13:07:58 by chanhyle          #+#    #+#             */
-/*   Updated: 2021/12/23 20:54:20 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 11:14:20 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 11:14:25 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_printf.h"
 
-char	*print_char_or_str(const char *format, va_list ap, int *ret)
+char	*type_char_or_str(const char *format, va_list ap, int *ret)
 {
 	char	ch;
 	char	*str_ptr;
 
 	if (*(format + 1) == 'c')
 	{
-		ch = (char)va_arg(ap, int);
+		ch = (unsigned char)va_arg(ap, int);
 		write(1, &ch, 1);
 		(*ret)++;
 	}
@@ -30,21 +30,21 @@ char	*print_char_or_str(const char *format, va_list ap, int *ret)
 		{
 			write(1, "(null)", 6);
 			*ret += 6;
-			return ((char *)(format + 1));
 		}
-		print_string(str_ptr, ret);
+		else
+			print_string(str_ptr, ret);
 	}
 	return ((char *)(format + 1));
 }
 
-char	*print_address_or_percent(const char *format, va_list ap, int *ret)
+char	*type_address_or_percent(const char *format, va_list ap, int *ret)
 {
 	unsigned long long	addr;
 	char				*addr_ptr;
 
 	if (*(format + 1) == 'p')
 	{
-		addr = va_arg(ap, long long);
+		addr = va_arg(ap, unsigned long long);
 		addr_ptr = make_hex_string(addr, 0);
 		addr_ptr = add_prefix(&addr_ptr, 0);
 		if (addr_ptr == NULL)
@@ -60,7 +60,7 @@ char	*print_address_or_percent(const char *format, va_list ap, int *ret)
 	return ((char *)(format + 1));
 }
 
-char	*print_signed_int(const char *format, va_list ap, int *ret)
+char	*type_signed_int(const char *format, va_list ap, int *ret)
 {
 	char	*int_ptr;
 
@@ -72,11 +72,11 @@ char	*print_signed_int(const char *format, va_list ap, int *ret)
 	return ((char *)(format + 1));
 }
 
-char	*print_unsigned_int(const char *format, va_list ap, int *ret)
+char	*type_unsigned_int(const char *format, va_list ap, int *ret)
 {
 	char	*uint_ptr;
 
-	uint_ptr = make_uint_string(va_arg(ap, int));
+	uint_ptr = make_uint_string(va_arg(ap, unsigned int));
 	if (uint_ptr == NULL)
 		return (NULL);
 	print_string(uint_ptr, ret);
@@ -84,13 +84,13 @@ char	*print_unsigned_int(const char *format, va_list ap, int *ret)
 	return ((char *)(format + 1));
 }
 
-char	*print_hex(const char *format, va_list ap, int *ret)
+char	*type_hex(const char *format, va_list ap, int *ret)
 {
-	unsigned int	hex;
-	char			*hex_ptr;
-	int				len;
+	unsigned long long	hex;
+	char				*hex_ptr;
+	int					len;
 
-	hex = va_arg(ap, int);
+	hex = va_arg(ap, unsigned long long);
 	if (*(format + 1) == 'x')
 		hex_ptr = make_hex_string(hex, 0);
 	else if (*(format + 1) == 'X')

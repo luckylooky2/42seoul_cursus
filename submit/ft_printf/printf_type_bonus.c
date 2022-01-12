@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   type_bonus.c                                       :+:      :+:    :+:   */
+/*   printf_type_bonus.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 18:46:31 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/07 18:46:33 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 11:11:29 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 11:11:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "printf_bonus.h"
 
 char	*type_cs(const char *format, va_list ap, int *ret, t_option *opt)
 {

@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   option_bonus.c                                     :+:      :+:    :+:   */
+/*   printf_option_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/07 18:46:04 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/07 18:46:07 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 11:11:11 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 11:11:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "ft_printf_bonus.h"
+#include "printf_bonus.h"
 
 int	print_sign(int *ret, t_option *opt, int i)
 {
