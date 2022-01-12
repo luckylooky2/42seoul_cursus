@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/01/12 11:10:41 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/01/12 11:10:49 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/01/12 12:41:41 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/01/12 12:41:43 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,18 +106,3 @@ int	ft_printf(const char *format, ...)
 	else
 		return (ret);
 }
-
-// #include <limits.h>
-// #include <stdio.h>
-// int main()
-// {
-// 	// int a = 12334;
-// 	// ft_printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
-// 	// printf("%-1.12s\n%-15.3s\n", "Hello, world!", "12345");
-
-// 	printf("%d\n", ft_printf(" %#X ", -1));
-// 	printf("%d\n", printf(" %#X ", -1));
-
-// // 	ft_printf("%2.12s\n", "12345");
-// // 	printf("%2.12s\n", "12345");
-// }
