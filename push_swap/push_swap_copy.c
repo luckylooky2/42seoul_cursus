@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "push_swap.h"
-#include <stdio.h>
 
 void *ft_calloc(size_t nmemb, size_t size)
 {
@@ -570,7 +569,7 @@ int find_index(t_node **stack_b, int num, int flag)
 		cnt++;
 		curr = curr->left;
 	}
-	if (flag == 1)
+	if (flag == 0)
 		return (big);
 	return (small);
 }
@@ -623,39 +622,21 @@ int check_sorted(t_node **stack, int num)
 	return (0);
 }
 
-void init_aux(t_aux *aux)
-{
-	aux->pa_cnt = 0;
-	aux->pb_cnt = 0;
-	aux->ra_cnt = 0;
-	aux->rb_cnt = 0;
-	aux->sorted_cnt = 0;
-	aux->big = 0;
-	aux->small = 0;
-}
-
-int set_pivot(t_node **stack_a, t_node **stack_b, int num, int flag)
-{
-	int max;
-	int min;
-
-	max = find_index(stack_b, num, 1);
-	min = find_index(stack_b, num, 0);
-	if (flag == 1)
-		return (min + (max - min) * 0.75);
-	else
-		return (min + (max - min) * 0.5);
-}
-
 void move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc) // stack_a -> stack_b
 {
 	int cnt;
-	t_aux aux;
+	int pa_cnt;
+	int ra_cnt;
+	int rb_cnt;
+	int sorted_cnt;
 
 	cnt = 0;
-	init_aux(&aux);
-	aux.big = set_pivot(stack_a, stack_b, num, 1);
-	aux.small = set_pivot(stack_a, stack_b, num, 0);
+	pa_cnt = 0;
+	ra_cnt = 0;
+	rb_cnt = 0;
+	sorted_cnt = 0;
+	int big = find_index(stack_b, num, 1) + (find_index(stack_b, num, 0) - find_index(stack_b, num, 1)) * 0.75;
+	int small = find_index(stack_b, num, 1) + (find_index(stack_b, num, 0) - find_index(stack_b, num, 1)) * 0.5;
 	if (num == 0)
 		return;
 	if (num == 1)
@@ -670,94 +651,107 @@ void move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc) // stack
 	}
 	while (cnt < num)
 	{
-		if ((*stack_b)->left->idx >= aux.small)
+		if ((*stack_b)->left->idx >= small)
 		{
 			push_a(stack_a, stack_b, 0); // 나중에 인자로 줘서 줄 절약할 것
-			(aux.pa_cnt)++;
+			pa_cnt++;
 			if (check_sorted(stack_a, num) == 1) // 제대로 정렬되어 있는지 체크
-				(aux.sorted_cnt)++;
+				sorted_cnt++;
 			else
 			{
-				if ((*stack_a)->left->idx < aux.big)
+				if ((*stack_a)->left->idx < big)
 				{
 					rotate_a(stack_a, 0);
-					(aux.ra_cnt)++;
+					ra_cnt++;
 				}
 			}
 		}
 		else
 		{
 			rotate_b(stack_b, 0);
-			(aux.rb_cnt)++;
+			rb_cnt++;
 		}
 		cnt++;
 	}
-	move_a_to_b(stack_a, stack_b, aux.pa_cnt - aux.ra_cnt - aux.sorted_cnt, argc);
-	aux.sorted_cnt = 0;
+	move_a_to_b(stack_a, stack_b, pa_cnt - ra_cnt - sorted_cnt, argc);
+	sorted_cnt = 0;
 	cnt = -1;
-	while (++cnt < aux.ra_cnt)
+	if (ra_cnt > rb_cnt)
 	{
-		reverse_rotate_r(stack_a, stack_b, 0);
-		if (check_sorted(stack_a, num) == 1)
-			(aux.sorted_cnt)++;
+		while (++cnt < rb_cnt)
+		{
+			reverse_rotate_r(stack_a, stack_b, 0);
+			if (check_sorted(stack_a, num) == 1)
+				sorted_cnt++;
+		}
+		while (cnt++ < ra_cnt)
+			reverse_rotate_a(stack_a, 0);
 	}
-	while (cnt++ < aux.rb_cnt)
-		reverse_rotate_b(stack_b, 0);
-	move_a_to_b(stack_a, stack_b, aux.ra_cnt - aux.sorted_cnt, argc);
-	move_b_to_a(stack_a, stack_b, aux.rb_cnt, argc);
+	else
+	{
+		while (++cnt < ra_cnt)
+		{
+			reverse_rotate_r(stack_a, stack_b, 0);
+			if (check_sorted(stack_a, num) == 1)
+				sorted_cnt++;
+		}
+		while (cnt++ < rb_cnt)
+			reverse_rotate_b(stack_b, 0);
+	}
+	move_a_to_b(stack_a, stack_b, ra_cnt - sorted_cnt, argc);
+	move_b_to_a(stack_a, stack_b, rb_cnt, argc);
 }
 
-void move_a_to_b(t_node **stack_a, t_node **stack_b, int num, int argc) // stack_a -> stack_b
+void move_a_to_b(t_node **stack_a, t_node **stack_b, int num, t_aux *aux) // stack_a -> stack_b
 {
 	int cnt;
-	t_aux aux;
 
 	cnt = 0;
-	init_aux(&aux);
-	aux.big = (argc - num) + (num * 0.55);
-	aux.small = (argc - num) + (num * 0.4);
-	if (num <= 3)
+	aux->num = num;
+	aux->big = ((aux->argc - aux->num) + (aux->num * 0.55));
+	aux->small = ((aux->argc - aux->num) + (aux->num * 0.4));
+	if (aux->num <= 3)
 	{
-		sort_three_items(stack_a, stack_b, num);
+		sort_three_items(stack_a, stack_b, aux->num);
 		return;
 	}
-	while (cnt < num)
+	while (cnt < aux->num)
 	{
-		if ((*stack_a)->left->idx < aux.big)
+		if ((*stack_a)->left->idx < aux->big)
 		{
 			push_b(stack_a, stack_b, 0); // 나중에 인자로 줘서 줄 절약할 것
-			(aux.pb_cnt)++;
-			if ((*stack_b)->left->idx >= aux.small)
+			(aux->pb_cnt)++;
+			if ((*stack_b)->left->idx >= aux->small)
 			{
 				rotate_b(stack_b, 0);
-				(aux.rb_cnt)++;
+				(aux->rb_cnt)++;
 			}
 		}
 		else
 		{
 			rotate_a(stack_a, 0);
-			(aux.ra_cnt)++;
+			(aux->ra_cnt)++;
 		}
 		cnt++;
 	}
 	cnt = -1;
-	while (++cnt < aux.rb_cnt)
+	while (++cnt < aux->rb_cnt)
 		reverse_rotate_b(stack_b, 0);
-	move_a_to_b(stack_a, stack_b, aux.ra_cnt, argc);
-	move_b_to_a(stack_a, stack_b, aux.rb_cnt, argc);
-	move_b_to_a(stack_a, stack_b, aux.pb_cnt - aux.rb_cnt, argc);
+	move_a_to_b(stack_a, stack_b, aux->ra_cnt, aux);
+	move_b_to_a(stack_a, stack_b, aux->rb_cnt, aux);
+	move_b_to_a(stack_a, stack_b, aux->pb_cnt - aux->rb_cnt, aux);
 }
 
-t_node *sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc) // argc - 1 : 인자 개수만큼 들어옴
+t_node *sort_stack_a(t_node *stack_a, t_node *stack_b, t_aux *aux) // argc - 1 : 인자 개수만큼 들어옴
 {
-	if (num == 3)
+	if (aux->num == 3)
 		sort_only_three_items(&stack_a);
 	// else if (num == 4)
 	// 	sort_only_four_items(&stack_a);
-	else if (num == 5)
+	else if (aux->num == 5)
 		sort_only_five_items(&stack_a, &stack_b);
 	else
-		move_a_to_b(&stack_a, &stack_b, num, argc);
+		move_a_to_b(&stack_a, &stack_b, aux->argc, aux);
 	return (stack_a);
 }
 
@@ -974,13 +968,29 @@ t_node *fill_stack_a(int argc, char *argv[]) // input으로 stack_a 채우기
 	return (head);
 }
 
+t_aux init_aux(t_aux aux, int argc)
+{
+	aux.argc = argc - 1;
+	aux.num = 0;
+	aux.pa_cnt = 0;
+	aux.pb_cnt = 0;
+	aux.ra_cnt = 0;
+	aux.rb_cnt = 0;
+	aux.sorted_cnt = 0;
+	aux.big = 0;
+	aux.small = 0;
+	return (aux);
+}
+
 int main(int argc, char *argv[]) // argc : 1번부터, argc - 1(num): 들어온 인자 개수
 {
 	t_node *stack_a;
 	t_node *stack_b;
+	t_aux aux;
 
 	stack_a = NULL;
 	stack_b = NULL;
+	aux = init_aux(aux, argc);
 	if (argc < 2)
 		return (-1);
 	if (check_input(argc, argv) == -1 || check_repeat(argc, argv) == -1)
@@ -991,7 +1001,7 @@ int main(int argc, char *argv[]) // argc : 1번부터, argc - 1(num): 들어온 
 	stack_a = fill_stack_a(argc, argv);
 	if (stack_a == NULL)
 		exit(-2);
-	stack_a = sort_stack_a(stack_a, stack_b, argc - 1, argc - 1); //인자 개수만큼 넘겨 줌
+	stack_a = sort_stack_a(stack_a, stack_b, &aux); //인자 개수만큼 넘겨 줌
 	free_linked_list(&stack_a, argc - 1);
 	return (0);
 }
