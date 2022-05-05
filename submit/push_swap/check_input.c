@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:23:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 18:44:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 21:49:12 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,8 @@ char	**parse_input(char *argv[])
 	while (argv[cnt])
 	{
 		str = ft_strjoin(&str, argv[cnt]);
-		// if (str == NULL)
-		// {
-		// 	//free
-		// }
+		if (str == NULL)
+			return (NULL);
 		if (check_blank(argv[cnt]) == 1)
 		{
 			free(str);

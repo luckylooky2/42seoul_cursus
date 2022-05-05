@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:51:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 16:13:06 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 21:46:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,10 @@ char	*ft_strjoin(char **s1, char *s2)
 	s2_len = ft_strlen(s2);
 	new_str = (char *)malloc(sizeof(char) * (s1_len + s2_len + 2));
 	if (!new_str)
+	{
+		free(*s1);
 		return (NULL);
+	}
 	if (s1_len != 0)
 		new_str = fill_with_s1(s1, new_str, &index);
 	if (s2_len != 0)

@@ -6,13 +6,12 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 09:04:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 18:16:47 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 22:41:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef PUSH_SWAP_H
 # define PUSH_SWAP_H
-
 # include <unistd.h>
 # include <stdlib.h>
 
@@ -78,9 +77,13 @@ void		init_aux(t_aux *aux);
 void		init_count(t_aux *aux);
 int			set_pivot(t_node **stack, int num, int flag);
 void		free_linked_list(t_node **head, int cnt);
+t_node		*free_if_failed(t_node **head, int cnt);
+t_node		*create_new_node(int content);
+t_node		*push_front(t_node *head, t_node *tail, t_node *new);
+void		make_new_index(t_node **head, int argc);
 
-void		move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc);
 void		move_a_to_b(t_node **stack_a, t_node **stack_b, int num, int argc);
+void		move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc);
 t_node		*sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc);
 t_node		*fill_stack_a(int argc, char *argv[]);
 
