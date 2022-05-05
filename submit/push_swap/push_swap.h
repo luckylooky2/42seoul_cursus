@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 09:04:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 22:41:20 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 22:45:59 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,11 +66,12 @@ long long	ft_atoll(const char *nptr);
 size_t		ft_strlen(const char *s);
 char		**ft_split(char const *s, char c);
 char		*ft_strjoin(char **s1, char *s2);
-int			find_index(t_node **stack_b, int num, int flag);
+
 int			check_sorted(t_node **stack, int num);
 int			check_input(int argc, char *argv[]);
 int			check_repeat(int argc, char *argv[]);
 int			check_blank(char *str);
+int			find_index(t_node **stack_b, int num, int flag);
 char		**parse_input(char *argv[]);
 int			count_argc(char *argv[]);
 void		init_aux(t_aux *aux);
