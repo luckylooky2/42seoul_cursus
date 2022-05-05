@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:42:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 16:15:06 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 18:44:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,12 @@
 // 해야 할 것
 // 1. malloc 실패할 때, argv free
 // 2. 마지막 argv free
+// 3. header file prototype 체크
 
 int	main(int argc, char *argv[])
 {
 	t_node	*stack_a;
 	t_node	*stack_b;
-	char	*str;
 
 	stack_a = NULL;
 	stack_b = NULL;

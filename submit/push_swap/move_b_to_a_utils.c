@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 23:54:14 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 09:29:06 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 16:39:33 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,13 +64,13 @@ int	check_sorted(t_node **stack, int num)
 	return (0);
 }
 
-int	set_pivot(t_node **stack_a, t_node **stack_b, int num, int flag)
+int	set_pivot(t_node **stack, int num, int flag)
 {
 	int	max;
 	int	min;
 
-	max = find_index(stack_b, num, 1);
-	min = find_index(stack_b, num, 0);
+	max = find_index(stack, num, 1);
+	min = find_index(stack, num, 0);
 	if (flag == 1)
 		return (min + (max - min) * 0.75);
 	else

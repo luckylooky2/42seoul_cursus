@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 23:56:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 00:35:23 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 16:39:50 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,8 +61,8 @@ void	move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc)
 	t_aux	aux;
 
 	init_aux(&aux);
-	aux.big = set_pivot(stack_a, stack_b, num, 1);
-	aux.small = set_pivot(stack_a, stack_b, num, 0);
+	aux.big = set_pivot(stack_b, num, 1);
+	aux.small = set_pivot(stack_b, num, 0);
 	if (num == 0)
 		return ;
 	else if (num == 1)

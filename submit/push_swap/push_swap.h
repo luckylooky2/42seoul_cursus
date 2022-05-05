@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 09:04:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 16:21:37 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 18:16:47 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,11 +71,12 @@ int			find_index(t_node **stack_b, int num, int flag);
 int			check_sorted(t_node **stack, int num);
 int			check_input(int argc, char *argv[]);
 int			check_repeat(int argc, char *argv[]);
+int			check_blank(char *str);
 char		**parse_input(char *argv[]);
 int			count_argc(char *argv[]);
 void		init_aux(t_aux *aux);
 void		init_count(t_aux *aux);
-int			set_pivot(t_node **stack_a, t_node **stack_b, int num, int flag);
+int			set_pivot(t_node **stack, int num, int flag);
 void		free_linked_list(t_node **head, int cnt);
 
 void		move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc);

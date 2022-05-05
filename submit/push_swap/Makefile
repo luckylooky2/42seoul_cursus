@@ -26,10 +26,10 @@ endif
 
 $(NAME) : $(OBJ)
 	$(AR) $(ARFLAGS) $(LIB) $(OBJECT)
-	$(CC) -L. -l$(NAME) $(MAIN) -o $(NAME)
+	$(CC) $(CFLAGS) -L. -l$(NAME) $(MAIN) -o $(NAME)
 
 %.o : %.c
-	$(CC) -c $< -o $@
+	$(CC) $(CFLAGS) -c $< -o $@
 
 all : $(NAME)
 

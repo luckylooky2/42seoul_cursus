@@ -6,13 +6,13 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 00:17:17 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 00:35:38 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/05 16:41:15 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	reverse(t_node **stack_a, t_node **stack_b, int num, t_aux *aux)
+static void	reverse(t_node **stack_b, t_aux *aux)
 {
 	while (aux->cnt < aux->rb)
 	{
@@ -57,7 +57,7 @@ void	move_a_to_b(t_node **stack_a, t_node **stack_b, int num, int argc)
 	{
 		sort_main(stack_a, stack_b, num, &aux);
 		init_count(&aux);
-		reverse(stack_a, stack_b, num, &aux);
+		reverse(stack_b, &aux);
 		move_a_to_b(stack_a, stack_b, aux.ra, argc);
 		move_b_to_a(stack_a, stack_b, aux.rb, argc);
 		move_b_to_a(stack_a, stack_b, aux.pb - aux.rb, argc);
