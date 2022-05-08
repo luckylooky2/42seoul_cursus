@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:42:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/09 00:23:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/09 00:45:54 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static	int	check_error(int argc, char *argv[], char **new_argv)
 	if (argv[1] == NULL || check_input(argc, new_argv) == -1
 		|| check_repeat(argc, new_argv) == -1)
 	{
-		write(1, "Error\n", 6);
+		write(2, "Error\n", 6);
 		return (1);
 	}
 	return (0);

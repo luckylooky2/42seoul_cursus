@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   push_swap.h                                        :+:      :+:    :+:   */
+/*   push_swap_bonus.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 09:04:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/09 00:49:50 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/09 00:54:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PUSH_SWAP_H
-# define PUSH_SWAP_H
+#ifndef PUSH_SWAP_BONUS_H
+# define PUSH_SWAP_BONUS_H
 # include <unistd.h>
 # include <stdlib.h>
 
@@ -88,5 +88,9 @@ void		move_a_to_b(t_node **stack_a, t_node **stack_b, int num, int argc);
 void		move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc);
 t_node		*sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc);
 t_node		*fill_stack_a(int argc, char *argv[]);
+
+void		apply_command(t_node **stack_a, t_node **stack_b, char *cmd);
+void		print_result(t_node **stack_a, t_node **stack_b, int argc);
+void		check_command(t_node **stack_a, t_node **stack_b);
 
 #endif

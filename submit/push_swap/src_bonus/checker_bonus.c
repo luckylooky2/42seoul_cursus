@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checker.c                                          :+:      :+:    :+:   */
+/*   checker_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 12:37:55 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/09 00:13:17 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/09 00:54:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/get_next_line.h"
-#include "../include/push_swap.h"
+#include "../include/get_next_line_bonus.h"
+#include "../include/push_swap_bonus.h"
 
 void	apply_command(t_node **stack_a, t_node **stack_b, char *cmd)
 {
@@ -73,7 +73,7 @@ static	int	check_error(int argc, char *argv[], char **new_argv)
 	if (argv[1] == NULL || check_input(argc, new_argv) == -1
 		|| check_repeat(argc, new_argv) == -1)
 	{
-		write(1, "Error\n", 6);
+		write(2, "Error\n", 6);
 		return (1);
 	}
 	return (0);
