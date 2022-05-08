@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:42:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 15:51:54 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 23:41:28 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,10 @@ int	main(int argc, char *argv[])
 		exit(-2);
 	argc = count_argc(new_argv);
 	if (check_error(argc, argv, new_argv) == 1)
+	{
+		new_argv = free_new_argv(new_argv);
 		exit(-3);
+	}
 	stack_a = fill_stack_a(argc, new_argv);
 	new_argv = free_new_argv(new_argv);
 	if (stack_a == NULL)
