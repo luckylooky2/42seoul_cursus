@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:10:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/07 23:52:03 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:32 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static char	**ft_free(char **str)
 {

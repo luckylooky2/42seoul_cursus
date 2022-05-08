@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:48:24 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/03 21:53:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:28 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 t_node	*free_if_failed(t_node **head, int cnt)
 {

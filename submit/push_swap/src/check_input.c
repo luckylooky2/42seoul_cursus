@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:23:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/07 23:51:59 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:53:34 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 int	check_input(int argc, char *argv[])
 {

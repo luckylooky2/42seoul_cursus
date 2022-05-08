@@ -6,12 +6,12 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 12:37:55 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 00:38:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:52:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
-#include "push_swap.h"
+#include "../include/get_next_line.h"
+#include "../include/push_swap.h"
 
 void	apply_command(t_node **stack_a, t_node **stack_b, char *cmd)
 {

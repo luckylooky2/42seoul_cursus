@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 00:17:17 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 16:41:15 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:40 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static void	reverse(t_node **stack_b, t_aux *aux)
 {

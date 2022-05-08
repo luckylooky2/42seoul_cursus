@@ -1,31 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   init_struct.c                                      :+:      :+:    :+:   */
+/*   cmd_swap_s.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/05/05 10:09:01 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 10:09:32 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/05/04 19:03:44 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/05/08 15:51:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
-void	init_count(t_aux *aux)
+void	swap_s(t_node **stack_a, t_node **stack_b, int flag)
 {
-	aux->cnt = 0;
-	aux->sorted = 0;
-}
-
-void	init_aux(t_aux *aux)
-{
-	aux->cnt = 0;
-	aux->pa = 0;
-	aux->pb = 0;
-	aux->ra = 0;
-	aux->rb = 0;
-	aux->sorted = 0;
-	aux->big = 0;
-	aux->small = 0;
+	if (*stack_a == NULL || *stack_a == (*stack_a)->right
+		|| *stack_b == NULL || *stack_b == (*stack_b)->right)
+		return ;
+	if (flag == 0)
+		write(1, "ss\n", 3);
+	swap_a(stack_a, 1);
+	swap_b(stack_b, 1);
 }

@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:55:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 00:33:15 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:52:00 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 void	sort_only_three(t_node **stack_a)
 {

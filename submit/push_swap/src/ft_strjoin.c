@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:51:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 21:46:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:35 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static char	*fill_with_s1(char **s1, char *new_str, int *index)
 {

@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 00:25:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 00:48:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:52:05 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 t_node	*sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc)
 {

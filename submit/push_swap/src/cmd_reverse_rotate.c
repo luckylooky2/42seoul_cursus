@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:14:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/07 14:03:13 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:15 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 void	rotate_a(t_node **stack_a, int flag)
 {

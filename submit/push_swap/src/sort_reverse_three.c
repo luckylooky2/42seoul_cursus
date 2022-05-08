@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 19:19:16 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 00:33:53 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:52:03 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static void	is_second_small(t_node **stack_a, t_node **stack_b, t_sort ord)
 {	

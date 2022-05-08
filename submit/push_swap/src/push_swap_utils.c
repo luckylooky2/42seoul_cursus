@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:02:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 00:22:04 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:51 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {

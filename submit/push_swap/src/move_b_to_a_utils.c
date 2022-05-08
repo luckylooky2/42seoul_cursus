@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 23:54:14 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 16:39:33 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 int	find_index(t_node **stack_b, int num, int flag)
 {

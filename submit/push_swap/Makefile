@@ -6,30 +6,33 @@ RM=rm -f
 
 LIB=libpush_swap.a
 LIB_NAME=push_swap
-SOURCE=check_input.c quick_sort.c fill_stack_a.c sort_only_items.c \
-		push_swap_utils.c cmd_rotate.c cmd_reverse_rotate.c cmd_push_a.c \
-		cmd_push_b.c cmd_swap_a.c cmd_swap_b.c sort_three.c \
-		sort_reverse_three.c move_b_to_a_utils.c \
-		move_b_to_a.c move_a_to_b.c sort_stack_a.c ft_split.c \
-		init_struct.c ft_strjoin.c cmd_swap_s.c push_swap.c
-SOURCE_BONUS=get_next_line.c get_next_line_utils.c checker.c
-OBJECT=$(SOURCE:.c=.o)
-OBJECT_BONUS=$(SOURCE_BONUS:.c=.o)
+SRC_DIR=src
+SRC_BONUS_DIR=src_bonus
+SRC=$(addprefix $(SRC_DIR)/, check_input.c quick_sort.c fill_stack_a.c \
+	sort_only_items.c push_swap_utils.c cmd_rotate.c cmd_reverse_rotate.c \
+	cmd_push_a.c cmd_push_b.c cmd_swap_a.c cmd_swap_b.c sort_three.c \
+	sort_reverse_three.c move_b_to_a_utils.c \
+	move_b_to_a.c move_a_to_b.c sort_stack_a.c ft_split.c \
+	init_struct.c ft_strjoin.c cmd_swap_s.c push_swap.c)
+SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, get_next_line.c \
+	get_next_line_utils.c checker.c)
+OBJECT=$(SRC:.c=.o)
+OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 EXE=push_swap checker
-
-
 
 ifdef WITH_BONUS
 	NAME=checker
 	OBJ = $(OBJECT) $(OBJECT_BONUS)
+	DIR = $(SRC_BONUS_DIR)
 else
 	NAME=push_swap
 	OBJ = $(OBJECT)
+	DIR = $(SRC_DIR)
 endif
 
 $(NAME) : $(OBJ)
 	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
-	$(CC) $(CFLAGS) -L. -l$(LIB_NAME) $(addsuffix  .c, $(NAME)) -o $(NAME)
+	$(CC) $(CFLAGS) -L. -l$(LIB_NAME) -Iinclude $(DIR)/$(addsuffix  .c, $(NAME)) -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@

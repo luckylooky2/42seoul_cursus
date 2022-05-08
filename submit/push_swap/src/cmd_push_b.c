@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/04 00:03:38 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 16:37:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 15:51:12 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "push_swap.h"
+#include "../include/push_swap.h"
 
 static void	push_if_over_one(t_node **stack_a, t_node **stack_b)
 {
