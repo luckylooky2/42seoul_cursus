@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 09:04:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 22:45:59 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 00:38:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,7 @@ int			count_argc(char *argv[]);
 void		init_aux(t_aux *aux);
 void		init_count(t_aux *aux);
 int			set_pivot(t_node **stack, int num, int flag);
+char		**free_new_argv(char **new_argv);
 void		free_linked_list(t_node **head, int cnt);
 t_node		*free_if_failed(t_node **head, int cnt);
 t_node		*create_new_node(int content);
@@ -87,5 +88,10 @@ void		move_a_to_b(t_node **stack_a, t_node **stack_b, int num, int argc);
 void		move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc);
 t_node		*sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc);
 t_node		*fill_stack_a(int argc, char *argv[]);
+
+// bonus
+void		apply_command(t_node **stack_a, t_node **stack_b, char *cmd);
+void		print_result(t_node **stack_a, t_node **stack_b, int argc);
+void		check_command(t_node **stack_a, t_node **stack_b);
 
 #endif

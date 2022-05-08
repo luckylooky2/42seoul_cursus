@@ -6,33 +6,41 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:42:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 22:24:20 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 00:22:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+static	int	check_error(int argc, char *argv[], char **new_argv)
+{
+	if (argv[1] == NULL || check_input(argc, new_argv) == -1
+		|| check_repeat(argc, new_argv) == -1)
+	{
+		write(1, "Error\n", 6);
+		return (1);
+	}
+	return (0);
+}
+
 int	main(int argc, char *argv[])
 {
 	t_node	*stack_a;
 	t_node	*stack_b;
+	char	**new_argv;
 
 	stack_a = NULL;
 	stack_b = NULL;
 	if (argc < 2)
 		exit(-1);
-	argv = parse_input(argv);
-	if (argv == NULL)
+	new_argv = parse_input(argv);
+	if (new_argv == NULL)
 		exit(-2);
-	argc = count_argc(argv);
-	if (argv[1] == NULL
-		|| check_input(argc, argv) == -1 || check_repeat(argc, argv) == -1)
-	{
-		write(1, "Error\n", 6);
+	argc = count_argc(new_argv);
+	if (check_error(argc, argv, new_argv) == 1)
 		exit(-3);
-	}
-	stack_a = fill_stack_a(argc, argv);
-	free(argv);
+	stack_a = fill_stack_a(argc, new_argv);
+	new_argv = free_new_argv(new_argv);
 	if (stack_a == NULL)
 		exit(-4);
 	if (check_sorted(&stack_a, argc - 2) == 0)

@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:02:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 15:53:55 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/08 00:22:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,4 +84,17 @@ size_t	ft_strlen(const char *s)
 	while (s[cnt])
 		cnt++;
 	return (cnt);
+}
+
+char	**free_new_argv(char **new_argv)
+{
+	int	i;
+
+	i = 1;
+	while (new_argv[i])
+	{
+		free(new_argv[i]);
+		i++;
+	}
+	return (new_argv);
 }

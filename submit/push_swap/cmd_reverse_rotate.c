@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:14:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/03 22:15:41 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/07 14:03:13 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,10 +32,10 @@ void	rotate_b(t_node **stack_b, int flag)
 
 void	rotate_r(t_node **stack_a, t_node **stack_b, int flag)
 {
-	flag = 1;
 	if (*stack_a == NULL || *stack_b == NULL)
 		return ;
-	write(1, "rr\n", 3);
-	rotate_a(stack_a, flag);
-	rotate_b(stack_b, flag);
+	if (flag == 0)
+		write(1, "rr\n", 3);
+	rotate_a(stack_a, 1);
+	rotate_b(stack_b, 1);
 }	

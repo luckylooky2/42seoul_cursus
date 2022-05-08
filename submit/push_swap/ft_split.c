@@ -6,20 +6,20 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:10:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 10:34:25 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/07 23:52:03 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-static void	ft_free(char **str)
+static char	**ft_free(char **str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 		free(str[i++]);
-	return ;
+	return (str);
 }
 
 static char	*ft_copy(char const *str2, char const *str1, char *ptr_ary)
@@ -106,7 +106,7 @@ char	**ft_split(char const *s, char c)
 	last_str = ft_second_malloc(s, c, str, i);
 	if (last_str == NULL)
 	{
-		ft_free(str);
+		str = ft_free(str);
 		free(str);
 		return (NULL);
 	}

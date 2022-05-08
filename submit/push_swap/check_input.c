@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:23:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/05 21:49:12 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/07 23:51:59 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,11 +81,13 @@ int	check_blank(char *str)
 
 char	**parse_input(char *argv[])
 {
+	char	**new_argv;
 	char	*str;
 	int		cnt;
 
-	cnt = 1;
+	new_argv = NULL;
 	str = NULL;
+	cnt = 1;
 	while (argv[cnt])
 	{
 		str = ft_strjoin(&str, argv[cnt]);
@@ -99,9 +101,9 @@ char	**parse_input(char *argv[])
 		}
 		cnt++;
 	}
-	argv = ft_split(str, ' ');
+	new_argv = ft_split(str, ' ');
 	free(str);
-	return (argv);
+	return (new_argv);
 }
 
 int	count_argc(char *argv[])
