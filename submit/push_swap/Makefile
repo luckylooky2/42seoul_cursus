@@ -4,8 +4,7 @@ ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
-LIB=libpush_swap.a
-LIB_NAME=push_swap
+LIB=push_swap
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
 SRC=$(addprefix $(SRC_DIR)/, check_input.c quick_sort.c fill_stack_a.c \
@@ -31,8 +30,8 @@ else
 endif
 
 $(NAME) : $(OBJ)
-	$(AR) $(ARFLAGS) $(LIB) $(OBJ)
-	$(CC) $(CFLAGS) -L. -l$(LIB_NAME) -Iinclude $(DIR)/$(addsuffix  .c, $(NAME)) -o $(NAME)
+	$(AR) $(ARFLAGS) $(addprefix lib, $(addsuffix .a, $(LIB))) $(OBJ)
+	$(CC) $(CFLAGS) -L. -l$(LIB) -Iinclude $(DIR)/$(addsuffix .c, $(NAME)) -o $(NAME)
 
 %.o : %.c
 	$(CC) $(CFLAGS) -c $< -o $@
@@ -47,7 +46,7 @@ clean :
 	$(RM) $(OBJECT) $(OBJECT_BONUS)
 
 fclean : clean
-	$(RM) $(EXE) $(LIB)
+	$(RM) $(EXE) $(addprefix lib, $(addsuffix .a, $(LIB)))
 
 re : fclean all
 
