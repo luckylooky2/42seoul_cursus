@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/07 12:37:55 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 23:38:51 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/09 00:13:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,20 +88,20 @@ int	main(int argc, char *argv[])
 	stack_a = NULL;
 	stack_b = NULL;
 	if (argc < 2)
-		exit(-1);
+		exit(EXIT_FAILURE);
 	new_argv = parse_input(argv);
 	if (new_argv == NULL)
-		exit(-2);
+		exit(EXIT_FAILURE);
 	argc = count_argc(new_argv);
 	if (check_error(argc, argv, new_argv) == 1)
 	{
 		new_argv = free_new_argv(new_argv);
-		exit(-3);
+		exit(EXIT_FAILURE);
 	}
 	stack_a = fill_stack_a(argc, new_argv);
 	new_argv = free_new_argv(new_argv);
 	if (stack_a == NULL)
-		exit(-4);
+		exit(EXIT_FAILURE);
 	check_command(&stack_a, &stack_b);
 	print_result(&stack_a, &stack_b, argc);
 	free_linked_list(&stack_a, argc - 1);
