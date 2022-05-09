@@ -89,8 +89,8 @@ void		move_b_to_a(t_node **stack_a, t_node **stack_b, int num, int argc);
 t_node		*sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc);
 t_node		*fill_stack_a(int argc, char *argv[]);
 
-void		apply_command(t_node **stack_a, t_node **stack_b, char *cmd);
+int			apply_command(t_node **stack_a, t_node **stack_b, char *cmd);
 void		print_result(t_node **stack_a, t_node **stack_b, int argc);
-void		check_command(t_node **stack_a, t_node **stack_b);
+int			check_command(t_node **stack_a, t_node **stack_b);
 
 #endif

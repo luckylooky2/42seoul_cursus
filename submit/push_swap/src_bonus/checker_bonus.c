@@ -13,7 +13,7 @@
 #include "../include/get_next_line_bonus.h"
 #include "../include/push_swap_bonus.h"
 
-void	apply_command(t_node **stack_a, t_node **stack_b, char *cmd)
+int	apply_command(t_node **stack_a, t_node **stack_b, char *cmd)
 {
 	if (cmd[0] == 'p' && cmd[1] == 'a' && cmd[2] == '\n')
 		push_a(stack_a, stack_b, 1);
@@ -31,12 +31,15 @@ void	apply_command(t_node **stack_a, t_node **stack_b, char *cmd)
 		rotate_b(stack_b, 1);
 	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == '\n')
 		rotate_r(stack_a, stack_b, 1);
-	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == 'a')
+	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == 'a' && cmd[3] == '\n')
 		reverse_rotate_a(stack_a, 1);
-	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == 'b')
+	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == 'b' && cmd[3] == '\n')
 		reverse_rotate_b(stack_b, 1);
-	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == 'r')
+	else if (cmd[0] == 'r' && cmd[1] == 'r' && cmd[2] == 'r' && cmd[3] == '\n')
 		reverse_rotate_r(stack_a, stack_b, 1);
+	else
+		return (0);
+	return (1);
 }
 
 void	print_result(t_node **stack_a, t_node **stack_b, int argc)
@@ -54,7 +57,7 @@ void	print_result(t_node **stack_a, t_node **stack_b, int argc)
 		write(1, "KO\n", 3);
 }
 
-void	check_command(t_node **stack_a, t_node **stack_b)
+int	check_command(t_node **stack_a, t_node **stack_b)
 {
 	char	*cmd;
 
@@ -64,8 +67,15 @@ void	check_command(t_node **stack_a, t_node **stack_b)
 		cmd = get_next_line(0);
 		if (cmd == NULL)
 			break ;
-		apply_command(stack_a, stack_b, cmd);
+		if (apply_command(stack_a, stack_b, cmd) == 0)
+		{
+			write(2, "Error\n", 6);
+			while (*stack_b != NULL)
+				push_a(stack_a, stack_b, 1);
+			return (0);
+		}
 	}
+	return (1);
 }
 
 static	int	check_error(int argc, char *argv[], char **new_argv)
@@ -102,8 +112,8 @@ int	main(int argc, char *argv[])
 	new_argv = free_new_argv(new_argv);
 	if (stack_a == NULL)
 		exit(EXIT_FAILURE);
-	check_command(&stack_a, &stack_b);
-	print_result(&stack_a, &stack_b, argc);
+	if (check_command(&stack_a, &stack_b) == 1)
+		print_result(&stack_a, &stack_b, argc);
 	free_linked_list(&stack_a, argc - 1);
 	return (0);
 }
