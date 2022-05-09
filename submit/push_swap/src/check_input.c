@@ -12,29 +12,30 @@
 
 #include "../include/push_swap.h"
 
-int	check_input(int argc, char *argv[])
+int	check_input(int ac, char *av[])
 {
 	int	i;
 	int	j;
 
 	i = 0;
-	while (++i < argc)
+	while (++i < ac)
 	{
-		j = 0;
-		while (argv[i][j])
+		j = -1;
+		while (av[i][++j])
 		{
-			if (!(('0' <= argv[i][j] && argv[i][j] <= '9') ||
-				argv[i][j] == '+' || argv[i][j] == '-') ||
-				(('0' <= argv[i][j] && argv[i][j] <= '9') &&
-				(argv[i][j + 1] == '+' || argv[i][j + 1] == '-')) ||
-				((argv[i][j] == '+' || argv[i][j] == '-') &&
-				!('0' <= argv[i][j + 1] && argv[i][j + 1] <= '9')))
+			if (!(('0' <= av[i][j] && av[i][j] <= '9') || av[i][j] == '+' ||
+				av[i][j] == '-') || (('0' <= av[i][j] && av[i][j] <= '9') &&
+				(av[i][j + 1] == '+' || av[i][j + 1] == '-')) ||
+				((av[i][j] == '+' || av[i][j] == '-') &&
+				!('0' <= av[i][j + 1] && av[i][j + 1] <= '9')))
 				return (-1);
-			j++;
 		}
-		if (argv[i][0] == '-' && (j > 11 || ft_atoll(argv[i]) < -2147483648LL))
+		if (av[i][0] == '-' && (j > 11 || ft_atoll(av[i]) < -2147483648LL))
 			return (-1);
-		if (argv[i][0] != '-' && (j > 10 || ft_atoll(argv[i]) > 2147483647LL))
+		if (av[i][0] == '+' && (j > 11 || ft_atoll(av[i]) > 2147483647LL))
+			return (-1);
+		if ((av[i][0] != '-' && av[i][0] != '+') &&
+		(j > 10 || ft_atoll(av[i]) > 2147483647LL))
 			return (-1);
 	}
 	return (0);
