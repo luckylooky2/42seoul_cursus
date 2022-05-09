@@ -68,7 +68,7 @@ char		**ft_split(char const *s, char c);
 char		*ft_strjoin(char **s1, char *s2);
 
 int			check_sorted(t_node **stack, int num);
-int			check_input(int argc, char *argv[]);
+int			check_input(int ac, char *av[]);
 int			check_repeat(int argc, char *argv[]);
 int			check_blank(char *str);
 int			find_index(t_node **stack_b, int num, int flag);
