@@ -39,11 +39,11 @@ int	main(int argc, char *argv[])
 	argc = count_argc(new_argv);
 	if (check_error(argc, argv, new_argv) == 1)
 	{
-		new_argv = free_new_argv(new_argv);
+		free_new_argv(&new_argv);
 		exit(EXIT_FAILURE);
 	}
 	stack_a = fill_stack_a(argc, new_argv);
-	new_argv = free_new_argv(new_argv);
+	free_new_argv(&new_argv);
 	if (stack_a == NULL)
 		exit(EXIT_FAILURE);
 	if (check_sorted(&stack_a, argc - 2) == 0)

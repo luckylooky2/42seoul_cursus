@@ -72,8 +72,10 @@ int	check_command(t_node **stack_a, t_node **stack_b)
 			write(2, "Error\n", 6);
 			while (*stack_b != NULL)
 				push_a(stack_a, stack_b, 1);
+			free(cmd);
 			return (0);
 		}
+		free(cmd);
 	}
 	return (1);
 }
@@ -105,11 +107,11 @@ int	main(int argc, char *argv[])
 	argc = count_argc(new_argv);
 	if (check_error(argc, argv, new_argv) == 1)
 	{
-		new_argv = free_new_argv(new_argv);
+		free_new_argv(&new_argv);
 		exit(EXIT_FAILURE);
 	}
 	stack_a = fill_stack_a(argc, new_argv);
-	new_argv = free_new_argv(new_argv);
+	free_new_argv(&new_argv);
 	if (stack_a == NULL)
 		exit(EXIT_FAILURE);
 	if (check_command(&stack_a, &stack_b) == 1)

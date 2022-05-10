@@ -77,7 +77,7 @@ int			count_argc(char *argv[]);
 void		init_aux(t_aux *aux);
 void		init_count(t_aux *aux);
 int			set_pivot(t_node **stack, int num, int flag);
-char		**free_new_argv(char **new_argv);
+void		free_new_argv(char ***new_argv);
 void		free_linked_list(t_node **head, int cnt);
 t_node		*free_if_failed(t_node **head, int cnt);
 t_node		*create_new_node(int content);

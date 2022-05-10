@@ -86,15 +86,15 @@ size_t	ft_strlen(const char *s)
 	return (cnt);
 }
 
-char	**free_new_argv(char **new_argv)
+void	free_new_argv(char ***new_argv)
 {
 	int	i;
 
 	i = 1;
-	while (new_argv[i])
+	while ((*new_argv)[i])
 	{
-		free(new_argv[i]);
+		free((*new_argv)[i]);
 		i++;
 	}
-	return (new_argv);
+	free(*new_argv);
 }
