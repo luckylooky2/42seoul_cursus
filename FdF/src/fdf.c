@@ -6,12 +6,19 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/17 21:56:58 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/17 22:33:10 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/get_next_line.h"
+
+int	count_tmp(char **tmp)
+{
+	int i;
+
+	i = 0;
+}
 
 int	read_map(char *argv[], t_aux *aux)
 {
@@ -44,10 +51,26 @@ int	read_map(char *argv[], t_aux *aux)
 			break ;
 		aux->lines[i++] = line;
 	}
+	*(aux->data) = (t_data **)malloc(sizeof(t_data *) * line_num);
 	i = 0;
+	char **tmp;
+	int j;
+	int atoi;
+	int num;
 	while (aux->lines[i])
 	{
-		
+		j = 0;
+		num = 0;
+		tmp = ft_split(aux->lines[i], ' ');
+		num = count_tmp(tmp);
+		while (tmp[j])
+		{
+			atoi = ft_atoi(tmp[j]);
+			j++;
+		}
+		aux->col_ary[i] = num;
+		i++;
+		free_double_array(&tmp);
 	}
 	return (1);
 }
@@ -56,6 +79,7 @@ void	init_aux(t_aux	*aux)
 {
 	aux->lines = NULL;
 	aux->map = NULL;
+	aux->col_ary = NULL;
 	aux->data = NULL;
 }
 
