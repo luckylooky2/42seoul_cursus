@@ -4,10 +4,11 @@ ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
-LIB=fdf
+MLX	= libmlx.a
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
-SRC=$(addprefix $(SRC_DIR)/, fdf.c get_next_line.c get_next_line_utils.c)
+SRC=$(addprefix $(SRC_DIR)/, fdf.c read_map.c fdf_utils.c ft_split.c \
+	get_next_line.c get_next_line_utils.c count_row_col.c)
 SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/,)
 OBJECT=$(SRC:.c=.o)
 OBJECT_BONUS=$(SRC_BONUS:.c=.o)
@@ -26,11 +27,14 @@ else
 endif
 
 $(NAME) : $(OBJ)
-	$(AR) $(ARFLAGS) $(addprefix lib, $(addsuffix .a, $(LIB))) $(OBJ)
-	$(CC) $(CFLAGS) -g -L. -l$(LIB) -Iinclude $(DIR)/$(addsuffix .c, $(FILE)) -o $(NAME)
+	$(CC) -Iinclude $(OBJ) -o $(NAME)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -g -c $< -o $@
+	$(CC) -c $< -o $@
+
+$(MLX) :
+	@make -C minilibx_macos/
+	@cp minilibx_macos/$@ .
 
 all : $(NAME)
 
@@ -42,7 +46,7 @@ clean :
 	$(RM) $(OBJECT) $(OBJECT_BONUS)
 
 fclean : clean
-	$(RM) $(EXE) $(addprefix lib, $(addsuffix .a, $(LIB)))
+	$(RM) $(EXE) $(MLX)
 
 re : fclean all
 

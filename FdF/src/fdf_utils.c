@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 21:46:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/17 21:48:11 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/21 22:50:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,50 @@ int	ft_atoi(const char *nptr)
 		return ((int)longlong);
 }
 
+size_t	ft_strlen(const char *s)
+{
+	size_t	cnt;
+
+	cnt = 0;
+	while (s[cnt])
+		cnt++;
+	return (cnt);
+}
+
+void	init_aux(t_aux	*aux)
+{
+	aux->row_num = 0;
+	aux->col_num = NULL;
+	aux->axis_data = NULL;
+}
+
+void	free_aux(t_aux *aux)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < aux->row_num)
+	{
+		j = 0;
+		while (j < aux->col_num[i])
+		{
+			free(aux->axis_data[i][j]);
+			j++;
+		}
+		free(aux->axis_data[i]);
+		i++;
+	}
+	free(aux->axis_data);
+	free(aux->col_num);
+}
+
+void	free_double_array(char ***array)
+{
+	int i;
+
+	i = 0;
+	while((*array)[i])
+		free((*array)[i++]);
+	free(*array);
+}
