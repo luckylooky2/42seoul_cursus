@@ -6,11 +6,28 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 21:46:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/21 22:50:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/23 22:16:48 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
+
+void	*ft_calloc(size_t nmemb, size_t size)
+{
+	void	*new_str;
+	size_t	i;
+
+	i = 0;
+	new_str = malloc(nmemb * size);
+	if (!new_str)
+		return (NULL);
+	else
+	{
+		while (i < nmemb * size)
+			((unsigned char *)new_str)[i++] = 0;
+		return (new_str);
+	}
+}
 
 int	ft_atoi(const char *nptr)
 {
