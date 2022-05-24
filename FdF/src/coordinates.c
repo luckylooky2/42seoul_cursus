@@ -6,13 +6,12 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/25 08:03:04 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/25 08:12:11 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/get_next_line.h"
-#include <stdio.h>
 
 void	calculate_normal_vector(t_aux *aux, t_vector *vector)
 {
@@ -122,7 +121,7 @@ void	translate_coordinate(t_aux *aux)
 
 void	project_coordinate(t_aux *aux, t_vector *vector)
 {
-	aux->theta = 90 - atan(1 / sqrt(2)) / M_PI * 180;
+	aux->theta = (90 - atan(1 / sqrt(2))) / M_PI * 180;
 	aux->phi = atan(1) / M_PI * 180;
 	calculate_normal_vector(aux, vector);
 	calculate_coordinate(aux, vector);
