@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/24 19:14:56 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/24 19:39:10 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,43 @@ int	draw_dot(t_aux *aux, int count_h, int count_w)
 	return (0);
 }
 
+void Set_Pixel(int x, int y, t_img *img)
+{
+    img->data[x * 1000 + y] = 0xFFFFFF;
+}
+
+void DDA(double x1, double y1, double x2, double y2, t_img *img)
+{
+    // x, y축의 증분
+    double dx = x2 - x1;
+    double dy = y2 - y1;
+    // 총 칠해야 할 픽셀의 가로(y의 경우 세로) 길이
+    int steps;
+    // 시작점 지정
+    double x = x1, y = y1;
+
+    double x_incre, y_incre;
+
+    if(fabs(dx) > fabs(dy))
+        steps = fabs(dx);
+    else 
+        steps = fabs(dy);
+    
+    // step가 하나 증가할 때 x, y 좌표가 얼마나 증가할지 지정해준다
+    x_incre = dx / steps;
+    y_incre = dy / steps;
+
+    // 시작 좌표 x(=x1), y(=y1)을 칠해준다
+    Set_Pixel(round(x), round(y), img);
+
+    for(int i = 0; i < steps; i++){
+        x += x_incre;
+        y += y_incre;
+
+        Set_Pixel(round(x), round(y), img);
+    }
+}
+
 int	main(int argc, char *argv[])
 {
 	t_mlx		mlx;
@@ -99,6 +136,7 @@ int	main(int argc, char *argv[])
 			if (draw_dot(&aux, count_h, count_w) == 1)
 				img.data[count_h * 1000 + count_w] = 0xFFFFFF;
 	}
+	DDA(aux.axis_data[0][0][0], aux.axis_data[0][0][1], aux.axis_data[0][1][0], aux.axis_data[0][1][1], &img);
 	mlx_put_image_to_window(mlx.mlx, mlx.win, img.img_ptr, 0, 0);
 	mlx_hook(mlx.win, X_EVENT_KEY_PRESS, 0, &key_press, &mlx);
 	mlx_loop(mlx.mlx);
