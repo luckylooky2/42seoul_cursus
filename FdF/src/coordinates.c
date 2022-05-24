@@ -6,49 +6,55 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/24 19:15:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/25 08:03:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/get_next_line.h"
+#include <stdio.h>
 
-void	calculate_normal_vector(t_angle *a, t_vector *vec)
+void	calculate_normal_vector(t_aux *aux, t_vector *vector)
 {
-	a->theta = a->theta * M_PI / 180;
-	a->phi = a->phi * M_PI / 180;
-	vec->a = cos(a->phi) * sin(a->theta);
-	vec->b = sin(a->phi) * sin(a->theta);
-	vec->c = cos(a->theta);
+	aux->theta = aux->theta * M_PI / 180;
+	aux->phi = aux->phi * M_PI / 180;
+	vector->a = cos(aux->phi) * sin(aux->theta);
+	vector->b = sin(aux->phi) * sin(aux->theta);
+	vector->c = cos(aux->theta);
 }
 
-void	calculate_coordinate(double ***axis, t_vector *vec, int row, int *col)
+void	calculate_coordinate(t_aux *aux, t_vector *vector)
 {
 	int	i;
 	int	j;
+	double x;
+	double y;
+	double z;
 
 	i = 0;
-	while (i < row)
+	while (i < aux->row_num)
 	{
 		j = 0;
-		while (j < col[0])
+		while (j < aux->col_num[0])
 		{
-			axis[i][j][3] = -1 * (vec->a * axis[i][j][0] \
-			+ vec->b * axis[i][j][1] + vec->c * axis[i][j][2]);
-			axis[i][j][0] = vec->a * axis[i][j][3] + axis[i][j][0];
-			axis[i][j][1] = vec->b * axis[i][j][3] + axis[i][j][1];
-			axis[i][j][2] = vec->c * axis[i][j][3] + axis[i][j][2];
+			x = (aux->axis_data)[i][j][0];
+			y = (aux->axis_data)[i][j][1];
+			z = (aux->axis_data)[i][j][2];
+			aux->axis_data[i][j][3] = -1 * (vector->a * x + vector->b * y + vector->c * z);
+			aux->axis_data[i][j][0] = vector->a * aux->axis_data[i][j][3] + x;
+			aux->axis_data[i][j][1] = vector->b * aux->axis_data[i][j][3] + y;
+			aux->axis_data[i][j][2] = vector->c * aux->axis_data[i][j][3] + z;
 			j++;
 		}
 		i++;
 	}
 }
 
-int	find_maximum_z(t_aux *aux)
+double	find_maximum_z(t_aux *aux)
 {
 	int	i;
 	int	j;
-	int	max;
+	double	max;
 
 	i = 0;
 	max = aux->axis_data[0][0][2];
@@ -66,11 +72,11 @@ int	find_maximum_z(t_aux *aux)
 	return (max);
 }
 
-int	find_minimum_z(t_aux *aux)
+double	find_minimum_z(t_aux *aux)
 {
 	int	i;
 	int	j;
-	int	min;
+	double	min;
 
 	i = 0;
 	min = aux->axis_data[0][0][2];
@@ -88,48 +94,6 @@ int	find_minimum_z(t_aux *aux)
 	return (min);
 }
 
-void	rotate_z(t_aux *aux, t_angle *a)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < aux->row_num)
-	{
-		j = 0;
-		while (j < aux->col_num[0])
-		{
-			aux->axis_data[i][j][0] = cos(a->phi) * aux->axis_data[i][j][0]
-			+ -1 * sin(a->phi) * aux->axis_data[i][j][1];
-			aux->axis_data[i][j][1] = sin(a->phi) * aux->axis_data[i][j][0]
-			+ cos(a->phi) * aux->axis_data[i][j][1];
-			j++;
-		}
-		i++;
-	}
-}
-
-void	rotate_y(t_aux *aux, t_angle *a)
-{
-	int	i;
-	int	j;
-
-	i = 0;
-	while (i < aux->row_num)
-	{
-		j = 0;
-		while (j < aux->col_num[0])
-		{
-			aux->axis_data[i][j][0] = cos(a->theta) * aux->axis_data[i][j][0]
-			+ -1 * sin(a->theta) * aux->axis_data[i][j][2];
-			aux->axis_data[i][j][2] = sin(a->theta) * aux->axis_data[i][j][0]
-			+ cos(a->theta) * aux->axis_data[i][j][2];
-			j++;
-		}
-		i++;
-	}
-}
-
 void	translate_coordinate(t_aux *aux)
 {
 	double	x_move;
@@ -138,9 +102,9 @@ void	translate_coordinate(t_aux *aux)
 	int	i;
 	int	j;
 
-	x_move = aux->row_num / 2;
-	y_move = aux->col_num[0] / 2;
-	z_move = find_maximum_z(aux) + find_minimum_z(aux) / 2;
+	x_move = ((double)(aux->col_num[0]) - 1) / 2;
+	y_move = ((double)(aux->row_num) - 1) / 2;
+	z_move = (find_maximum_z(aux) + find_minimum_z(aux)) / 2;
 	i = 0;
 	while (i < aux->row_num)
 	{
@@ -156,16 +120,38 @@ void	translate_coordinate(t_aux *aux)
 	}
 }
 
-void	transform_coordinate(t_aux *aux, t_angle *angle, t_vector *vector)
+void	project_coordinate(t_aux *aux, t_vector *vector)
 {
-	angle->theta = 90 - 35.264;
-	angle->phi = 45;
-	calculate_normal_vector(angle, vector);
-	calculate_coordinate(aux->axis_data, vector, aux->row_num, aux->col_num);
+	aux->theta = 90 - atan(1 / sqrt(2)) / M_PI * 180;
+	aux->phi = atan(1) / M_PI * 180;
+	calculate_normal_vector(aux, vector);
+	calculate_coordinate(aux, vector);
 }
 
-void	rotate_coordinate(t_aux *aux, t_angle *angle)
+void	rotate_coordinate(t_aux *aux)
 {
-	rotate_z(aux, angle);
-	rotate_y(aux, angle);
+	int	i;
+	int	j;
+	double x;
+	double y;
+	double z;
+
+	i = 0;
+	while (i < aux->row_num) // y
+	{
+		j = 0;
+		while (j < aux->col_num[0]) // x
+		{
+			x = (aux->axis_data)[i][j][0];
+			y = (aux->axis_data)[i][j][1];
+			z = (aux->axis_data)[i][j][2];
+			(aux->axis_data)[i][j][0] = cos(aux->theta) * cos(aux->phi) * x
+				+ cos(aux->theta) * sin(aux->phi) * y - sin(aux->theta) * z;
+			(aux->axis_data)[i][j][1] = -sin(aux->phi) * x + cos(aux->phi) * y;
+			(aux->axis_data)[i][j][2] = sin(aux->theta) * cos(aux->phi) * x
+				+ sin(aux->theta) * sin(aux->phi) * y + cos(aux->theta) * z;
+			j++;
+		}
+		i++;
+	}
 }

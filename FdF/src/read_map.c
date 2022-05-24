@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 18:12:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/23 18:23:54 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/25 07:17:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,12 +42,11 @@ int	read_map(char *file, t_aux *aux)
 		while (tmp[j])
 		{
 			(aux->axis_data)[i][j] = (double *)malloc(sizeof(double) * 4); // 좌표 1차원 배열
-			(aux->axis_data)[i][j][0] = i; // x좌표? 
-			(aux->axis_data)[i][j][1] = j; // y좌표?
+			(aux->axis_data)[i][j][0] = j; // x좌표? 
+			(aux->axis_data)[i][j][1] = i; // y좌표?
 			(aux->axis_data)[i][j][2] = ft_atoi(tmp[j]);
 			(aux->axis_data)[i][j][3] = 0;
 			j++;
-			// i를 뽑으면 y좌표에 대한 정보들이 나오고, j를 뽑으면 x좌표에 대한 정보들이 나옴
 		}
 		free_double_array(&tmp);
 		i++;

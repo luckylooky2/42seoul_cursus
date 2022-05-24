@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:09:08 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/24 18:54:05 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/25 07:49:14 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,13 +28,9 @@ typedef struct s_aux
 	int		row_num;
 	int		*col_num;
 	double	***axis_data;
-}	t_aux;
-
-typedef struct s_angle
-{
 	double	theta;
 	double	phi;
-}	t_angle;
+}	t_aux;
 
 typedef struct s_vector
 {
@@ -63,15 +59,15 @@ void	free_double_array(char ***array);
 int		read_map(char *file, t_aux *aux);
 void	init_aux(t_aux	*aux);
 void	free_aux(t_aux *aux);
-int		find_maximum_z(t_aux *aux);
-int		find_minimum_z(t_aux *aux);
+double	find_maximum_z(t_aux *aux);
+double	find_minimum_z(t_aux *aux);
+
 void	translate_coordinate(t_aux *aux);
-void	transform_coordinate(t_aux *aux, t_angle *angle, t_vector *vector);
-void	calculate_normal_vector(t_angle *a, t_vector *vec);
-void	calculate_coordinate(double ***axis, t_vector *vec, int row, int *col);
-void	rotate_z(t_aux *aux, t_angle *a);
-void	rotate_y(t_aux *aux, t_angle *a);
-void	rotate_coordinate(t_aux *aux, t_angle *angle);
+void	project_coordinate(t_aux *aux, t_vector *vector);
+void	calculate_normal_vector(t_aux *aux, t_vector *vector);
+void	calculate_coordinate(t_aux *aux, t_vector *vector);
+void	rotate_coordinate(t_aux *aux);
+
 int		key_press(int keycode, t_mlx *mlx);
 
 #endif
