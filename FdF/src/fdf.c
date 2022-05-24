@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/23 20:30:38 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/24 19:14:56 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,65 @@
 #include "../include/get_next_line.h"
 #include "../mlx/mlx.h"
 
+#define X_EVENT_KEY_PRESS	2
+
+#define KEY_ESC	53
+
+int	key_press(int keycode, t_mlx *mlx)
+{
+	if (keycode == KEY_ESC)
+		exit(0);
+	return (0);
+}
+
+void	move_coordinate(t_aux *aux)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < aux->row_num)
+	{
+		j = 0;
+		while (j < aux->col_num[0])
+		{
+			aux->axis_data[i][j][0] = floor(aux->axis_data[i][j][0] * 100) + 100;
+			aux->axis_data[i][j][1] = floor(aux->axis_data[i][j][1] * 100) + 100;
+			j++;
+		}
+		i++;
+	}
+}
+
+int	draw_dot(t_aux *aux, int count_h, int count_w)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < aux->row_num) // 11
+	{
+		j = 0;
+		while (j < aux->col_num[0]) // 20
+		{
+			if (count_w == aux->axis_data[i][j][0] && count_h == aux->axis_data[i][j][1])
+				return (1);
+			j++;
+		}
+		i++;
+	}
+	return (0);
+}
+
 int	main(int argc, char *argv[])
 {
+	t_mlx		mlx;
 	t_aux		aux;
 	t_angle		angle;
 	t_vector	vector;
-	void		*mlx;
-	void		*win;
+	t_img		img;
+	int			count_w;
+	int			count_h;
 
 	if (argc != 2)
 		exit(EXIT_FAILURE);
@@ -33,10 +85,23 @@ int	main(int argc, char *argv[])
 	}
 	translate_coordinate(&aux);
 	transform_coordinate(&aux, &angle, &vector);
-	rotate_coordinate(&aux);
-	// mlx = mlx_init();
-	// win = mlx_new_window(mlx, 500, 500, "mlx_project");
-	// mlx_loop(mlx);
+	rotate_coordinate(&aux, &angle);
+	mlx.mlx = mlx_init();
+	mlx.win = mlx_new_window(mlx.mlx, 1000, 1000, "mlx_project");
+	img.img_ptr = mlx_new_image(mlx.mlx, 1000, 1000);
+	img.data = (int *)mlx_get_data_addr(img.img_ptr, &img.bpp, &img.size_l, &img.endian);
+	move_coordinate(&aux);
+	count_h = -1;
+	while (++count_h < 1000)
+	{
+		count_w = -1;
+		while (++count_w < 1000)
+			if (draw_dot(&aux, count_h, count_w) == 1)
+				img.data[count_h * 1000 + count_w] = 0xFFFFFF;
+	}
+	mlx_put_image_to_window(mlx.mlx, mlx.win, img.img_ptr, 0, 0);
+	mlx_hook(mlx.win, X_EVENT_KEY_PRESS, 0, &key_press, &mlx);
+	mlx_loop(mlx.mlx);
 	free_aux(&aux);
 	system("leaks fdf");
 	return (0);

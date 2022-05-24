@@ -6,17 +6,17 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/23 22:24:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/24 19:15:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
 #include "../include/get_next_line.h"
 
-void	calculate_normal_vector(t_angle *a, t_vector *vec, int theta, int phi)
+void	calculate_normal_vector(t_angle *a, t_vector *vec)
 {
-	a->theta = theta * M_PI / 180;
-	a->phi = phi * M_PI / 180;
+	a->theta = a->theta * M_PI / 180;
+	a->phi = a->phi * M_PI / 180;
 	vec->a = cos(a->phi) * sin(a->theta);
 	vec->b = sin(a->phi) * sin(a->theta);
 	vec->c = cos(a->theta);
@@ -44,7 +44,7 @@ void	calculate_coordinate(double ***axis, t_vector *vec, int row, int *col)
 	}
 }
 
-int	find_max_z(t_aux *aux)
+int	find_maximum_z(t_aux *aux)
 {
 	int	i;
 	int	j;
@@ -66,7 +66,7 @@ int	find_max_z(t_aux *aux)
 	return (max);
 }
 
-int	find_min_z(t_aux *aux)
+int	find_minimum_z(t_aux *aux)
 {
 	int	i;
 	int	j;
@@ -88,14 +88,46 @@ int	find_min_z(t_aux *aux)
 	return (min);
 }
 
-void	rotate_z(t_aux *aux)
+void	rotate_z(t_aux *aux, t_angle *a)
 {
-	// 회전 변환 행렬
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < aux->row_num)
+	{
+		j = 0;
+		while (j < aux->col_num[0])
+		{
+			aux->axis_data[i][j][0] = cos(a->phi) * aux->axis_data[i][j][0]
+			+ -1 * sin(a->phi) * aux->axis_data[i][j][1];
+			aux->axis_data[i][j][1] = sin(a->phi) * aux->axis_data[i][j][0]
+			+ cos(a->phi) * aux->axis_data[i][j][1];
+			j++;
+		}
+		i++;
+	}
 }
 
-void	rotate_y(t_aux *aux)
+void	rotate_y(t_aux *aux, t_angle *a)
 {
-	
+	int	i;
+	int	j;
+
+	i = 0;
+	while (i < aux->row_num)
+	{
+		j = 0;
+		while (j < aux->col_num[0])
+		{
+			aux->axis_data[i][j][0] = cos(a->theta) * aux->axis_data[i][j][0]
+			+ -1 * sin(a->theta) * aux->axis_data[i][j][2];
+			aux->axis_data[i][j][2] = sin(a->theta) * aux->axis_data[i][j][0]
+			+ cos(a->theta) * aux->axis_data[i][j][2];
+			j++;
+		}
+		i++;
+	}
 }
 
 void	translate_coordinate(t_aux *aux)
@@ -108,7 +140,7 @@ void	translate_coordinate(t_aux *aux)
 
 	x_move = aux->row_num / 2;
 	y_move = aux->col_num[0] / 2;
-	z_move = find_z_maxmin(aux, 1) + find_z_maxmin(aux, 0) / 2;
+	z_move = find_maximum_z(aux) + find_minimum_z(aux) / 2;
 	i = 0;
 	while (i < aux->row_num)
 	{
@@ -126,17 +158,14 @@ void	translate_coordinate(t_aux *aux)
 
 void	transform_coordinate(t_aux *aux, t_angle *angle, t_vector *vector)
 {
-	int	theta;
-	int	phi;
-
-	theta = 30;
-	phi = 60;
-	calculate_normal_vector(angle, vector, theta, phi);
+	angle->theta = 90 - 35.264;
+	angle->phi = 45;
+	calculate_normal_vector(angle, vector);
 	calculate_coordinate(aux->axis_data, vector, aux->row_num, aux->col_num);
 }
 
-void	rotate_coordinate(t_aux *aux)
+void	rotate_coordinate(t_aux *aux, t_angle *angle)
 {
-	rotate_z(aux);
-	rotate_y(aux);	
+	rotate_z(aux, angle);
+	rotate_y(aux, angle);
 }
