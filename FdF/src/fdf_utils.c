@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 21:46:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/23 22:16:48 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/26 13:12:18 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,12 @@ void	init_aux(t_aux	*aux)
 {
 	aux->row_num = 0;
 	aux->col_num = NULL;
+	aux->max_x = 0;
+	aux->max_y = 0;
+	aux->max_z = 0;
 	aux->axis_data = NULL;
+	aux->theta = 0;
+	aux->phi = 0;
 }
 
 void	free_aux(t_aux *aux)

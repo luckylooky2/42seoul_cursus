@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/25 08:13:28 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/26 21:27:42 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,30 +26,45 @@ int	key_press(int keycode, t_mlx *mlx)
 	return (0);
 }
 
+double	calculate_max_length(t_aux *aux)
+{
+	double	x;
+	double	y;
+	double	z;
+
+	x = aux->max_x;
+	y = aux->max_y;
+	z = aux->max_z;
+	return	(sqrt(pow(x, 2) + pow(y, 2) + pow(z, 2)));
+}
+
 void	move_coordinate(t_aux *aux)
 {
-	int	i;
-	int	j;
+	int		i;
+	int		j;
+	double	ratio;
 
 	i = 0;
+	ratio = 1000 * 0.9 / calculate_max_length(aux);
 	while (i < aux->row_num)
 	{
 		j = 0;
 		while (j < aux->col_num[0])
 		{
-			aux->axis_data[i][j][0] = floor(aux->axis_data[i][j][0] * 100) + 100;
-			aux->axis_data[i][j][1] = floor(aux->axis_data[i][j][1] * 100) + 100;
-			// mul = 1000 * 0.9
+			aux->axis_data[i][j][0] = floor(aux->axis_data[i][j][0] * ratio) + 500;
+			aux->axis_data[i][j][1] = floor(aux->axis_data[i][j][1] * ratio) + 500;
 			j++;
 		}
 		i++;
 	}
 }
 
-int	draw_dot(t_aux *aux, int count_h, int count_w)
+void	draw_dots(t_aux *aux, t_img *img)
 {
 	int	i;
 	int	j;
+	int	x;
+	int	y;
 
 	i = 0;
 	while (i < aux->row_num) // 11
@@ -57,26 +72,81 @@ int	draw_dot(t_aux *aux, int count_h, int count_w)
 		j = 0;
 		while (j < aux->col_num[0]) // 20
 		{
-			if (count_w == aux->axis_data[i][j][0] && count_h == aux->axis_data[i][j][1])
-				return (1);
+			x = aux->axis_data[i][j][0];
+			y = aux->axis_data[i][j][1];
+			if (x < 1000 && y < 1000 && x >= 0 && y >= 0)
+				img->data[1000 * y + x] = 0xFFFFFF;
 			j++;
 		}
 		i++;
 	}
-	return (0);
 }
 
+// void Bres_x(int x0, int y0, int xEnd, int yEnd, t_img *img)
+// {
+// 	int dx = abs (xEnd - x0), dy = abs(yEnd - y0);
+//     int p = 2 * dy - dx;
+//     int twoDy = 2 * dy, twoDyMinusDx = 2 * (dy - dx);
+//     int x, y;
+    
+// 	// 어디가 왼쪽이고 오른쪽인지
+// 	if (x0 > xEnd) {
+//       x = xEnd;
+//       y = yEnd;
+//       xEnd = x0;
+// 	}
+// 	else {
+// 		x = x0;
+// 		y = y0; 
+// 	}
+//   	while (x < xEnd) {
+// 		x++;
+//     	if (p < 0)
+// 		{
+// 			// y--;
+// 			p += twoDy;
+// 		}
+// 		else { 
+// 			y++;
+//       		p += twoDyMinusDx;
+//     	}
+// 	img->data[x + 1000 * y] = 0xFFFFFF;
+// 	}
+// }
 
-//if (line->x < 1000 && line->y < 1000 && line->x >= 0 && line->y >= 0)
-//		my_mlx->img.data[line->y * 1000 + line->x] = 0xFFFFFF;
+// void Bres_y(int y0, int x0, int yEnd, int xEnd, t_img *img)
+// {
+// 	int dx = abs(xEnd - x0), dy = abs(yEnd - y0);
+//     int p = 2 * dy - dx;
+//     int twoDy = 2 * dy, twoDyMinusDx = 2 * (dy - dx);
+//     int x, y;
+    
+// 	// 어디가 왼쪽이고 오른쪽인지
+// 	if (x0 > xEnd) {
+//       x = xEnd;
+//       y = yEnd;
+//       xEnd = x0;
+// 	}
+// 	else {
+// 		x = x0;
+// 		y = y0; 
+// 	}
+//   	while (x < xEnd) {
+// 		x++;
+//     	if (p < 0)
+// 		{
+// 			// y--;
+// 			p += twoDy;
+// 		}
+// 		else { 
+// 			y++;
+//       		p += twoDyMinusDx;
+//     	}
+// 	img->data[y + 1000 * x] = 0xFFFFFF;
+// 	}
+// }
 
-void Set_Pixel(int x, int y, t_img *img)
-{
-    img->data[x * 1000 + y] = 0xFFFFFF;
-}
-
-void DDA(double x1, double y1, double x2, double y2, t_img *img) // dda
-{
+void DDA(double x1, double y1, double x2, double y2, t_img *img){
     // x, y축의 증분
     double dx = x2 - x1;
     double dy = y2 - y1;
@@ -93,24 +163,47 @@ void DDA(double x1, double y1, double x2, double y2, t_img *img) // dda
         steps = fabs(dy);
     
     // step가 하나 증가할 때 x, y 좌표가 얼마나 증가할지 지정해준다
-    x_incre = dx / steps;
-    y_incre = dy / steps;
+    x_incre = (dx / steps);
+    y_incre = (dy / steps);
 
     // 시작 좌표 x(=x1), y(=y1)을 칠해준다
-    Set_Pixel(round(x), round(y), img);
+	// img->data[y + 1000 * x] = 0xFFFFFF;
 
-    for(int i = 0; i < steps; i++){
+    for(int i = 0; i < steps; i +=1){
         x += x_incre;
         y += y_incre;
-
-        Set_Pixel(round(x), round(y), img);
+		if (x >= 0 && y>= 0 && x < 1000 && y < 1000)
+			img->data[(int)x + 1000 * (int)y] = 0xFFFFFF;
     }
+}
+
+void	draw_lines(t_aux *aux, t_img *img)
+{
+	int	i;
+	int	j;
+
+	i = 0;
+	j = 0;
+	while (i < aux->row_num)
+	{
+		j = 0;
+		while (j < aux->col_num[0])
+		{
+			if (j < aux->col_num[0] - 1)
+				DDA(aux->axis_data[i][j][0], aux->axis_data[i][j][1], aux->axis_data[i][j + 1][0], aux->axis_data[i][j + 1][1], img);
+			if (i < aux->row_num - 1)
+				DDA(aux->axis_data[i][j][0], aux->axis_data[i][j][1], aux->axis_data[i + 1][j][0], aux->axis_data[i + 1][j][1], img);
+			j++;
+		}
+		i++;
+	}
 }
 
 void	print_arr(t_aux *data)
 {
 	int	i;
 	int	j;
+	
 	i = 0;
 	j = 0;
 	while (i < data->row_num)
@@ -135,8 +228,6 @@ int	main(int argc, char *argv[])
 	t_aux		aux;
 	t_vector	vector;
 	t_img		img;
-	int			count_w;
-	int			count_h;
 
 	if (argc != 2)
 		exit(EXIT_FAILURE);
@@ -149,24 +240,17 @@ int	main(int argc, char *argv[])
 	translate_coordinate(&aux);
 	project_coordinate(&aux, &vector);
 	rotate_coordinate(&aux);
-	print_arr(&aux);
-	// mlx.mlx = mlx_init();
-	// mlx.win = mlx_new_window(mlx.mlx, 1000, 1000, "mlx_project");
-	// img.img_ptr = mlx_new_image(mlx.mlx, 1000, 1000);
-	// img.data = (int *)mlx_get_data_addr(img.img_ptr, &img.bpp, &img.size_l, &img.endian);
 	move_coordinate(&aux);
-	// count_h = -1;
-	// while (++count_h < 1000) // 이 방식이 아니라 좌표 데이터를 기반으로 해당 픽셀에 찍는 방식으로 바꿀 것
-	// {
-	// 	count_w = -1;
-	// 	while (++count_w < 1000)
-	// 		if (draw_dot(&aux, count_h, count_w) == 1)
-	// 			img.data[count_h * 1000 + count_w] = 0xFFFFFF;
-	// }
-	// DDA(aux.axis_data[0][0][0], aux.axis_data[0][0][1], aux.axis_data[0][1][0], aux.axis_data[0][1][1], &img);
-	// mlx_put_image_to_window(mlx.mlx, mlx.win, img.img_ptr, 0, 0);
-	// mlx_hook(mlx.win, X_EVENT_KEY_PRESS, 0, &key_press, &mlx);
-	// mlx_loop(mlx.mlx);
+	print_arr(&aux);
+	mlx.mlx = mlx_init();
+	mlx.win = mlx_new_window(mlx.mlx, 1000, 1000, "mlx_project");
+	img.img_ptr = mlx_new_image(mlx.mlx, 1000, 1000); // 이미지 크기에 따라 size_l이 변경
+	img.data = (int *)mlx_get_data_addr(img.img_ptr, &img.bpp, &img.size_l, &img.endian);
+	draw_dots(&aux, &img);
+	draw_lines(&aux, &img);
+	mlx_put_image_to_window(mlx.mlx, mlx.win, img.img_ptr, 0, 0);
+	mlx_hook(mlx.win, X_EVENT_KEY_PRESS, 0, &key_press, &mlx);
+	mlx_loop(mlx.mlx);
 	free_aux(&aux);
 	// system("leaks fdf");
 	return (0);

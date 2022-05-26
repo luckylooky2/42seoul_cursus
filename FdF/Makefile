@@ -4,7 +4,7 @@ ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
-MLX=libmlx.dylib
+MLX=libmlx.a
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
 SRC=$(addprefix $(SRC_DIR)/, fdf.c read_map.c fdf_utils.c ft_split.c \

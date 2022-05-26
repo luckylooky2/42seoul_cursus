@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/25 08:12:11 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/26 21:42:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,11 +49,11 @@ void	calculate_coordinate(t_aux *aux, t_vector *vector)
 	}
 }
 
-double	find_maximum_z(t_aux *aux)
+int	find_maximum_z(t_aux *aux)
 {
 	int	i;
 	int	j;
-	double	max;
+	int	max;
 
 	i = 0;
 	max = aux->axis_data[0][0][2];
@@ -71,11 +71,11 @@ double	find_maximum_z(t_aux *aux)
 	return (max);
 }
 
-double	find_minimum_z(t_aux *aux)
+int	find_minimum_z(t_aux *aux)
 {
 	int	i;
 	int	j;
-	double	min;
+	int	min;
 
 	i = 0;
 	min = aux->axis_data[0][0][2];
@@ -101,9 +101,12 @@ void	translate_coordinate(t_aux *aux)
 	int	i;
 	int	j;
 
+	aux->max_x = aux->col_num[0] - 1;
+	aux->max_y = aux->row_num - 1;
+	aux->max_z = find_maximum_z(aux);
 	x_move = ((double)(aux->col_num[0]) - 1) / 2;
 	y_move = ((double)(aux->row_num) - 1) / 2;
-	z_move = (find_maximum_z(aux) + find_minimum_z(aux)) / 2;
+	z_move = ((double)find_maximum_z(aux) + (double)find_minimum_z(aux)) / 2;
 	i = 0;
 	while (i < aux->row_num)
 	{
@@ -121,7 +124,7 @@ void	translate_coordinate(t_aux *aux)
 
 void	project_coordinate(t_aux *aux, t_vector *vector)
 {
-	aux->theta = (90 - atan(1 / sqrt(2))) / M_PI * 180;
+	aux->theta = (acos(1 / sqrt(3))) / M_PI * 180;
 	aux->phi = atan(1) / M_PI * 180;
 	calculate_normal_vector(aux, vector);
 	calculate_coordinate(aux, vector);

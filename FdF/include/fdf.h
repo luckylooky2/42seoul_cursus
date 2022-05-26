@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:09:08 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/25 07:49:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/26 17:40:30 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@ typedef struct s_aux
 {
 	int		row_num;
 	int		*col_num;
+	int		max_x;
+	int		max_y;
+	int		max_z;
 	double	***axis_data;
 	double	theta;
 	double	phi;
@@ -59,8 +62,8 @@ void	free_double_array(char ***array);
 int		read_map(char *file, t_aux *aux);
 void	init_aux(t_aux	*aux);
 void	free_aux(t_aux *aux);
-double	find_maximum_z(t_aux *aux);
-double	find_minimum_z(t_aux *aux);
+int		find_maximum_z(t_aux *aux);
+int		find_minimum_z(t_aux *aux);
 
 void	translate_coordinate(t_aux *aux);
 void	project_coordinate(t_aux *aux, t_vector *vector);
