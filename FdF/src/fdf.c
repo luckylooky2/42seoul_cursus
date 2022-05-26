@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/26 21:27:42 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/26 22:46:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,70 +81,6 @@ void	draw_dots(t_aux *aux, t_img *img)
 		i++;
 	}
 }
-
-// void Bres_x(int x0, int y0, int xEnd, int yEnd, t_img *img)
-// {
-// 	int dx = abs (xEnd - x0), dy = abs(yEnd - y0);
-//     int p = 2 * dy - dx;
-//     int twoDy = 2 * dy, twoDyMinusDx = 2 * (dy - dx);
-//     int x, y;
-    
-// 	// 어디가 왼쪽이고 오른쪽인지
-// 	if (x0 > xEnd) {
-//       x = xEnd;
-//       y = yEnd;
-//       xEnd = x0;
-// 	}
-// 	else {
-// 		x = x0;
-// 		y = y0; 
-// 	}
-//   	while (x < xEnd) {
-// 		x++;
-//     	if (p < 0)
-// 		{
-// 			// y--;
-// 			p += twoDy;
-// 		}
-// 		else { 
-// 			y++;
-//       		p += twoDyMinusDx;
-//     	}
-// 	img->data[x + 1000 * y] = 0xFFFFFF;
-// 	}
-// }
-
-// void Bres_y(int y0, int x0, int yEnd, int xEnd, t_img *img)
-// {
-// 	int dx = abs(xEnd - x0), dy = abs(yEnd - y0);
-//     int p = 2 * dy - dx;
-//     int twoDy = 2 * dy, twoDyMinusDx = 2 * (dy - dx);
-//     int x, y;
-    
-// 	// 어디가 왼쪽이고 오른쪽인지
-// 	if (x0 > xEnd) {
-//       x = xEnd;
-//       y = yEnd;
-//       xEnd = x0;
-// 	}
-// 	else {
-// 		x = x0;
-// 		y = y0; 
-// 	}
-//   	while (x < xEnd) {
-// 		x++;
-//     	if (p < 0)
-// 		{
-// 			// y--;
-// 			p += twoDy;
-// 		}
-// 		else { 
-// 			y++;
-//       		p += twoDyMinusDx;
-//     	}
-// 	img->data[y + 1000 * x] = 0xFFFFFF;
-// 	}
-// }
 
 void DDA(double x1, double y1, double x2, double y2, t_img *img){
     // x, y축의 증분
@@ -222,6 +158,31 @@ void	print_arr(t_aux *data)
 	}
 }
 
+void	rotate_z(t_aux *aux)
+{
+	int	i;
+	int	j;
+	double x;
+	double y;
+	double angle;
+
+	i = 0;
+	angle = 90 * M_PI / 180;
+	while (i < aux->row_num) // y
+	{
+		j = 0;
+		while (j < aux->col_num[0]) // x
+		{
+			x = (aux->axis_data)[i][j][0];
+			y = (aux->axis_data)[i][j][1];
+			(aux->axis_data)[i][j][0] = cos(angle) * x - sin(angle) * y;
+			(aux->axis_data)[i][j][1] = sin(angle) * x + cos(angle) * y;
+			j++;
+		}
+		i++;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	t_mlx		mlx;
@@ -240,6 +201,7 @@ int	main(int argc, char *argv[])
 	translate_coordinate(&aux);
 	project_coordinate(&aux, &vector);
 	rotate_coordinate(&aux);
+	rotate_z(&aux);
 	move_coordinate(&aux);
 	print_arr(&aux);
 	mlx.mlx = mlx_init();
