@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 21:46:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/26 13:12:18 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/27 19:08:07 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,16 +68,33 @@ size_t	ft_strlen(const char *s)
 	return (cnt);
 }
 
-void	init_aux(t_aux	*aux)
+void	init_struct(t_aux *aux, t_vector *vector)
 {
 	aux->row_num = 0;
 	aux->col_num = NULL;
 	aux->max_x = 0;
 	aux->max_y = 0;
 	aux->max_z = 0;
+	aux->map_data = NULL;
 	aux->axis_data = NULL;
 	aux->theta = 0;
 	aux->phi = 0;
+	aux->multi = 0;
+	aux->alpha = 0;
+	aux->trans_x = 0;
+	aux->trans_y = 0;
+	vector->a = 0;
+	vector->b = 0;
+	vector->c = 0;
+}
+
+void	init_data(t_aux *aux)
+{
+	aux->multi = 0;
+	aux->alpha = 0;
+	aux->trans_x = 0;
+	aux->trans_y = 0;
+	init_angle(aux);
 }
 
 void	free_aux(t_aux *aux)

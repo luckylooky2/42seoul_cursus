@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/26 21:42:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/27 17:37:16 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,6 @@
 
 void	calculate_normal_vector(t_aux *aux, t_vector *vector)
 {
-	aux->theta = aux->theta * M_PI / 180;
-	aux->phi = aux->phi * M_PI / 180;
 	vector->a = cos(aux->phi) * sin(aux->theta);
 	vector->b = sin(aux->phi) * sin(aux->theta);
 	vector->c = cos(aux->theta);
@@ -124,8 +122,6 @@ void	translate_coordinate(t_aux *aux)
 
 void	project_coordinate(t_aux *aux, t_vector *vector)
 {
-	aux->theta = (acos(1 / sqrt(3))) / M_PI * 180;
-	aux->phi = atan(1) / M_PI * 180;
 	calculate_normal_vector(aux, vector);
 	calculate_coordinate(aux, vector);
 }
