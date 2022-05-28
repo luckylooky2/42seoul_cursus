@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/27 19:10:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/28 11:07:59 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,8 +15,8 @@
 #include "../mlx/mlx.h"
 #include <stdio.h>
 
-#define X_EVENT_KEY_PRESS	2
-#define X_EVENT_BUTTON_X	17
+#define X_EVENT_KEY_PRESS		2
+#define X_EVENT_CLOSE_BUTTON	17
 
 #define KEY_ESC			53
 #define KEY_UP			126
@@ -50,7 +50,7 @@ int	press_keys(int keycode, t_mlx *mlx)
 {
 	init_img_data(&mlx->img);
 	if (keycode == KEY_ESC)
-		exit(0); // free
+		exit(EXIT_SUCCESS); // free
 	else if (keycode == KEY_UP)
 		mlx->aux.theta += 1 * M_PI / 180;
 	else if (keycode == KEY_DOWN)
@@ -127,10 +127,10 @@ void	draw_dots(t_aux *aux, t_img *img)
 	int	y;
 
 	i = 0;
-	while (i < aux->row_num) // 11
+	while (i < aux->row_num)
 	{
 		j = 0;
-		while (j < aux->col_num[0]) // 20
+		while (j < aux->col_num[0])
 		{
 			x = aux->axis_data[i][j][0];
 			y = aux->axis_data[i][j][1];
@@ -228,10 +228,10 @@ void	rotate_axis_z(t_aux *aux)
 
 	i = 0;
 	angle = (90 + aux->alpha) * M_PI / 180;
-	while (i < aux->row_num) // y
+	while (i < aux->row_num)
 	{
 		j = 0;
-		while (j < aux->col_num[0]) // x
+		while (j < aux->col_num[0])
 		{
 			x = (aux->axis_data)[i][j][0];
 			y = (aux->axis_data)[i][j][1];
@@ -243,7 +243,7 @@ void	rotate_axis_z(t_aux *aux)
 	}
 }
 
-void	init_loop(t_aux *aux)
+void	init_axis_data(t_aux *aux)
 {
 	int	i;
 	int	j;
@@ -264,15 +264,9 @@ void	init_loop(t_aux *aux)
 	}
 }
 
-void	init_angle(t_aux *aux)
-{
-	aux->theta = acos(1 / sqrt(3));
-	aux->phi = atan(1);
-}
-
 int	repeat_main_loop(t_mlx *mlx)
 {
-	init_loop(&mlx->aux);
+	init_axis_data(&mlx->aux);
 	translate_coordinate(&mlx->aux);
 	project_coordinate(&mlx->aux, &mlx->vector);
 	rotate_coordinate(&mlx->aux);
@@ -293,25 +287,19 @@ int	main(int argc, char *argv[])
 
 	if (argc != 2)
 		exit(EXIT_FAILURE);
-	init_struct(&aux, &vector); // init_struct
+	init_struct(&aux, &vector);
 	if (read_map(argv[1], &aux) == 0)
-	{
-		free_aux(&aux);
 		exit(EXIT_FAILURE); // 파일이 없는 경우, 동적할당 실패 시
-	}
 	mlx.mlx = mlx_init();
-	mlx.win = mlx_new_window(mlx.mlx, 1000, 1000, "mlx_project");
-	img.img_ptr = mlx_new_image(mlx.mlx, 1000, 1000); // 이미지 크기에 따라 size_l이 변경
-	// print_arr(&aux);
+	mlx.win = mlx_new_window(mlx.mlx, 1000, 1000, "FdF");
+	img.img_ptr = mlx_new_image(mlx.mlx, 1000, 1000);
 	img.data = (int *)mlx_get_data_addr(img.img_ptr, &img.bpp, &img.size_l, &img.endian);
-	init_angle(&aux);
 	mlx.aux = aux;
 	mlx.vector = vector;
-	mlx.img = img;
+	mlx.img = img; // 함수로 만들기
 	mlx_hook(mlx.win, X_EVENT_KEY_PRESS, 0, &press_keys, &mlx);
-	mlx_hook(mlx.win, X_EVENT_BUTTON_X, 0, &close_window, &mlx);
+	mlx_hook(mlx.win, X_EVENT_CLOSE_BUTTON, 0, &close_window, &mlx);
 	mlx_loop_hook(mlx.mlx, &repeat_main_loop, &mlx);
 	mlx_loop(mlx.mlx);
-	// system("leaks fdf");
 	return (0);
 }
