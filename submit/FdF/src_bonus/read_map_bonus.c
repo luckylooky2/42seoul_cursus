@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 18:12:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 19:44:10 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 20:49:36 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,10 @@ static int	malloc_three_dimension(t_aux **aux, t_map *map)
 			sizeof(int), (*aux)->row_num);
 	if (!((*aux)->axis_data) || !((*aux)->map_data) || !((*aux)->col_num))
 	{
-		map->map_status = 0;
-		return (0);
+		map->map_status = MAP_FAIL_MALLOC;
+		return (MAP_FAIL_MALLOC);
 	}
-	return (1);
+	return (MAP_SUCCESS);
 }
 
 static int	malloc_two_dimension(t_aux **aux, t_map *map, int i, int *j)
@@ -49,8 +49,8 @@ static int	malloc_two_dimension(t_aux **aux, t_map *map, int i, int *j)
 	map->tmp = ft_split(map->line, ' ');
 	if (map->tmp == NULL)
 	{
-		map->map_status = 0;
-		return (0);
+		map->map_status = MAP_FAIL_MALLOC;
+		return (MAP_FAIL_MALLOC);
 	}
 	((*aux)->col_num)[i] = count_col_num(map->tmp);
 	((*aux)->axis_data)[i] = (double **)ft_calloc(
@@ -59,10 +59,10 @@ static int	malloc_two_dimension(t_aux **aux, t_map *map, int i, int *j)
 			sizeof(double *), ((*aux)->col_num)[i]);
 	if (!(((*aux)->axis_data)[i]) || !(((*aux)->map_data)[i]))
 	{
-		map->map_status = 0;
-		return (0);
+		map->map_status = MAP_FAIL_MALLOC;
+		return (MAP_FAIL_MALLOC);
 	}
-	return (1);
+	return (MAP_SUCCESS);
 }
 
 static int	malloc_one_dimension(t_aux **aux, t_map *map, int *i, int *j)
@@ -73,14 +73,14 @@ static int	malloc_one_dimension(t_aux **aux, t_map *map, int *i, int *j)
 		((*aux)->map_data)[*i][*j] = (double *)ft_calloc(sizeof(double), 4);
 		if (!(((*aux)->axis_data)[*i][*j]) || !(((*aux)->map_data)[*i][*j]))
 		{
-			map->map_status = 0;
-			return (0);
+			map->map_status = MAP_FAIL_MALLOC;
+			return (MAP_FAIL_MALLOC);
 		}
 		fill_axis_and_map_data(*aux, map->tmp, *i, *j);
 		(*j)++;
 	}
 	(*i)++;
-	return (1);
+	return (MAP_SUCCESS);
 }
 
 int	read_map(char *file, t_aux *aux)
@@ -93,21 +93,21 @@ int	read_map(char *file, t_aux *aux)
 	init_map(&map);
 	if (count_row_num(file, aux, &map) < 0)
 		return (map.map_status);
-	if (malloc_three_dimension(&aux, &map) == 0)
-		return (0);
+	if (malloc_three_dimension(&aux, &map) == MAP_FAIL_MALLOC)
+		return (MAP_FAIL_MALLOC);
 	while (1)
 	{
-		if (malloc_two_dimension(&aux, &map, i, &j) == 0)
+		if (malloc_two_dimension(&aux, &map, i, &j) == MAP_FAIL_MALLOC)
 			break ;
-		if (malloc_one_dimension(&aux, &map, &i, &j) == 0)
+		if (malloc_one_dimension(&aux, &map, &i, &j) == MAP_FAIL_MALLOC)
 			break ;
 		free_array(&map.tmp, &map.line);
 	}
 	free_array(&map.tmp, &map.line);
 	close(map.fd);
-	if (map.map_status == 0)
-		return (0);
-	if (check_col_num(&aux->col_num, aux->row_num, &map) == -3)
-		return (-3);
-	return (1);
+	if (map.map_status == MAP_FAIL_MALLOC)
+		return (MAP_FAIL_MALLOC);
+	if (check_col_num(&aux->col_num, aux->row_num, &map) == MAP_DIFF_COL)
+		return (MAP_DIFF_COL);
+	return (MAP_SUCCESS);
 }

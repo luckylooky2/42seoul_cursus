@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:09:08 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 19:49:25 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 20:49:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 # define KEY_R_BRACKET			30
 # define KEY_SPACE				49
 
+# define MAP_SUCCESS			1
 # define MAP_FAIL_MALLOC		0
 # define MAP_NO_FILE			-1
 # define MAP_NO_DATA			-2
