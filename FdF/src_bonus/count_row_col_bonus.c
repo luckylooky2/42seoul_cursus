@@ -1,16 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   count_row_col.c                                    :+:      :+:    :+:   */
+/*   count_row_col_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:51:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 19:49:18 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 19:40:11 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/fdf.h"
+#include "../include/fdf_bonus.h"
 
 int	count_row_num(char *file, t_aux *aux, t_map *map)
 {
