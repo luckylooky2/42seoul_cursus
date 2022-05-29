@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/17 21:46:20 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/28 10:47:06 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 08:19:58 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,6 +88,14 @@ void	init_struct(t_aux *aux, t_vector *vector)
 	vector->c = 0;
 }
 
+void	init_map(t_map *map)
+{
+	map->fd = 0;
+	map->line = NULL;
+	map->tmp = NULL;
+	map->map_status = 1;
+}
+
 void	init_data(t_aux *aux)
 {
 	aux->theta = acos(1 / sqrt(3));
@@ -119,12 +127,24 @@ void	free_aux(t_aux *aux)
 	free(aux->col_num);
 }
 
-void	free_double_array(char ***array)
+void	free_array(char ***double_array, char **single_array)
 {
-	int i;
+	int	i;
 
 	i = 0;
-	while((*array)[i])
-		free((*array)[i++]);
-	free(*array);
+	if (*double_array != NULL)
+	{
+		while ((*double_array)[i])
+		{
+			free((*double_array)[i]);
+			i++;
+		}
+		free(*double_array);
+		*double_array = NULL;
+	}
+	if (*single_array != NULL)
+	{
+		free(*single_array);
+		*single_array = NULL;
+	}
 }

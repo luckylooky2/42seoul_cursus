@@ -28,10 +28,10 @@ else
 endif
 
 $(NAME) : $(OBJ) $(MLX)
-	$(CC) -g -Lmlx -lmlx -framework OpenGL -framework AppKit $(MLX) $(OBJ) -o $(NAME)
+	$(CC) $(CFLAGS) -g -Lmlx -lmlx -framework OpenGL -framework AppKit $(MLX) $(OBJ) -o $(NAME)
 
 %.o : %.c
-	$(CC) -g -c $< -o $@
+	$(CC) $(CFLAGS) -g -c $< -o $@
 
 $(MLX) :
 	@make -C mlx/

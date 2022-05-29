@@ -6,38 +6,43 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:51:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/21 22:53:51 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 08:39:23 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-#include "../include/get_next_line.h"
 
-int	count_row_num(char *file, t_aux *aux)
+int	count_row_num(char *file, t_aux *aux, t_map *map)
 {
-	int		fd;
 	char	*line;
 
-	fd = open(file, O_RDONLY);
-	if (fd < 0) // 파일이 없는 경우
+	map->fd = open(file, O_RDONLY);
+	if (map->fd < 0)
 	{
-		//perror();
-		return (0);
+		map->map_status = -1;
+		return (map->map_status);
 	}
-	while(1)
+	while (1)
 	{
-		line = get_next_line(fd);
+		line = get_next_line(map->fd);
 		if (line == NULL)
 			break ;
 		(aux->row_num)++;
 		free(line);
 	}
-	return (1);
+	close(map->fd);
+	if (aux->row_num == 0)
+	{
+		map->map_status = -2;
+		return (map->map_status);
+	}
+	map->fd = open(file, O_RDONLY);
+	return (map->map_status);
 }
 
 int	count_col_num(char **array)
 {
-	int cnt;
+	int	cnt;
 
 	cnt = 0;
 	while (array[cnt])
@@ -45,19 +50,22 @@ int	count_col_num(char **array)
 	return (cnt);
 }
 
-int	check_col_num(int **col_num, int row_num)
+int	check_col_num(int **col_num, int row_num, t_map *map)
 {
-	int i;
-	int j;
+	int	i;
+	int	j;
 
 	i = 0;
-	while(i < row_num - 1)
+	while (i < row_num - 1)
 	{
 		j = i + 1;
-		while(j < row_num)
+		while (j < row_num)
 		{
 			if ((*col_num)[i] != (*col_num)[j])
-				return (0);
+			{
+				map->map_status = -3;
+				return (-3);
+			}
 			j++;
 		}
 		i++;

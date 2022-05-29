@@ -6,60 +6,108 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 18:12:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/27 18:09:17 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 09:07:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-#include "../include/get_next_line.h"
+
+static void	fill_axis_and_map_data(t_aux *aux, char **tmp, int i, int j)
+{
+	(aux->axis_data)[i][j][0] = j;
+	(aux->axis_data)[i][j][1] = i;
+	(aux->axis_data)[i][j][2] = ft_atoi(tmp[j]);
+	(aux->axis_data)[i][j][3] = 0;
+	(aux->map_data)[i][j][0] = j;
+	(aux->map_data)[i][j][1] = i;
+	(aux->map_data)[i][j][2] = ft_atoi(tmp[j]);
+	(aux->map_data)[i][j][3] = 0;
+}
+
+static int	malloc_three_dimension(t_aux **aux, t_map *map)
+{
+	(*aux)->axis_data = (double ***)ft_calloc(
+			sizeof(double **), (*aux)->row_num);
+	(*aux)->map_data = (double ***)ft_calloc(
+			sizeof(double **), (*aux)->row_num);
+	(*aux)->col_num = (int *)ft_calloc(
+			sizeof(int), (*aux)->row_num);
+	if (!((*aux)->axis_data) || !((*aux)->map_data) || !((*aux)->col_num))
+	{
+		map->map_status = 0;
+		return (0);
+	}
+	return (1);
+}
+
+static int	malloc_two_dimension(t_aux **aux, t_map *map, int i, int *j)
+{
+	*j = 0;
+	map->line = get_next_line(map->fd);
+	if (map->line == NULL)
+		return (0);
+	map->tmp = ft_split(map->line, ' ');
+	if (map->tmp == NULL)
+	{
+		map->map_status = 0;
+		return (0);
+	}
+	((*aux)->col_num)[i] = count_col_num(map->tmp);
+	((*aux)->axis_data)[i] = (double **)ft_calloc(
+			sizeof(double *), ((*aux)->col_num)[i]);
+	((*aux)->map_data)[i] = (double **)ft_calloc(
+			sizeof(double *), ((*aux)->col_num)[i]);
+	if (!(((*aux)->axis_data)[i]) || !(((*aux)->map_data)[i]))
+	{
+		map->map_status = 0;
+		return (0);
+	}
+	return (1);
+}
+
+static int	malloc_one_dimension(t_aux **aux, t_map *map, int *i, int *j)
+{
+	while (map->tmp[*j])
+	{
+		((*aux)->axis_data)[*i][*j] = (double *)ft_calloc(sizeof(double), 4);
+		((*aux)->map_data)[*i][*j] = (double *)ft_calloc(sizeof(double), 4);
+		if (!(((*aux)->axis_data)[*i][*j]) || !(((*aux)->map_data)[*i][*j]))
+		{
+			map->map_status = 0;
+			return (0);
+		}
+		fill_axis_and_map_data(*aux, map->tmp, *i, *j);
+		(*j)++;
+	}
+	(*i)++;
+	return (1);
+}
 
 int	read_map(char *file, t_aux *aux)
 {
-	int		fd;
+	t_map	map;
 	int		i;
-	int 	j;
-	char	**lines;
-	char 	**tmp;
+	int		j;
 
 	i = 0;
-	if (count_row_num(file, aux) == 0) // row 개수 count
+	init_map(&map);
+	if (count_row_num(file, aux, &map) < 0)
+		return (map.map_status);
+	if (malloc_three_dimension(&aux, &map) == 0)
 		return (0);
-	fd = open(file, O_RDONLY);
-	aux->axis_data = (double ***)malloc(sizeof(double **) * aux->row_num); // 좌표 3차원 배열
-	aux->map_data = (double ***)malloc(sizeof(double **) * aux->row_num); // 좌표 3차원 배열
-	if (aux->axis_data == NULL)
-		return (0);
-	aux->col_num = (int *)malloc(sizeof(int) * aux->row_num);
-	lines = (char **)malloc(sizeof(char *) * (aux->row_num + 1));
 	while (1)
 	{
-		j = 0;
-		lines[i] = get_next_line(fd);
-		if (lines[i] == NULL)
+		if (malloc_two_dimension(&aux, &map, i, &j) == 0)
 			break ;
-		tmp = ft_split(lines[i], ' ');
-		(aux->col_num)[i] = count_col_num(tmp);
-		(aux->axis_data)[i] = (double **)malloc(sizeof(double *) * (aux->col_num)[i]); // 좌표 2차원 배열
-		(aux->map_data)[i] = (double **)malloc(sizeof(double *) * (aux->col_num)[i]); // 좌표 2차원 배열
-		while (tmp[j])
-		{
-			(aux->axis_data)[i][j] = (double *)malloc(sizeof(double) * 4); // 좌표 1차원 배열
-			(aux->map_data)[i][j] = (double *)malloc(sizeof(double) * 4); // 좌표 1차원 배열
-			(aux->axis_data)[i][j][0] = j; // x좌표? 
-			(aux->axis_data)[i][j][1] = i; // y좌표?
-			(aux->axis_data)[i][j][2] = ft_atoi(tmp[j]);
-			(aux->axis_data)[i][j][3] = 0;
-			(aux->map_data)[i][j][0] = j; // x좌표? 
-			(aux->map_data)[i][j][1] = i; // y좌표?
-			(aux->map_data)[i][j][2] = ft_atoi(tmp[j]);
-			(aux->map_data)[i][j][3] = 0;
-			j++;
-		}
-		free_double_array(&tmp);
-		i++;
+		if (malloc_one_dimension(&aux, &map, &i, &j) == 0)
+			break ;
+		free_array(&map.tmp, &map.line);
 	}
-	free_double_array(&lines);
-	if (check_col_num(&aux->col_num, aux->row_num) == 0)
+	free_array(&map.tmp, &map.line);
+	close(map.fd);
+	if (map.map_status == 0)
 		return (0);
+	if (check_col_num(&aux->col_num, aux->row_num, &map) == -3)
+		return (-3);
 	return (1);
 }

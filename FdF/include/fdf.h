@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:09:08 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/27 19:07:37 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 09:13:56 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,35 @@
 # include <stdlib.h>
 # include <fcntl.h>
 # include <math.h>
+# include <stdio.h>
+# include "../include/get_next_line.h"
+# include "../mlx/mlx.h"
 
+# define WINDOW_WIDTH	800
+# define WINDOW_HEIGHT	800
+
+# define X_EVENT_KEY_PRESS		2
+# define X_EVENT_CLOSE_BUTTON	17
+
+# define KEY_ESC			53
+# define KEY_UP			126
+# define KEY_DOWN		125
+# define KEY_LEFT		123
+# define KEY_RIGHT		124
+# define KEY_W			13
+# define KEY_A			0
+# define KEY_S			1
+# define KEY_D			2
+# define KEY_PLUS		24
+# define KEY_MINUS		27
+# define KEY_L_BRACKET	33
+# define KEY_R_BRACKET	30
+# define KEY_SPACE		49
+
+# define	MAP_FAIL_MALLOC		0
+# define	MAP_NO_FILE			-1
+# define MAP_NO_DATA			-2
+# define MAP_DIFF_COL		-3
 
 typedef struct s_aux
 {
@@ -60,17 +88,39 @@ typedef struct	s_mlx
 	t_img		img;
 }	t_mlx;
 
+typedef struct s_line
+{
+	double	dx; 
+	double	dy;
+	int		steps;
+    double	x;
+	double	y;
+    double	x_incre;
+	double	y_incre;
+}	t_line;
+
+typedef struct s_map
+{
+	int		fd;
+	char	*line;
+	char	**tmp;
+	int		map_status;
+}	t_map;
+
+
+
 void	*ft_calloc(size_t nmemb, size_t size);
 int		ft_atoi(const char *nptr);
 char	**ft_split(char const *s, char c);
 size_t	ft_strlen(const char *s);
-int		count_row_num(char *file, t_aux *aux);
+int		count_row_num(char *file, t_aux *aux, t_map *map);
 int		count_col_num(char **array);
-int		check_col_num(int **col_num, int row_num);
-void	free_double_array(char ***array);
+int		check_col_num(int **col_num, int row_num, t_map *map);
+void	free_array(char ***double_array, char **single_array);
 int		read_map(char *file, t_aux *aux);
 void	init_struct(t_aux *aux, t_vector *vector);
 void	init_data(t_aux *aux);
+void	init_map(t_map *map);
 void	init_angle(t_aux *aux);
 void	free_aux(t_aux *aux);
 int		find_maximum_z(t_aux *aux);

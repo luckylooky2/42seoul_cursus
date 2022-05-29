@@ -6,12 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/28 11:04:48 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/29 07:09:14 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/fdf.h"
-#include "../include/get_next_line.h"
 
 void	calculate_normal_vector(t_aux *aux, t_vector *vector)
 {
@@ -22,11 +21,11 @@ void	calculate_normal_vector(t_aux *aux, t_vector *vector)
 
 void	calculate_coordinate(t_aux *aux, t_vector *vector)
 {
-	int	i;
-	int	j;
-	double x;
-	double y;
-	double z;
+	double	x;
+	double	y;
+	double	z;
+	int		i;
+	int		j;
 
 	i = 0;
 	while (i < aux->row_num)
@@ -37,7 +36,8 @@ void	calculate_coordinate(t_aux *aux, t_vector *vector)
 			x = (aux->axis_data)[i][j][0];
 			y = (aux->axis_data)[i][j][1];
 			z = (aux->axis_data)[i][j][2];
-			aux->axis_data[i][j][3] = -1 * (vector->a * x + vector->b * y + vector->c * z);
+			aux->axis_data[i][j][3] = -1 * (vector->a * x + vector->b * y
+					+ vector->c * z);
 			aux->axis_data[i][j][0] = vector->a * aux->axis_data[i][j][3] + x;
 			aux->axis_data[i][j][1] = vector->b * aux->axis_data[i][j][3] + y;
 			aux->axis_data[i][j][2] = vector->c * aux->axis_data[i][j][3] + z;
@@ -96,8 +96,8 @@ void	translate_coordinate(t_aux *aux)
 	double	x_move;
 	double	y_move;
 	double	z_move;
-	int	i;
-	int	j;
+	int		i;
+	int		j;
 
 	aux->max_x = aux->col_num[0] - 1;
 	aux->max_y = aux->row_num - 1;
@@ -128,17 +128,17 @@ void	project_coordinate(t_aux *aux, t_vector *vector)
 
 void	rotate_coordinate(t_aux *aux)
 {
-	int	i;
-	int	j;
-	double x;
-	double y;
-	double z;
+	double	x;
+	double	y;
+	double	z;
+	int		i;
+	int		j;
 
 	i = 0;
-	while (i < aux->row_num) // y
+	while (i < aux->row_num)
 	{
 		j = 0;
-		while (j < aux->col_num[0]) // x
+		while (j < aux->col_num[0])
 		{
 			x = (aux->axis_data)[i][j][0];
 			y = (aux->axis_data)[i][j][1];
