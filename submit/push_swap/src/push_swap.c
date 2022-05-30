@@ -6,13 +6,13 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/06 14:42:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/09 00:45:54 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/30 18:46:08 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
 
-static	int	check_error(int argc, char *argv[], char **new_argv)
+int	check_error(int argc, char *argv[], char **new_argv)
 {
 	if (argv[1] == NULL || check_input(argc, new_argv) == -1
 		|| check_repeat(argc, new_argv) == -1)

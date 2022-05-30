@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 22:02:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 15:51:51 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/30 18:11:38 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,12 +50,7 @@ long long	ft_atoll(const char *nptr)
 		longlong = longlong * 10 + (nptr[i++] - '0');
 	if (sign == -1)
 		longlong *= -1;
-	if (sign == 1 && (longlong < 0 || i > 19))
-		return (-1);
-	else if (sign == -1 && (longlong > 0 || i > 19))
-		return (0);
-	else
-		return (longlong);
+	return (longlong);
 }
 
 void	free_linked_list(t_node **head, int cnt)

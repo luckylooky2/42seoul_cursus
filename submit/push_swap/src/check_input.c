@@ -6,58 +6,64 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:23:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 15:53:34 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/30 18:11:54 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/push_swap.h"
 
+static int	check_number(char *argv[], int i, int j)
+{
+	if (!(('0' <= argv[i][j] && argv[i][j] <= '9') || argv[i][j] == '+' ||
+	argv[i][j] == '-') || (('0' <= argv[i][j] && argv[i][j] <= '9') &&
+	(argv[i][j + 1] == '+' || argv[i][j + 1] == '-')) ||
+	((argv[i][j] == '+' || argv[i][j] == '-') &&
+	!('0' <= argv[i][j + 1] && argv[i][j + 1] <= '9')))
+		return (0);
+	return (1);
+}
+
+static int	check_zero(char *argv_num, int cnt)
+{
+	int	i;
+	int	flag;
+
+	i = 0;
+	flag = 0;
+	if (argv_num[0] == '+' || argv_num[0] == '-' || argv_num[0] == '0')
+		i++;
+	while (argv_num[i])
+	{
+		if (argv_num[i] != '0')
+			flag = 1;
+		if (flag == 1)
+			cnt++;
+		i++;
+	}
+	return (cnt);
+}
+
 int	check_input(int ac, char *av[])
 {
 	int	i;
 	int	j;
+	int	cnt;
 
 	i = 0;
 	while (++i < ac)
 	{
 		j = -1;
+		cnt = 0;
 		while (av[i][++j])
 		{
-			if (!(('0' <= av[i][j] && av[i][j] <= '9') || av[i][j] == '+' ||
-				av[i][j] == '-') || (('0' <= av[i][j] && av[i][j] <= '9') &&
-				(av[i][j + 1] == '+' || av[i][j + 1] == '-')) ||
-				((av[i][j] == '+' || av[i][j] == '-') &&
-				!('0' <= av[i][j + 1] && av[i][j + 1] <= '9')))
+			if (check_number(av, i, j) == 0)
 				return (-1);
 		}
-		if (av[i][0] == '-' && (j > 11 || ft_atoll(av[i]) < -2147483648LL))
+		cnt = check_zero(av[i], cnt);
+		if (cnt > 11 || ft_atoll(av[i]) < -2147483648LL)
 			return (-1);
-		if (av[i][0] == '+' && (j > 11 || ft_atoll(av[i]) > 2147483647LL))
+		if (cnt > 11 || ft_atoll(av[i]) > 2147483647LL)
 			return (-1);
-		if ((av[i][0] != '-' && av[i][0] != '+') &&
-		(j > 10 || ft_atoll(av[i]) > 2147483647LL))
-			return (-1);
-	}
-	return (0);
-}
-
-int	check_repeat(int argc, char *argv[])
-{
-	int	i;
-	int	j;
-	int	crt;
-
-	i = 0;
-	while (++i < argc)
-	{
-		j = i + 1;
-		crt = ft_atoll(argv[i]);
-		while (j < argc)
-		{
-			if (crt == ft_atoll(argv[j]))
-				return (-1);
-			j++;
-		}
 	}
 	return (0);
 }
@@ -105,14 +111,4 @@ char	**parse_input(char *argv[])
 	new_argv = ft_split(str, ' ');
 	free(str);
 	return (new_argv);
-}
-
-int	count_argc(char *argv[])
-{
-	int	cnt;
-
-	cnt = 1;
-	while (argv[cnt] != NULL)
-		cnt++;
-	return (cnt);
 }

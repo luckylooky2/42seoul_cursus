@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/24 09:04:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/09 00:49:50 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/30 18:46:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,9 +71,9 @@ int			check_sorted(t_node **stack, int num);
 int			check_input(int ac, char *av[]);
 int			check_repeat(int argc, char *argv[]);
 int			check_blank(char *str);
+int			count_argc(char *argv[]);
 int			find_index(t_node **stack_b, int num, int flag);
 char		**parse_input(char *argv[]);
-int			count_argc(char *argv[]);
 void		init_aux(t_aux *aux);
 void		init_count(t_aux *aux);
 int			set_pivot(t_node **stack, int num, int flag);
