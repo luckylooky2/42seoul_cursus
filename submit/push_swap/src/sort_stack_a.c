@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 00:25:19 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/08 15:52:05 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/30 11:24:37 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ t_node	*sort_stack_a(t_node *stack_a, t_node *stack_b, int num, int argc)
 		if (stack_a->left->idx > stack_a->idx)
 			swap_a(&stack_a, 0);
 	}
-	if (num == 3)
+	else if (num == 3)
 		sort_only_three(&stack_a);
 	else if (num == 4)
 		sort_only_four(&stack_a, &stack_b);
