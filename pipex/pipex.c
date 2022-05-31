@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 01:02:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/31 12:03:32 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/05/31 12:08:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ int main(int argc, char **argv, char **envp)
     int fd12;
 
     // inputdata_check(argc, argv, &data);
-    fd12 = open("file2", O_RDWR | O_CREAT, 0755);
+    fd12 = open("file2", O_RDWR | O_CREAT, 0644);
     pipe(fd);
     // printf("fd[0] : %d, fd[1] : %d\n", fd[0], fd[1]);
     // pipe(fd1);
