@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/03 21:23:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/31 01:39:10 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/02 11:10:58 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -110,5 +110,7 @@ char	**parse_input(char *argv[])
 	}
 	new_argv = ft_split(str, ' ');
 	free(str);
+	if (new_argv == NULL)
+		return (NULL);
 	return (new_argv);
 }
