@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/31 01:02:32 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 06:42:23 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/03 11:34:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,7 @@ int main(int argc, char **argv, char **envp)
         // close(fd1[0]);
         b = (char **)malloc(sizeof(char *) * 3);
         b[0] = "wc";
-        // b[1] = "-l";
+        b[1] = "-l";
         b[2] = NULL;
         execve("/usr/bin/wc", b, NULL);
     }
@@ -60,10 +60,11 @@ int main(int argc, char **argv, char **envp)
         // write(fd[0], "hello\n", 6); // 3번에 출력 -> 출력 안 됨. 어디로?
         // write(1, "hello\n", 6); // dup2에 의해 4번에 출력
         a = (char **)malloc(sizeof(char *) * 3);
-        a[0] = "cat";
+        a[0] = "ls";
+        // a[1] = "-al";
         // a[1] = "file1";
-        a[2] = NULL;
-        if (execve("/bin/cat", a, NULL) == -1)
+        a[1] = NULL;
+        if (execve("/bin/ls", a, NULL) == -1)
             printf("no cat\n");
     }
 }

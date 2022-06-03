@@ -6,48 +6,13 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 08:33:57 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/03 15:29:12 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
 // $> ./pipex infile ``ls -l'' ``wc -l'' outfile
-
-typedef struct s_data
-{
-	char **c1_param;
-	char **c2_param;
-}	t_data;
-
-void	*ft_calloc(size_t nmemb, size_t size)
-{
-	void	*new_str;
-	size_t	i;
-
-	i = 0;
-	new_str = malloc(nmemb * size);
-	if (!new_str)
-		return (NULL);
-	else
-	{
-		while (i < nmemb * size)
-			((unsigned char *)new_str)[i++] = 0;
-		return (new_str);
-	}
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	cnt;
-
-	cnt = 0;
-	if (s == NULL)
-		return (0);
-	while (s[cnt])
-		cnt++;
-	return (cnt);
-}
 
 int	free_c_params(t_data **data)
 {
@@ -90,17 +55,18 @@ int	check_input(int argc, char *argv[], t_data *data)
 int main(int argc, char *argv[], char *envp[])
 {
 	t_data	data;
-	pid_t pid;
-    pid_t pid2;
+	pid_t pid = 1;
+    pid_t pid2 = 1;
 	int status;
     int fd[2];
     int fd2[2];
 	pid_t res;
 	int fd_file1;
-	int exe_res;
+	int fd_file2;
 	char *tmp;
 
 	fd_file1 = open(argv[1], O_RDONLY);
+	fd_file2 = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0644);
 	if (check_input(argc, argv, &data) == 0)
 		exit(EXIT_FAILURE);
 	pipe(fd);
@@ -108,42 +74,36 @@ int main(int argc, char *argv[], char *envp[])
 	pid = fork();
     if (pid != 0)
         pid2 = fork();
-	if (pid == 0) // 자식 1
+	if (pid == 0) // 자식 2
     {
-		// dup2(fd2[1], 1);
-		// close(fd2[0]);
-        dup2(fd[0], fd_file1);
-        close(fd[1]);
-        // execve("/usr/bin/wc", b, NULL);
-		execve("/bin/cat", data.c1_param, NULL);
+		dup2(fd[0], 0);
+		dup2(fd2[1], 1);
+        close(fd2[0]);
+		close(fd[1]);
+		if (execve("/bin/cat", data.c1_param, NULL) == -1)
+			printf("failed c1\n");
     }
-	else if (pid2 == 0) // 자식 2
+	else if (pid2 == 0) // 자식 3
     {
-        dup2(fd[1], 1);
+		dup2(fd2[0], 0);
+        dup2(fd_file2, 1);
+        close(fd2[1]);
         close(fd[0]);
-		// close(fd2[0]);
-		// close(fd2[1]);
-        if (execve("/bin/cat", data.c2_param, NULL) == -1)
-            printf("no cat\n");
+        close(fd[1]);
+		write(2, data.c2_param[1], ft_strlen(data.c2_param[1]));
+        if (execve("/usr/bin/wc", data.c2_param, NULL) == -1)
+            printf("failed c2\n");
     }
     else // 부모
     {
-		// dup2(fd2[0], fd_file1);
-		// close(fd2[1]);
-		// while (1)
-		// {
-		// 	tmp = get_next_line(fd_file1);
-		// 	printf("%s", tmp);
-		// 	if (tmp == NULL)
-		// 		break ;
-		// 	write(fd2[0], tmp, ft_strlen(tmp));
-		// }
-		// close(fd[0]);
-		// close(fd[1]);
-        res = waitpid(pid2, &status, 0); // 대기
-		// printf("status : %d\n", WEXITSTATUS(status));
-        // res = waitpid(pid, &status, 0); // 대기
-		// printf("res : %d\n", res);
-		// printf("status : %d\n", WEXITSTATUS(status));
+		int i = 0;
+		tmp = get_next_line(fd_file1);
+		dup2(fd[1], 1);
+        close(fd[0]);
+        close(fd2[0]);
+        close(fd2[1]);
+		write(1, tmp, ft_strlen(tmp));
+        // res = waitpid(pid, &status, 0); // 대기	
+        // res = waitpid(pid2, &status, 0); // 대기
     }
 }
