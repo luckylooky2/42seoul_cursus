@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 15:29:12 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/03 15:40:56 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ int main(int argc, char *argv[], char *envp[])
 	t_data	data;
 	pid_t pid = 1;
     pid_t pid2 = 1;
+    pid_t pid3 = 1;
 	int status;
     int fd[2];
     int fd2[2];
@@ -72,9 +73,21 @@ int main(int argc, char *argv[], char *envp[])
 	pipe(fd);
 	pipe(fd2);
 	pid = fork();
-    if (pid != 0)
+    if (pid != 0 && pid2 != 0)
         pid2 = fork();
-	if (pid == 0) // 자식 2
+    if (pid != 0 && pid2 != 0)
+        pid3 = fork();
+	if (pid == 0) // 자식 1
+	{
+		int i = 0;
+		tmp = get_next_line(fd_file1);
+		dup2(fd[1], 1);
+        close(fd[0]);
+        close(fd2[0]);
+        close(fd2[1]);
+		write(1, tmp, ft_strlen(tmp));
+	}
+	if (pid2 == 0) // 자식 2
     {
 		dup2(fd[0], 0);
 		dup2(fd2[1], 1);
@@ -83,27 +96,16 @@ int main(int argc, char *argv[], char *envp[])
 		if (execve("/bin/cat", data.c1_param, NULL) == -1)
 			printf("failed c1\n");
     }
-	else if (pid2 == 0) // 자식 3
+	else if (pid3 == 0) // 자식 3
     {
 		dup2(fd2[0], 0);
         dup2(fd_file2, 1);
         close(fd2[1]);
         close(fd[0]);
         close(fd[1]);
-		write(2, data.c2_param[1], ft_strlen(data.c2_param[1]));
         if (execve("/usr/bin/wc", data.c2_param, NULL) == -1)
             printf("failed c2\n");
     }
     else // 부모
-    {
-		int i = 0;
-		tmp = get_next_line(fd_file1);
-		dup2(fd[1], 1);
-        close(fd[0]);
-        close(fd2[0]);
-        close(fd2[1]);
-		write(1, tmp, ft_strlen(tmp));
-        // res = waitpid(pid, &status, 0); // 대기	
-        // res = waitpid(pid2, &status, 0); // 대기
-    }
+		wait(&status);
 }

@@ -4,7 +4,6 @@ ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
-LIB=pipex.a
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
 SRC=pipex.c get_next_line.c get_next_line_utils.c ft_split.c pipex_utils.c
@@ -36,9 +35,12 @@ bonus :
 clean :
 	$(RM) $(OBJECT) $(OBJECT_BONUS)
 
-fclean : clean
+fclean :
+	@$(MAKE) clean
 	$(RM) $(NAME)
 
-re : fclean all
+re :
+	@$(MAKE) fclean
+	@$(MAKE) all
 
 .PHONY : all clean fclean re bonus
