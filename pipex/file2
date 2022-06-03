@@ -1,1 +1,12 @@
-      51
+total 2216
+-rwxr-xr-x  1 chanhyle  staff    34290 Jun  3 07:29 a.out
+-rw-r--r--  1 chanhyle  staff      205 May 31 11:22 file1
+-rwxr-xr-x  1 chanhyle  staff        0 Jun  3 07:44 file2
+-rw-r--r--  1 chanhyle  staff     2492 Jun  3 07:40 ft_split.c
+-rw-r--r--  1 chanhyle  staff     3128 Jun  2 23:57 main.c
+-rwxr-xr-x  1 chanhyle  staff    35378 Jun  3 07:41 pipex
+-rw-r--r--  1 chanhyle  staff     2978 Jun  3 07:42 pipex.c
+drwxr-xr-x  3 chanhyle  staff       96 Jun  3 07:29 pipex.dSYM
+-rw-r--r--  1 chanhyle  staff     1156 Jun  3 07:29 pipex.h
+-rw-r--r--  1 chanhyle  staff  1035900 Jun  3 07:27 pipex.h.gch
+-rw-r--r--  1 chanhyle  staff     2952 Jun  3 06:42 pipex2.c
