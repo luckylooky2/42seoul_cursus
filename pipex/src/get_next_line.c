@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/13 20:33:25 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 08:24:41 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:06:50 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "get_next_line.h"
+#include "../include/get_next_line.h"
 
 static t_list	*make_linked_list(char *buf, t_list *char_lst)
 {

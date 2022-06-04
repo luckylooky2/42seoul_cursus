@@ -4,28 +4,27 @@ ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
+NAME=pipex
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
-SRC=pipex.c get_next_line.c get_next_line_utils.c ft_split.c pipex_utils.c
-SRC_BONUS=pipex2.c get_next_line.c get_next_line_utils.c ft_split.c pipex_utils.c
+SRC=$(addprefix $(SRC_DIR)/, pipex.c get_next_line.c get_next_line_utils.c \
+	ft_split.c pipex_utils.c ft_strjoin.c)
+SRC_BONUS=$(addprefix $(SRC_DIR)/, pipex2.c get_next_line.c \
+	get_next_line_utils.c ft_split.c pipex_utils.c)
 OBJECT=$(SRC:.c=.o)
 OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 
 ifdef WITH_BONUS
-	NAME=pipex2
 	OBJ = $(OBJECT_BONUS)
-	DIR = $(SRC_BONUS_DIR)
 else
-	NAME=pipex
 	OBJ = $(OBJECT)
-	DIR = $(SRC_DIR)
 endif
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) -g $(OBJ) -o $(NAME)
 
 %.o : %.c
-	$(CC) -c $< -o $@
+	$(CC) -g -c $< -o $@
 
 all : $(NAME)
 

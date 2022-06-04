@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:10:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 12:49:02 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:07:02 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 static char	**ft_free(char **str)
 {

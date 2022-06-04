@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:34:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 15:29:01 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/04 17:06:32 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,14 +20,30 @@
 # include <sys/wait.h>
 # include "get_next_line.h"
 
-typedef struct s_data
+typedef struct s_aux
 {
-	char **c1_param;
-	char **c2_param;
-}	t_data;
+	pid_t	*pid;
+	char	***exec_param;
+	char	**path;
+	char 	*str_infile;
+	int		argc;
+	int		cmd_num;
+	int		fork_num;
+	int		status;
+}	t_aux;
+
+typedef struct s_fd
+{
+	int	**pipe;
+	int	infile;
+	int	outfile;
+	int argc;
+	int	pipe_num;
+}	t_fd;
 
 char	**ft_split(char const *s, char c);
 void	*ft_calloc(size_t nmemb, size_t size);
 size_t	ft_strlen(const char *s);
+char	*ft_strjoin(char **s1, char *s2);
 
 #endif

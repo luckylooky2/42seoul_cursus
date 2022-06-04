@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 11:03:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/03 11:03:18 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/04 16:58:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
+#include "../include/pipex.h"
 
 void	*ft_calloc(size_t nmemb, size_t size)
 {
