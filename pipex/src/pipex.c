@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/04 17:32:25 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/05 17:38:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,13 +38,98 @@
 // 	}
 // }
 
-void	parse_input(char *argv[], t_aux *aux)
+int	find_path(char *envp[])
+{
+	int	i;
+
+	i = 0;
+	while (envp[i])
+	{
+		if (envp[i][0] == 'P')
+			if (envp[i][1] == 'A')
+				if (envp[i][2] == 'T')
+					if (envp[i][3] == 'H')
+						return (i);
+		i++;
+	}
+	return (-1);
+}
+
+char	*join_path_cmd(t_aux *aux, char **path_ary, int i, int j)
+{
+	char	*tmp;
+
+	tmp = NULL;
+	if (j == 0)
+		tmp = ft_strjoin(&(path_ary[j][5]), "/");
+	else
+		tmp = ft_strjoin(path_ary[j], "/");
+	if (tmp == NULL)
+		exit(EXIT_FAILURE);
+	tmp = ft_strjoin_free(&tmp, aux->exec_param[i][0], 0);
+	if (tmp == NULL)
+		exit(EXIT_FAILURE);
+	return (tmp);
+}
+
+void	access_path(t_aux *aux, char **path_ary)
+{
+	int i;
+	int	j;
+	char *tmp;
+
+	i = 0;
+	tmp = NULL;
+	while (aux->exec_param[i])
+	{
+		j = 0;
+		while (path_ary[j])
+		{
+			tmp = join_path_cmd(aux, path_ary, i, j);
+			if (access(tmp, F_OK) == 0)
+				aux->path[i] = tmp;
+			else
+				free(tmp);
+			j++;
+		}
+		i++;
+	}
+}
+
+void	add_path(t_aux *aux, char *envp[])
+{
+	int		path_num;
+	char	**path_ary;
+	int		i;
+
+	i = 0;
+	path_num = find_path(envp);
+	if (path_num == -1)
+		return ;
+	path_ary = ft_split(envp[path_num], ':');
+	if (path_ary == NULL)
+		exit(EXIT_FAILURE);
+	access_path(aux, path_ary);
+	// printf("%s\n", aux->path[0]);
+	// printf("%s\n", aux->path[1]);
+	// printf("%s\n", aux->path[2]);
+	// printf("%s\n", aux->path[3]);
+	while (path_ary[i])
+	{
+		free(path_ary[i]);
+		i++;
+	}
+	free(path_ary);
+}
+
+void	parse_input(char *argv[], char *envp[], t_aux *aux)
 {
 	int	i;
 
 	i = 0;
 	aux->exec_param = (char ***)ft_calloc(sizeof(char **), aux->cmd_num + 1);
-	if (aux->exec_param == NULL)
+	aux->path = (char **)ft_calloc(sizeof(char *), aux->cmd_num + 1);
+	if (aux->exec_param == NULL || aux->path == NULL)
 		exit(EXIT_FAILURE);
 	while (i < aux->cmd_num)
 	{
@@ -53,6 +138,7 @@ void	parse_input(char *argv[], t_aux *aux)
 			exit(EXIT_FAILURE);
 		i++;
 	}
+	add_path(aux, envp);
 }
 
 void	open_files(char *argv[], t_fd *fd)
@@ -121,7 +207,7 @@ char	*read_infile(t_fd *fd, t_aux *aux)
 		line = get_next_line(fd->infile);
 		if (line == NULL)
 			break ;
-		ret = ft_strjoin(&ret, line);
+		ret = ft_strjoin_free(&ret, line, 1);
 		if (ret == NULL)
 			exit(EXIT_FAILURE);
 		free(line);
@@ -148,7 +234,7 @@ void	execute_child_process(t_fd *fd, t_aux *aux)
         close(fd->pipe[1][1]);
         close(fd->pipe[0][0]);
         close(fd->pipe[0][1]);
-        if (execve("/usr/bin/wc", aux->exec_param[1], NULL) == -1)
+        if (execve(aux->path[1], aux->exec_param[1], NULL) == -1)
             printf("failed c2\n");
 	}
 	else // 중간 자식
@@ -157,7 +243,7 @@ void	execute_child_process(t_fd *fd, t_aux *aux)
 		dup2(fd->pipe[1][1], 1);
 		close(fd->pipe[1][0]);
 		close(fd->pipe[0][1]);
-		if (execve("/bin/cat", aux->exec_param[0], NULL) == -1)
+		if (execve(aux->path[0], aux->exec_param[0], NULL) == -1)
 			printf("failed c1\n");
 	}
 }
@@ -202,7 +288,7 @@ int main(int argc, char *argv[], char *envp[])
 	if (argc < 5)
 		exit(EXIT_FAILURE);
 	init_struct(argc, &fd, &aux);
-	parse_input(argv, &aux);
+	parse_input(argv, envp, &aux);
 	open_files(argv, &fd);
 	open_pipes(&fd);
 	fork_child_process(&aux);

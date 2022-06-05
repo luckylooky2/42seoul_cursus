@@ -8,7 +8,7 @@ NAME=pipex
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
 SRC=$(addprefix $(SRC_DIR)/, pipex.c get_next_line.c get_next_line_utils.c \
-	ft_split.c pipex_utils.c ft_strjoin.c)
+	ft_split.c pipex_utils.c ft_strjoin_free.c ft_strjoin.c)
 SRC_BONUS=$(addprefix $(SRC_DIR)/, pipex2.c get_next_line.c \
 	get_next_line_utils.c ft_split.c pipex_utils.c)
 OBJECT=$(SRC:.c=.o)

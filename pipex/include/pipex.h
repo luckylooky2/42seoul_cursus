@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:34:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/04 17:06:32 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/05 16:50:35 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@ typedef struct s_fd
 char	**ft_split(char const *s, char c);
 void	*ft_calloc(size_t nmemb, size_t size);
 size_t	ft_strlen(const char *s);
-char	*ft_strjoin(char **s1, char *s2);
+char	*ft_strjoin_free(char **s1, char *s2, int flag);
+char	*ft_strjoin(char const *s1, char const *s2);
 
 #endif
