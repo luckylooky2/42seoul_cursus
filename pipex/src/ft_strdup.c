@@ -1,42 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/03 11:03:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 21:15:04 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/19 11:12:02 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/06/05 21:30:50 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/pipex.h"
 
-void	*ft_calloc(size_t nmemb, size_t size)
+char	*ft_strdup(const char *s)
 {
-	void	*new_str;
-	size_t	i;
+	char	*new_str;
+	int		len;
+	int		i;
 
 	i = 0;
-	new_str = malloc(nmemb * size);
+	len = ft_strlen((char *)s);
+	new_str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_str)
 		return (NULL);
-	else
+	while (s[i])
 	{
-		while (i < nmemb * size)
-			((unsigned char *)new_str)[i++] = 0;
-		return (new_str);
+		new_str[i] = s[i];
+		i++;
 	}
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	cnt;
-
-	cnt = 0;
-	if (s == NULL)
-		return (0);
-	while (s[cnt])
-		cnt++;
-	return (cnt);
+	new_str[i] = '\0';
+	return (new_str);
 }
