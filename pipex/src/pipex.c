@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 17:38:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/05 17:46:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,36 +196,21 @@ void	fork_child_process(t_aux *aux)
 	}
 }
 
-char	*read_infile(t_fd *fd, t_aux *aux)
-{
-	char	*line;
-	char	*ret;
-	
-	ret = NULL;
-	while (1)
-	{
-		line = get_next_line(fd->infile);
-		if (line == NULL)
-			break ;
-		ret = ft_strjoin_free(&ret, line, 1);
-		if (ret == NULL)
-			exit(EXIT_FAILURE);
-		free(line);
-	}
-	// system("leaks pipex");
-	return (ret);
-}
-
 void	execute_child_process(t_fd *fd, t_aux *aux)
 {
 	if (aux->pid[0] == 0) // 첫 번째 자식
 	{
-		aux->str_infile = read_infile(fd, aux);
 		dup2(fd->pipe[0][1], STDOUT_FILENO);
 		close(fd->pipe[0][0]);
 		close(fd->pipe[1][0]);
 		close(fd->pipe[1][1]);
-		write(1, aux->str_infile, ft_strlen(aux->str_infile));
+		while (1)
+		{
+			aux->str_infile = get_next_line(fd->infile);
+			if (aux->str_infile == NULL)
+				break ;
+			write(1, aux->str_infile, ft_strlen(aux->str_infile));
+		}
 	}
 	else if (aux->pid[aux->fork_num - 1] == 0)// 마지막 자식
 	{
