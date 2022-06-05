@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 23:39:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/06 00:38:15 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,13 @@ char	*join_path_cmd(t_aux *aux, char **path_ary, int i, int j)
 	char	*path;
 
 	path = NULL;
-	if (aux->exec_param[i][0][0] == '/')
-	{
-		path = ft_strdup(aux->exec_param[i][0]);
-		if (path == NULL)
-			exit(EXIT_FAILURE);
-		return (path);
-	}
+	// if (aux->exec_param[i][0][0] == '/')
+	// {
+	// 	path = ft_strdup(aux->exec_param[i][0]);
+	// 	if (path == NULL)
+	// 		exit(EXIT_FAILURE);
+	// 	return (path);
+	// }
 	if (j == 0)
 		path = ft_strjoin(&(path_ary[j][5]), "/");
 	else
@@ -114,14 +114,15 @@ void	access_path(t_aux *aux, char **path_ary, int path_num)
 		j = -1;
 		while (path_ary[++j])
 		{
-			if (check_access(aux, path, i, 1) == 0)
+			if (check_access(aux, path, i, 1) == 0
+				|| aux->exec_param[i][0][0] == '/')
 				break ;
 			path = join_path_cmd(aux, path_ary, i, j);
 			if (check_access(aux, path, i, 2) == 0)
 				break ;
 			free(path);
 		}
-		if (j == path_num)
+		if (j == path_num || aux->exec_param[i][0][0] == '/')
 			aux->path[i] = ft_strdup(aux->exec_param[i][0]);
 		if (aux->path[i] == NULL)
 			exit(EXIT_FAILURE);
