@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/07 00:34:59 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/07 08:00:36 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,15 +177,15 @@ void	open_files(char *argv[], t_aux *aux, t_fd *fd)
 		fd->infile = open(argv[1], O_RDONLY);
 		if (fd->infile < 0)
 		{
-			write(2, "fail\n", 6);
-			// perror(); //zsh: no such file or directory: file
-			// exit(EXIT_FAILURE);
+			write(2, "no such file or directory: ", 28);
+			write(2, argv[1], ft_strlen(argv[1]));
+			write(2, "\n", 1);
 		}
 	}
 	if (aux->here_doc == 0)
 		fd->outfile = open(argv[fd->argc - 1],
 				O_RDWR | O_CREAT | O_TRUNC, 0644);
-	else
+	else if (aux->here_doc == 1)
 		fd->outfile = open(argv[fd->argc - 1],
 				O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd->outfile < 0)
@@ -345,10 +345,12 @@ void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 	if (execve(aux->path[fd->pipe_num - 1],
 			aux->exec_param[fd->pipe_num - 1], envp) == -1)
 	{
-		write(2, "failed c2\n", 11);
-		// why? 1번에다가 쓰는게 아니기 때문
-		// perror(); //zsh: command not found: ca
-		// 명령어 옵션은 새로운 프로세스에서 판단함
+		if (aux->path[fd->pipe_num - 1][0] == '/')
+			write(2, "no such file or directory: ", 28);
+		else
+			write(2, "command not found: ", 20);
+			write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
+			write(2, "\n", 1);
 	}
 }
 
@@ -387,9 +389,12 @@ void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 	if (execve(aux->path[nth_child - 1],
 			aux->exec_param[nth_child - 1], envp) == -1)
 	{
-		write(2, "failed c1\n", 11);
-		// why? 1번에다가 쓰는게 아니기 때문
-		// perror(); //zsh: command not found: ca
+		if (aux->path[nth_child - 1][0] == '/')
+			write(2, "no such file or directory: ", 28);
+		else
+			write(2, "command not found: ", 20);
+		write(2, aux->path[nth_child - 1], ft_strlen(aux->path[nth_child - 1]));
+		write(2, "\n", 1);
 	}
 }
 
@@ -489,7 +494,7 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc < 5)
 		exit(EXIT_FAILURE);
-	check_here_doc(argv, &aux);
+	check_here_doc(argv, &aux); // here_doc이 1일 경우, argc != 6인 경우 제외하기
 	if (aux.here_doc == 0)
 		init_struct(argc, &fd, &aux);
 	else if (aux.here_doc == 1)
