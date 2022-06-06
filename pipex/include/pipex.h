@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:34:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/06 19:57:09 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/07 00:13:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_aux
 	int		cmd_num;
 	int		fork_num;
 	int		here_doc;
+	char	*limiter;
 	int		status;
 }	t_aux;
 

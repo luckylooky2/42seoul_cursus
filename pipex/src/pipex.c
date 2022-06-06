@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/06 19:48:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/07 00:34:59 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,13 +61,6 @@ char	*join_path_cmd(t_aux *aux, char **path_ary, int i, int j)
 	char	*path;
 
 	path = NULL;
-	// if (aux->exec_param[i][0][0] == '/')
-	// {
-	// 	path = ft_strdup(aux->exec_param[i][0]);
-	// 	if (path == NULL)
-	// 		exit(EXIT_FAILURE);
-	// 	return (path);
-	// }
 	if (j == 0)
 		path = ft_strjoin(&(path_ary[j][5]), "/");
 	else
@@ -166,7 +159,10 @@ void	parse_input(char *argv[], char *envp[], t_aux *aux)
 		exit(EXIT_FAILURE);
 	while (i < aux->cmd_num)
 	{
-		aux->exec_param[i] = ft_split(argv[i + 2], ' ');
+		if (aux->here_doc == 0)
+			aux->exec_param[i] = ft_split(argv[i + 2], ' ');
+		else
+			aux->exec_param[i] = ft_split(argv[i + 3], ' ');
 		if (aux->exec_param[i] == NULL)
 			exit(EXIT_FAILURE);
 		i++;
@@ -174,16 +170,24 @@ void	parse_input(char *argv[], char *envp[], t_aux *aux)
 	add_path(aux, envp);
 }
 
-void	open_files(char *argv[], t_fd *fd)
+void	open_files(char *argv[], t_aux *aux, t_fd *fd)
 {
-	fd->infile = open(argv[1], O_RDONLY);
-	if (fd->infile < 0)
+	if (aux->here_doc == 0)
 	{
-		write(2, "fail\n", 6);
-		// perror(); //zsh: no such file or directory: file
-		// exit(EXIT_FAILURE);
+		fd->infile = open(argv[1], O_RDONLY);
+		if (fd->infile < 0)
+		{
+			write(2, "fail\n", 6);
+			// perror(); //zsh: no such file or directory: file
+			// exit(EXIT_FAILURE);
+		}
 	}
-	fd->outfile = open(argv[fd->argc - 1], O_RDWR | O_CREAT | O_TRUNC, 0644);
+	if (aux->here_doc == 0)
+		fd->outfile = open(argv[fd->argc - 1],
+				O_RDWR | O_CREAT | O_TRUNC, 0644);
+	else
+		fd->outfile = open(argv[fd->argc - 1],
+				O_RDWR | O_CREAT | O_APPEND, 0644);
 	if (fd->outfile < 0)
 		exit(EXIT_FAILURE);
 }
@@ -267,6 +271,33 @@ void	close_pipes_first(t_fd *fd)
 	}
 }
 
+int	check_limiter(t_aux *aux, char *line)
+{
+	int		i;
+	int		cnt;
+	int		limiter_num;
+	int		line_num;
+	char	*new_limiter;
+
+	i = 0;
+	cnt = 0;
+	new_limiter = ft_strjoin(aux->limiter, "\n");
+	if (new_limiter == NULL)
+		exit(EXIT_FAILURE);
+	limiter_num = ft_strlen(new_limiter);
+	line_num = ft_strlen(line);
+	if (limiter_num != line_num)
+		return (0);
+	if (ft_strncmp(new_limiter, line, limiter_num) == 0)
+	{
+		free(new_limiter);
+		return (1);	
+	}
+	free(new_limiter);
+	return (0);
+	
+}
+
 void	execute_first_child(t_fd *fd, t_aux *aux)
 {
 	char	*line;
@@ -276,9 +307,17 @@ void	execute_first_child(t_fd *fd, t_aux *aux)
 	close_pipes_first(fd);
 	while (1)
 	{
-		line = get_next_line(fd->infile);
-		if (line == NULL)
+		if (aux->here_doc == 0)
+			line = get_next_line(fd->infile);
+		else if (aux->here_doc == 1)
+			line = get_next_line(STDIN_FILENO);
+		if (aux->here_doc == 0 && line == NULL)
 			break ;
+		else if (aux->here_doc == 1 && check_limiter(aux, line) == 1)
+		{
+			free(line);
+			break ;
+		}
 		write(STDOUT_FILENO, line, ft_strlen(line));
 		free(line);
 	}
@@ -385,6 +424,8 @@ void	check_here_doc(char *argv[], t_aux *aux)
 		aux->here_doc = 1;
 		return ;	
 	}
+	aux->here_doc = 0;
+	return ;
 }
 
 void	init_struct(int argc, t_fd *fd, t_aux *aux)
@@ -402,12 +443,39 @@ void	init_struct(int argc, t_fd *fd, t_aux *aux)
 	aux->argc = argc;
 	aux->cmd_num = argc - 3;
 	aux->fork_num = argc - 2;
-	aux->here_doc = 0;
+	aux->limiter = NULL;
 	aux->status = 0;
 	aux->pid = (pid_t *)ft_calloc(sizeof(pid_t), aux->fork_num);
 	if (aux->pid == NULL)
 		exit(EXIT_FAILURE);
 	while (i < argc - 2)
+	{
+		aux->pid[i] = 1;
+		i++;
+	}
+}
+
+void	init_struct_here_doc(int argc, char *argv[], t_fd *fd, t_aux *aux)
+{
+	int	i;
+
+	i = 0;
+	fd->pipe = NULL;
+	fd->infile = 0;
+	fd->outfile = 0;
+	fd->argc = argc;
+	fd->pipe_num = argc - 4;
+	aux->exec_param = NULL;
+	aux->path = NULL;
+	aux->argc = argc;
+	aux->cmd_num = argc - 4;
+	aux->fork_num = argc - 3;
+	aux->limiter = argv[2];
+	aux->status = 0;
+	aux->pid = (pid_t *)ft_calloc(sizeof(pid_t), aux->fork_num);
+	if (aux->pid == NULL)
+		exit(EXIT_FAILURE);
+	while (i < argc - 3)
 	{
 		aux->pid[i] = 1;
 		i++;
@@ -421,24 +489,17 @@ int	main(int argc, char *argv[], char *envp[])
 
 	if (argc < 5)
 		exit(EXIT_FAILURE);
-	init_struct(argc, &fd, &aux);
 	check_here_doc(argv, &aux);
+	if (aux.here_doc == 0)
+		init_struct(argc, &fd, &aux);
+	else if (aux.here_doc == 1)
+		init_struct_here_doc(argc, argv, &fd, &aux);
 	parse_input(argv, envp, &aux);
-	open_files(argv, &fd);
+	open_files(argv, &aux, &fd);
 	open_pipes(&fd);
 	fork_child_process(&aux);
-	if (aux.here_doc == 0)
-	{
-		if (check_child_process(&aux) == 1)
-			execute_child_process(envp, &fd, &aux);
-		else
-			execute_parent_process(&aux);
-	}
-	else if (aux.here_doc == 1)
-	{
-		if (check_child_process(&aux) == 1)
-			execute_child_process(envp, &fd, &aux);
-		else
-			execute_parent_process(&aux);
-	}
+	if (check_child_process(&aux) == 1)
+		execute_child_process(envp, &fd, &aux);
+	else
+		execute_parent_process(&aux);
 }
