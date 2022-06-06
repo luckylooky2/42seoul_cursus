@@ -1,32 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/19 11:12:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 21:30:50 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/19 15:07:51 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/22 10:50:43 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "libft.h"
 
-char	*ft_strdup(const char *s)
+char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*new_str;
-	int		len;
-	int		i;
+	char			*new_str;
+	size_t			i;
+	unsigned int	s_len;
 
 	i = 0;
-	len = ft_strlen((char *)s);
+	s_len = ft_strlen(s);
+	if (s_len <= len)
+		len = s_len;
 	new_str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_str)
 		return (NULL);
-	while (s[i])
+	while (i < len)
 	{
-		new_str[i] = s[i];
+		if (s_len > start)
+			new_str[i] = s[start];
+		else
+			break ;
 		i++;
+		start++;
 	}
 	new_str[i] = '\0';
 	return (new_str);

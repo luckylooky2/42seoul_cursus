@@ -1,13 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex_utils.c                                      :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/03 11:03:07 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/06 19:19:10 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/16 11:12:44 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/19 11:16:29 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "libft.h"
+
+int	ft_toupper(int c)
+{
+	if ('a' <= c && c <= 'z')
+		return (c - ('a' - 'A'));
+	else
+		return (c);
+}

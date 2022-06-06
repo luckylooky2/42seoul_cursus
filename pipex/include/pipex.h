@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:34:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 21:31:03 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:57:09 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 # include <sys/wait.h>
-# include "get_next_line.h"
+# include "../libft/libft.h"
 
 typedef struct s_aux
 {
@@ -28,6 +28,7 @@ typedef struct s_aux
 	int		argc;
 	int		cmd_num;
 	int		fork_num;
+	int		here_doc;
 	int		status;
 }	t_aux;
 
@@ -39,12 +40,5 @@ typedef struct s_fd
 	int argc;
 	int	pipe_num;
 }	t_fd;
-
-char	**ft_split(char const *s, char c);
-void	*ft_calloc(size_t nmemb, size_t size);
-size_t	ft_strlen(const char *s);
-char	*ft_strjoin_free(char **s1, char *s2, int flag);
-char	*ft_strjoin(char const *s1, char const *s2);
-char	*ft_strdup(const char *s);
 
 #endif

@@ -1,38 +1,33 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strjoin.c                                       :+:      :+:    :+:   */
+/*   ft_strdup.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 12:13:14 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 16:39:12 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/19 11:12:02 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/19 11:15:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "libft.h"
 
-char	*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strdup(const char *s)
 {
 	char	*new_str;
-	int		index;
 	int		len;
+	int		i;
 
-	index = 0;
-	len = ft_strlen(s1) + ft_strlen(s2);
+	i = 0;
+	len = ft_strlen((char *)s);
 	new_str = (char *)malloc(sizeof(char) * (len + 1));
 	if (!new_str)
 		return (NULL);
-	while (*s1)
+	while (s[i])
 	{
-		new_str[index++] = *s1;
-		s1++;
+		new_str[i] = s[i];
+		i++;
 	}
-	while (*s2)
-	{
-		new_str[index++] = *s2;
-		s2++;
-	}
-	new_str[index] = '\0';
+	new_str[i] = '\0';
 	return (new_str);
 }

@@ -4,13 +4,12 @@ ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
 RM=rm -f
 
+LIBFT=libft.a
 NAME=pipex
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
-SRC=$(addprefix $(SRC_DIR)/, pipex.c get_next_line.c get_next_line_utils.c \
-	ft_split.c pipex_utils.c ft_strjoin_free.c ft_strjoin.c ft_strdup.c)
-SRC_BONUS=$(addprefix $(SRC_DIR)/, pipex2.c get_next_line.c \
-	get_next_line_utils.c ft_split.c pipex_utils.c)
+SRC=$(addprefix $(SRC_DIR)/, pipex.c pipex_utils.c)
+SRC_BONUS=$(addprefix $(SRC_DIR)/, pipex.c)
 OBJECT=$(SRC:.c=.o)
 OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 
@@ -20,8 +19,9 @@ else
 	OBJ = $(OBJECT)
 endif
 
-$(NAME) : $(OBJ)
-	$(CC) -g $(OBJ) -o $(NAME)
+$(NAME) : $(OBJ) $(LIBFT) 
+	# @(MAKE) -C ./libft
+	$(CC) -g $(OBJ) $(LIBFT) -o $(NAME)
 
 %.o : %.c
 	$(CC) -g -c $< -o $@

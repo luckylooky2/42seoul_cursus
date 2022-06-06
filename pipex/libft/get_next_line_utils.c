@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 13:44:43 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/04 17:06:45 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:54:34 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/get_next_line.h"
+#include "libft.h"
 
 void	make_new_node(t_list **char_lst, void *content)
 {
@@ -37,35 +37,4 @@ void	make_new_node(t_list **char_lst, void *content)
 			curr = curr->next;
 		curr->next = new_node;
 	}
-}
-
-int	ft_lstsize(t_list *lst)
-{
-	int	cnt;
-
-	cnt = 0;
-	while (lst)
-	{
-		lst = lst->next;
-		cnt++;
-	}
-	return (cnt);
-}
-
-void	ft_lstclear(t_list **lst, void (*del)(void *))
-{
-	t_list	*back;
-
-	if ((*del) == NULL || *lst == NULL)
-		return ;
-	back = (*lst)->next;
-	while (*lst)
-	{
-		(*del)((*lst)->content);
-		free(*lst);
-		*lst = back;
-		if (*lst != NULL)
-			back = back->next;
-	}
-	*lst = NULL;
 }

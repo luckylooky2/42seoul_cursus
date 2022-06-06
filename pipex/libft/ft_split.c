@@ -3,23 +3,23 @@
 /*                                                        :::      ::::::::   */
 /*   ft_split.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/19 15:10:02 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 21:15:13 by chanhyle         ###   ########.fr       */
+/*   Updated: 2021/11/30 12:40:22 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "libft.h"
 
-static char	**ft_free(char **str)
+static void	ft_free(char **str)
 {
 	int	i;
 
 	i = 0;
 	while (str[i])
 		free(str[i++]);
-	return (str);
+	return ;
 }
 
 static char	*ft_copy(char const *str2, char const *str1, char *ptr_ary)
@@ -106,7 +106,7 @@ char	**ft_split(char const *s, char c)
 	last_str = ft_second_malloc(s, c, str, i);
 	if (last_str == NULL)
 	{
-		str = ft_free(str);
+		ft_free(str);
 		free(str);
 		return (NULL);
 	}

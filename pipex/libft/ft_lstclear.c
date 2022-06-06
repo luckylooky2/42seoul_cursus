@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_lstclear.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 11:05:39 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/06 19:18:41 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/24 10:07:51 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/24 10:08:01 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+void	ft_lstclear(t_list **lst, void (*del)(void *))
 {
-	size_t	cnt;
+	t_list	*back;
 
-	cnt = 0;
-	if (s == NULL)
-		return (0);
-	while (s[cnt])
-		cnt++;
-	return (cnt);
+	if ((*del) == NULL || *lst == NULL)
+		return ;
+	back = (*lst)->next;
+	while (*lst)
+	{
+		ft_lstdelone(*lst, (*del));
+		*lst = back;
+		if (*lst != NULL)
+			back = back->next;
+	}
+	*lst = NULL;
 }

@@ -1,25 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strlen.c                                        :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/16 11:05:39 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/06 19:18:41 by chanhyle         ###   ########.fr       */
+/*   Created: 2021/11/16 11:57:38 by chanhyle          #+#    #+#             */
+/*   Updated: 2021/11/19 11:15:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-size_t	ft_strlen(const char *s)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	size_t	cnt;
+	size_t	i;
+	int		res;
 
-	cnt = 0;
-	if (s == NULL)
-		return (0);
-	while (s[cnt])
-		cnt++;
-	return (cnt);
+	i = 0;
+	res = 0;
+	while (i < n)
+	{
+		res = ((const unsigned char *)s1)[i] - ((const unsigned char *)s2)[i];
+		if (res != 0)
+			break ;
+		i++;
+	}
+	return (res);
 }

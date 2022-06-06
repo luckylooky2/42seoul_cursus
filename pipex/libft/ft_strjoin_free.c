@@ -6,11 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/05 15:51:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/05 16:51:13 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:22:42 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/pipex.h"
+#include "libft.h"
 
 static char	*fill_with_s1(char **s1, char *new_str, int *index, int flag)
 {

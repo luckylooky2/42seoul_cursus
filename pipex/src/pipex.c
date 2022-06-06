@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/06 00:38:15 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/06 19:48:21 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -298,13 +298,13 @@ void	close_pipes_last(t_fd *fd)
 	}
 }
 
-void	execute_last_child(t_fd *fd, t_aux *aux)
+void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	dup2(fd->pipe[aux->cmd_num - 1][0], STDIN_FILENO);
 	dup2(fd->outfile, STDOUT_FILENO);
 	close_pipes_last(fd);
 	if (execve(aux->path[fd->pipe_num - 1],
-			aux->exec_param[fd->pipe_num - 1], NULL) == -1)
+			aux->exec_param[fd->pipe_num - 1], envp) == -1)
 	{
 		write(2, "failed c2\n", 11);
 		// why? 1번에다가 쓰는게 아니기 때문
@@ -335,7 +335,7 @@ void	close_pipes_middle(t_fd *fd, int nth_child)
 	}
 }
 
-void	execute_middle_child(t_fd *fd, t_aux *aux)
+void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	int	nth_child;
 
@@ -346,7 +346,7 @@ void	execute_middle_child(t_fd *fd, t_aux *aux)
 	dup2(fd->pipe[nth_child][1], STDOUT_FILENO);
 	close_pipes_middle(fd, nth_child);
 	if (execve(aux->path[nth_child - 1],
-			aux->exec_param[nth_child - 1], NULL) == -1)
+			aux->exec_param[nth_child - 1], envp) == -1)
 	{
 		write(2, "failed c1\n", 11);
 		// why? 1번에다가 쓰는게 아니기 때문
@@ -354,21 +354,37 @@ void	execute_middle_child(t_fd *fd, t_aux *aux)
 	}
 }
 
-void	execute_child_process(t_fd *fd, t_aux *aux)
+void	execute_child_process(char *envp[], t_fd *fd, t_aux *aux)
 {
 	// printf("pid : %d\n", aux->pid[0]);
 	if (aux->pid[0] == 0)
 		execute_first_child(fd, aux);
 	else if (aux->pid[aux->fork_num - 1] == 0)
-		execute_last_child(fd, aux);
+		execute_last_child(envp, fd, aux);
 	else
-		execute_middle_child(fd, aux);
+		execute_middle_child(envp, fd, aux);
 }
 
 void	execute_parent_process(t_aux *aux)
 {
 	wait(&aux->status);
 	// free_all
+}
+
+void	check_here_doc(char *argv[], t_aux *aux)
+{
+	int	i;
+	int	cnt;
+
+	i = 0;
+	cnt = 0;
+	if (ft_strlen(argv[1]) != 8)
+		return ;
+	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
+	{
+		aux->here_doc = 1;
+		return ;	
+	}
 }
 
 void	init_struct(int argc, t_fd *fd, t_aux *aux)
@@ -386,6 +402,7 @@ void	init_struct(int argc, t_fd *fd, t_aux *aux)
 	aux->argc = argc;
 	aux->cmd_num = argc - 3;
 	aux->fork_num = argc - 2;
+	aux->here_doc = 0;
 	aux->status = 0;
 	aux->pid = (pid_t *)ft_calloc(sizeof(pid_t), aux->fork_num);
 	if (aux->pid == NULL)
@@ -405,12 +422,23 @@ int	main(int argc, char *argv[], char *envp[])
 	if (argc < 5)
 		exit(EXIT_FAILURE);
 	init_struct(argc, &fd, &aux);
+	check_here_doc(argv, &aux);
 	parse_input(argv, envp, &aux);
 	open_files(argv, &fd);
 	open_pipes(&fd);
 	fork_child_process(&aux);
-	if (check_child_process(&aux) == 1)
-		execute_child_process(&fd, &aux);
-	else
-		execute_parent_process(&aux);
+	if (aux.here_doc == 0)
+	{
+		if (check_child_process(&aux) == 1)
+			execute_child_process(envp, &fd, &aux);
+		else
+			execute_parent_process(&aux);
+	}
+	else if (aux.here_doc == 1)
+	{
+		if (check_child_process(&aux) == 1)
+			execute_child_process(envp, &fd, &aux);
+		else
+			execute_parent_process(&aux);
+	}
 }
