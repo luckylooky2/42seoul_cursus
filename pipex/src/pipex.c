@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/07 08:00:36 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/10 18:19:26 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -257,12 +257,11 @@ void	fork_child_process(t_aux *aux)
 	}
 }
 
-void	close_pipes_first(t_fd *fd)
+void	close_pipes(t_fd *fd)
 {
 	int	i;
 
-	i = 1;
-	close(fd->pipe[0][0]);
+	i = 0;
 	while (i < fd->pipe_num)
 	{
 		close(fd->pipe[i][0]);
@@ -304,7 +303,7 @@ void	execute_first_child(t_fd *fd, t_aux *aux)
 
 	line = NULL;
 	dup2(fd->pipe[0][1], STDOUT_FILENO);
-	close_pipes_first(fd);
+	close_pipes(fd);
 	while (1)
 	{
 		if (aux->here_doc == 0)
@@ -321,6 +320,7 @@ void	execute_first_child(t_fd *fd, t_aux *aux)
 		write(STDOUT_FILENO, line, ft_strlen(line));
 		free(line);
 	}
+	exit(EXIT_SUCCESS);
 }
 
 void	close_pipes_last(t_fd *fd)
@@ -351,6 +351,7 @@ void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 			write(2, "command not found: ", 20);
 			write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
 			write(2, "\n", 1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -395,6 +396,7 @@ void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 			write(2, "command not found: ", 20);
 		write(2, aux->path[nth_child - 1], ft_strlen(aux->path[nth_child - 1]));
 		write(2, "\n", 1);
+		exit(EXIT_FAILURE);
 	}
 }
 
@@ -409,9 +411,19 @@ void	execute_child_process(char *envp[], t_fd *fd, t_aux *aux)
 		execute_middle_child(envp, fd, aux);
 }
 
-void	execute_parent_process(t_aux *aux)
+void	execute_parent_process(t_aux *aux, t_fd *fd)
 {
-	wait(&aux->status);
+	pid_t	pid;
+	
+	// pid = 0;
+	// close_pipes(fd);
+	// while (pid != aux->pid[aux->cmd_num])
+	// {
+	// 	pid = waitpid(aux->pid[aux->cmd_num], &aux->status, WNOHANG);
+	// }
+	// // wait(&aux->status);
+	// printf("%d\n", WEXITSTATUS(aux->status));
+	// exit(WEXITSTATUS(aux->status));
 	// free_all
 }
 
@@ -423,7 +435,10 @@ void	check_here_doc(char *argv[], t_aux *aux)
 	i = 0;
 	cnt = 0;
 	if (ft_strlen(argv[1]) != 8)
+	{
+		aux->here_doc = 0;
 		return ;
+	}
 	if (ft_strncmp(argv[1], "here_doc", 8) == 0)
 	{
 		aux->here_doc = 1;
@@ -442,7 +457,7 @@ void	init_struct(int argc, t_fd *fd, t_aux *aux)
 	fd->infile = 0;
 	fd->outfile = 0;
 	fd->argc = argc;
-	fd->pipe_num = argc - 3;
+	fd->pipe_num = argc - 2;
 	aux->exec_param = NULL;
 	aux->path = NULL;
 	aux->argc = argc;
@@ -506,5 +521,6 @@ int	main(int argc, char *argv[], char *envp[])
 	if (check_child_process(&aux) == 1)
 		execute_child_process(envp, &fd, &aux);
 	else
-		execute_parent_process(&aux);
+		execute_parent_process(&aux, &fd);
+	exit(127);
 }
