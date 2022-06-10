@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/10 22:34:34 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 03:10:21 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,107 +297,116 @@ int	check_limiter(t_aux *aux, char *line)
 	
 }
 
-void	execute_first_child(t_fd *fd, t_aux *aux)
+void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	char	*line;
 
 	line = NULL;
-	dup2(fd->pipe[0][1], STDOUT_FILENO);
-	close_pipes(fd);
-	while (1)
+	if (aux->here_doc == 0)
 	{
-		if (aux->here_doc == 0)
-			line = get_next_line(fd->infile);
-		else if (aux->here_doc == 1)
-			line = get_next_line(STDIN_FILENO);
-		if (aux->here_doc == 0 && line == NULL)
-			break ;
-		else if (aux->here_doc == 1 && check_limiter(aux, line) == 1)
+		dup2(fd->infile, STDIN_FILENO);
+		dup2(fd->pipe[0][1], STDOUT_FILENO);
+		close_pipes(fd);
+		if (execve(aux->path[0], aux->exec_param[0], envp) == -1)
 		{
-			free(line);
-			break ;
+			if (aux->path[0][0] == '/')
+				write(2, "no such file or directory: ", 28);
+			else
+				write(2, "command not found: ", 20);
+			write(2, aux->path[0], ft_strlen(aux->path[0]));
+			write(2, "\n", 1);
+			if (aux->path[0][0] == '/')
+				exit(EXIT_NO_FILE);
+			else
+				exit(EXIT_NO_COMMAND);
 		}
-		write(STDOUT_FILENO, line, ft_strlen(line));
-		free(line);
 	}
-	exit(EXIT_SUCCESS);
-}
-
-void	close_pipes_last(t_fd *fd)
-{
-	int	i;
-
-	i = 0;
-	close(fd->pipe[fd->pipe_num - 1][1]);
-	while (i < fd->pipe_num - 1)
+	else if (aux->here_doc == 1)
 	{
-		close(fd->pipe[i][0]);
-		close(fd->pipe[i][1]);
-		i++;
+		dup2(fd->pipe[0][1], STDOUT_FILENO);
+		close_pipes(fd);
+		while (1)
+		{
+			line = get_next_line(STDIN_FILENO);
+			if (line == NULL)
+				exit(EXIT_FAILURE);
+			if (check_limiter(aux, line) == 1)
+			{
+				free(line);
+				break ;
+			}
+			write(STDOUT_FILENO, line, ft_strlen(line));
+			free(line);
+		}
+		if (execve(aux->path[0], aux->exec_param[0], envp) == -1)
+		{
+			if (aux->path[0][0] == '/')
+				write(2, "no such file or directory: ", 28);
+			else
+				write(2, "command not found: ", 20);
+			write(2, aux->path[0], ft_strlen(aux->path[0]));
+			write(2, "\n", 1);
+			exit(EXIT_FAILURE);
+		}
 	}
 }
 
 void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 {
-	dup2(fd->pipe[aux->cmd_num - 1][0], STDIN_FILENO);
+	dup2(fd->pipe[fd->pipe_num - 1][0], STDIN_FILENO);
 	dup2(fd->outfile, STDOUT_FILENO);
 	close_pipes(fd);
-	if (execve(aux->path[fd->pipe_num - 1],
+	if (aux->here_doc == 0)
+	{
+		if (execve(aux->path[fd->pipe_num],
+				aux->exec_param[fd->pipe_num], envp) == -1)
+		{
+			if (aux->path[fd->pipe_num][0] == '/')
+				write(2, "no such file or directory: ", 28);
+			else
+				write(2, "command not found: ", 20);
+			write(2, aux->path[fd->pipe_num], ft_strlen(aux->path[fd->pipe_num]));
+			write(2, "\n", 1);
+			if (aux->path[fd->pipe_num][0] == '/')
+				exit(EXIT_NO_FILE);
+			else
+				exit(EXIT_NO_COMMAND);
+		}
+	}
+	else
+	{
+		if (execve(aux->path[fd->pipe_num - 1],
 			aux->exec_param[fd->pipe_num - 1], envp) == -1)
-	{
-		if (aux->path[fd->pipe_num - 1][0] == '/')
-			write(2, "no such file or directory: ", 28);
-		else
-			write(2, "command not found: ", 20);
-		write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
-		write(2, "\n", 1);
-		if (aux->path[fd->pipe_num - 1][0] == '/')
-			exit(EXIT_NO_FILE);
-		else
-			exit(EXIT_NO_COMMAND);
-	}
-}
-
-void	close_pipes_middle(t_fd *fd, int nth_child)
-{
-	int	i;
-
-	i = 0;
-	close(fd->pipe[nth_child][0]);
-	close(fd->pipe[nth_child -1][1]);
-	while (i < nth_child - 1)
-	{
-		close(fd->pipe[i][0]);
-		close(fd->pipe[i][1]);
-		i++;
-	}
-	i = nth_child + 1;
-	while (i < fd->pipe_num)
-	{
-		close(fd->pipe[i][0]);
-		close(fd->pipe[i][1]);
-		i++;
+		{
+			if (aux->path[fd->pipe_num - 1][0] == '/')
+				write(2, "no such file or directory: ", 28);
+			else
+				write(2, "command not found: ", 20);
+			write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
+			write(2, "\n", 1);
+			if (aux->path[fd->pipe_num - 1][0] == '/')
+				exit(EXIT_NO_FILE);
+			else
+				exit(EXIT_NO_COMMAND);
+		}
 	}
 }
 
 void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 {
-	int	nth_child;
+	int	nth;
 
-	// if (fd->infile < 0)
-	// 	exit(EXIT_FAILURE);
-	nth_child = check_nth_child_process(aux);
-	dup2(fd->pipe[nth_child - 1][0], STDIN_FILENO);
-	dup2(fd->pipe[nth_child][1], STDOUT_FILENO);
+	nth = check_nth_child_process(aux);
+	dup2(fd->pipe[nth - 1][0], STDIN_FILENO);
+	dup2(fd->pipe[nth][1], STDOUT_FILENO);
 	close_pipes(fd);
-	if (execve(aux->path[nth_child - 1],
-			aux->exec_param[nth_child - 1], envp) == -1)
+	if (execve(aux->path[nth - 1], aux->exec_param[nth - 1], envp) == -1)
 	{
-		if (aux->path[nth_child - 1][0] == '/')
+		if (aux->path[nth - 1][0] == '/')
 			write(2, "no such file or directory: ", 28);
 		else
 			write(2, "command not found: ", 20);
-		write(2, aux->path[nth_child - 1], ft_strlen(aux->path[nth_child - 1]));
+		write(2, aux->path[nth - 1], ft_strlen(aux->path[nth - 1]));
 		write(2, "\n", 1);
 		exit(EXIT_FAILURE);
 	}
@@ -406,7 +415,7 @@ void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 void	execute_child_process(char *envp[], t_fd *fd, t_aux *aux)
 {
 	if (aux->pid[0] == 0)
-		execute_first_child(fd, aux);
+		execute_first_child(envp, fd, aux);
 	else if (aux->pid[aux->fork_num - 1] == 0)
 		execute_last_child(envp, fd, aux);
 	else
@@ -416,11 +425,16 @@ void	execute_child_process(char *envp[], t_fd *fd, t_aux *aux)
 void	execute_parent_process(t_aux *aux, t_fd *fd)
 {
 	pid_t	pid;
+	pid_t	last_pid;
 	
 	pid = 0;
+	if (aux->here_doc == 0)
+		last_pid = aux->pid[aux->cmd_num - 1];
+	else
+		last_pid = aux->pid[aux->cmd_num];
 	close_pipes(fd);
-	while (pid != aux->pid[aux->cmd_num])
-		pid = waitpid(aux->pid[aux->cmd_num], &aux->status, WNOHANG);
+	while (pid != last_pid)
+		pid = waitpid(last_pid, &aux->status, WNOHANG);
 	exit(WEXITSTATUS(aux->status));
 	// free_all
 }
@@ -455,12 +469,12 @@ void	init_struct(int argc, t_fd *fd, t_aux *aux)
 	fd->infile = 0;
 	fd->outfile = 0;
 	fd->argc = argc;
-	fd->pipe_num = argc - 3;
+	fd->pipe_num = argc - 4;
 	aux->exec_param = NULL;
 	aux->path = NULL;
 	aux->argc = argc;
 	aux->cmd_num = argc - 3;
-	aux->fork_num = argc - 2;
+	aux->fork_num = argc - 3;
 	aux->limiter = NULL;
 	aux->status = 0;
 	aux->pid = (pid_t *)ft_calloc(sizeof(pid_t), aux->fork_num);
@@ -482,12 +496,12 @@ void	init_struct_here_doc(int argc, char *argv[], t_fd *fd, t_aux *aux)
 	fd->infile = 0;
 	fd->outfile = 0;
 	fd->argc = argc;
-	fd->pipe_num = argc - 4;
+	fd->pipe_num = argc - 4; // + 1
 	aux->exec_param = NULL;
 	aux->path = NULL;
 	aux->argc = argc;
 	aux->cmd_num = argc - 4;
-	aux->fork_num = argc - 3;
+	aux->fork_num = argc - 4; 
 	aux->limiter = argv[2];
 	aux->status = 0;
 	aux->pid = (pid_t *)ft_calloc(sizeof(pid_t), aux->fork_num);
