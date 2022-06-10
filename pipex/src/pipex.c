@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/10 22:20:56 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/10 22:34:34 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -341,7 +341,7 @@ void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	dup2(fd->pipe[aux->cmd_num - 1][0], STDIN_FILENO);
 	dup2(fd->outfile, STDOUT_FILENO);
-	close_pipes_last(fd);
+	close_pipes(fd);
 	if (execve(aux->path[fd->pipe_num - 1],
 			aux->exec_param[fd->pipe_num - 1], envp) == -1)
 	{
@@ -384,12 +384,12 @@ void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	int	nth_child;
 
-	if (fd->infile < 0)
-		exit(EXIT_FAILURE);
+	// if (fd->infile < 0)
+	// 	exit(EXIT_FAILURE);
 	nth_child = check_nth_child_process(aux);
 	dup2(fd->pipe[nth_child - 1][0], STDIN_FILENO);
 	dup2(fd->pipe[nth_child][1], STDOUT_FILENO);
-	close_pipes_middle(fd, nth_child);
+	close_pipes(fd);
 	if (execve(aux->path[nth_child - 1],
 			aux->exec_param[nth_child - 1], envp) == -1)
 	{
@@ -405,7 +405,6 @@ void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 
 void	execute_child_process(char *envp[], t_fd *fd, t_aux *aux)
 {
-	// printf("pid : %d\n", aux->pid[0]);
 	if (aux->pid[0] == 0)
 		execute_first_child(fd, aux);
 	else if (aux->pid[aux->fork_num - 1] == 0)
@@ -521,5 +520,5 @@ int	main(int argc, char *argv[], char *envp[])
 		execute_child_process(envp, &fd, &aux);
 	else
 		execute_parent_process(&aux, &fd);
-	exit(127);
+	exit(aux.status);
 }
