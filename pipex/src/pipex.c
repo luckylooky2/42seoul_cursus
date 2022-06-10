@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/10 18:19:26 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/10 22:20:56 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -349,9 +349,12 @@ void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 			write(2, "no such file or directory: ", 28);
 		else
 			write(2, "command not found: ", 20);
-			write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
-			write(2, "\n", 1);
-		exit(EXIT_FAILURE);
+		write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
+		write(2, "\n", 1);
+		if (aux->path[fd->pipe_num - 1][0] == '/')
+			exit(EXIT_NO_FILE);
+		else
+			exit(EXIT_NO_COMMAND);
 	}
 }
 
@@ -415,15 +418,11 @@ void	execute_parent_process(t_aux *aux, t_fd *fd)
 {
 	pid_t	pid;
 	
-	// pid = 0;
-	// close_pipes(fd);
-	// while (pid != aux->pid[aux->cmd_num])
-	// {
-	// 	pid = waitpid(aux->pid[aux->cmd_num], &aux->status, WNOHANG);
-	// }
-	// // wait(&aux->status);
-	// printf("%d\n", WEXITSTATUS(aux->status));
-	// exit(WEXITSTATUS(aux->status));
+	pid = 0;
+	close_pipes(fd);
+	while (pid != aux->pid[aux->cmd_num])
+		pid = waitpid(aux->pid[aux->cmd_num], &aux->status, WNOHANG);
+	exit(WEXITSTATUS(aux->status));
 	// free_all
 }
 
@@ -457,7 +456,7 @@ void	init_struct(int argc, t_fd *fd, t_aux *aux)
 	fd->infile = 0;
 	fd->outfile = 0;
 	fd->argc = argc;
-	fd->pipe_num = argc - 2;
+	fd->pipe_num = argc - 3;
 	aux->exec_param = NULL;
 	aux->path = NULL;
 	aux->argc = argc;

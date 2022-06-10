@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:34:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/07 00:13:55 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/10 22:20:37 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,9 @@
 # include <fcntl.h>
 # include <sys/wait.h>
 # include "../libft/libft.h"
+
+# define EXIT_NO_FILE		1
+# define EXIT_NO_COMMAND	127
 
 typedef struct s_aux
 {
