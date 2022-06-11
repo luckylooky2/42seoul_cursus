@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:58:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 12:11:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 21:26:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ void	rotate_axis_z(t_aux *aux)
 	double	angle;
 
 	i = 0;
-	angle = (90 + aux->alpha) * M_PI / 180;
+	angle = (90 + aux->alpha % 360) * M_PI / 180;
 	while (i < aux->row_num)
 	{
 		j = 0;

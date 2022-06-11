@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 11:44:25 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 12:15:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 21:28:35 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,10 @@ static void	control_angle_and_multi(int keycode, t_mlx *mlx)
 		if (mlx->aux.multi > -0.9)
 			mlx->aux.multi -= 0.01;
 	}
+	if (mlx->aux.theta > 2 * M_PI)
+		mlx->aux.theta -= 2 * M_PI;
+	if (mlx->aux.phi > 2 * M_PI)
+		mlx->aux.theta -= 2 * M_PI;
 }
 
 static void	control_axis(int keycode, t_mlx *mlx)
@@ -56,13 +60,17 @@ static void	control_axis(int keycode, t_mlx *mlx)
 	else if (keycode == KEY_R_BRACKET)
 		mlx->aux.alpha -= 1;
 	else if (keycode == KEY_W)
-		mlx->aux.trans_y -= 1;
+		if (mlx->aux.trans_y > -1000)
+			mlx->aux.trans_y -= 1;
 	else if (keycode == KEY_S)
-		mlx->aux.trans_y += 1;
+		if (mlx->aux.trans_y < 1000)
+			mlx->aux.trans_y += 1;
 	else if (keycode == KEY_A)
-		mlx->aux.trans_x -= 1;
+		if (mlx->aux.trans_x > -1000)
+			mlx->aux.trans_x -= 1;
 	else if (keycode == KEY_D)
-		mlx->aux.trans_x += 1;
+		if (mlx->aux.trans_x < 1000)
+			mlx->aux.trans_x += 1;
 	else if (keycode == KEY_SPACE)
 		init_all_data(&mlx->aux);
 }
