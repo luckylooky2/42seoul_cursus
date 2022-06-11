@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/11 03:10:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 10:30:32 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -300,13 +300,15 @@ int	check_limiter(t_aux *aux, char *line)
 void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	char	*line;
+	char	*tmp;
 
 	line = NULL;
+	tmp = NULL;
+	dup2(fd->infile, STDIN_FILENO);
+	dup2(fd->pipe[0][1], STDOUT_FILENO);
+	close_pipes(fd);
 	if (aux->here_doc == 0)
 	{
-		dup2(fd->infile, STDIN_FILENO);
-		dup2(fd->pipe[0][1], STDOUT_FILENO);
-		close_pipes(fd);
 		if (execve(aux->path[0], aux->exec_param[0], envp) == -1)
 		{
 			if (aux->path[0][0] == '/')
@@ -323,31 +325,23 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 	}
 	else if (aux->here_doc == 1)
 	{
-		dup2(fd->pipe[0][1], STDOUT_FILENO);
-		close_pipes(fd);
 		while (1)
 		{
-			line = get_next_line(STDIN_FILENO);
-			if (line == NULL)
+			tmp = get_next_line(STDIN_FILENO);
+			if (tmp == NULL)
 				exit(EXIT_FAILURE);
-			if (check_limiter(aux, line) == 1)
+			if (check_limiter(aux, tmp) == 1)
 			{
-				free(line);
+				free(tmp);
 				break ;
 			}
-			write(STDOUT_FILENO, line, ft_strlen(line));
-			free(line);
+			line = ft_strjoin_free(&line, tmp, 0);
+			free(tmp);
 		}
-		if (execve(aux->path[0], aux->exec_param[0], envp) == -1)
-		{
-			if (aux->path[0][0] == '/')
-				write(2, "no such file or directory: ", 28);
-			else
-				write(2, "command not found: ", 20);
-			write(2, aux->path[0], ft_strlen(aux->path[0]));
-			write(2, "\n", 1);
-			exit(EXIT_FAILURE);
-		}
+		// dup2(fd->pipe[0][1], STDOUT_FILENO);
+		// close_pipes(fd);
+		write(STDOUT_FILENO, line, ft_strlen(line));
+		free(line);
 	}
 }
 
@@ -373,7 +367,7 @@ void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 				exit(EXIT_NO_COMMAND);
 		}
 	}
-	else
+	else if (aux->here_doc == 1)
 	{
 		if (execve(aux->path[fd->pipe_num - 1],
 			aux->exec_param[fd->pipe_num - 1], envp) == -1)
@@ -501,7 +495,7 @@ void	init_struct_here_doc(int argc, char *argv[], t_fd *fd, t_aux *aux)
 	aux->path = NULL;
 	aux->argc = argc;
 	aux->cmd_num = argc - 4;
-	aux->fork_num = argc - 4; 
+	aux->fork_num = argc - 3; 
 	aux->limiter = argv[2];
 	aux->status = 0;
 	aux->pid = (pid_t *)ft_calloc(sizeof(pid_t), aux->fork_num);
