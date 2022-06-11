@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 11:56:09 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 12:09:17 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 23:45:15 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,4 +60,16 @@ void	init_all_data(t_aux *aux)
 	aux->alpha = 0;
 	aux->trans_x = 0;
 	aux->trans_y = 0;
+}
+
+void	init_img_data(t_img	*img)
+{
+	int	i;
+
+	i = 0;
+	while (i < (WINDOW_WIDTH - 1) * (WINDOW_HEIGHT - 1) + 1)
+	{
+		img->data[i] = 0;
+		i++;
+	}
 }

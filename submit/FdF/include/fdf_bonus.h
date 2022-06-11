@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:09:08 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 20:49:04 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 23:44:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -138,5 +138,6 @@ void	init_struct(t_aux *aux, t_vector *vector);
 void	init_mlx(t_mlx *mlx, t_aux *aux, t_vector *vector, t_img *img);
 void	init_map(t_map *map);
 void	init_all_data(t_aux *aux);
+void	init_img_data(t_img	*img);
 
 #endif
