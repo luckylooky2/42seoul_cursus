@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/11 11:19:20 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 13:08:40 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -297,13 +297,34 @@ int	check_limiter(t_aux *aux, char *line)
 	
 }
 
-void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
+static void	pass_line_with_limiter(t_fd *fd, t_aux *aux)
 {
 	char	*line;
 	char	*tmp;
 
 	line = NULL;
 	tmp = NULL;
+	while (1)
+	{
+		tmp = get_next_line(STDIN_FILENO); // 왜 stdin은 입력받지 못하는가?
+		if (tmp == NULL)
+			exit(EXIT_FAILURE);
+		if (check_limiter(aux, tmp) == 1)
+		{
+			free(tmp);
+			break ;
+		}
+		line = ft_strjoin_free(&line, tmp, 0);
+		free(tmp);
+	}
+	dup2(fd->pipe[0][1], STDOUT_FILENO);
+	close_pipes(fd);
+	write(STDOUT_FILENO, line, ft_strlen(line));
+	free(line);
+}
+
+void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
+{
 	if (aux->here_doc == 0)
 	{
 		dup2(fd->infile, STDIN_FILENO);
@@ -324,25 +345,7 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 		}
 	}
 	else if (aux->here_doc == 1)
-	{
-		while (1)
-		{
-			tmp = get_next_line(STDIN_FILENO);
-			if (tmp == NULL)
-				exit(EXIT_FAILURE);
-			if (check_limiter(aux, tmp) == 1)
-			{
-				free(tmp);
-				break ;
-			}
-			line = ft_strjoin_free(&line, tmp, 0);
-			free(tmp);
-		}
-		dup2(fd->pipe[0][1], STDOUT_FILENO);
-		close_pipes(fd);
-		write(STDOUT_FILENO, line, ft_strlen(line));
-		free(line);
-	}
+		pass_line_with_limiter(fd, aux);
 }
 
 void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
