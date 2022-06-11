@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/11 19:14:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 20:45:40 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,9 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 	}
 	else if (aux->here_doc == 1)
 	{
-		line = get_next_line_with_limiter(aux);
 		dup2(fd->pipe[0][1], STDOUT_FILENO);
 		close_pipes(fd);
+		line = get_next_line_with_limiter(aux);
 		write(STDOUT_FILENO, line, ft_strlen(line));
 		free(line);
 		exit(EXIT_SUCCESS);
