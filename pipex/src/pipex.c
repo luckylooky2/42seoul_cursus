@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/03 00:35:15 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/11 10:30:32 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/11 11:19:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -304,11 +304,11 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 
 	line = NULL;
 	tmp = NULL;
-	dup2(fd->infile, STDIN_FILENO);
-	dup2(fd->pipe[0][1], STDOUT_FILENO);
-	close_pipes(fd);
 	if (aux->here_doc == 0)
 	{
+		dup2(fd->infile, STDIN_FILENO);
+		dup2(fd->pipe[0][1], STDOUT_FILENO);
+		close_pipes(fd);
 		if (execve(aux->path[0], aux->exec_param[0], envp) == -1)
 		{
 			if (aux->path[0][0] == '/')
@@ -338,8 +338,8 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 			line = ft_strjoin_free(&line, tmp, 0);
 			free(tmp);
 		}
-		// dup2(fd->pipe[0][1], STDOUT_FILENO);
-		// close_pipes(fd);
+		dup2(fd->pipe[0][1], STDOUT_FILENO);
+		close_pipes(fd);
 		write(STDOUT_FILENO, line, ft_strlen(line));
 		free(line);
 	}
@@ -347,42 +347,27 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 
 void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 {
+	int	last;
+
+	if (aux->here_doc == 0)
+		last = fd->pipe_num;
+	else if (aux->here_doc == 1)
+		last = fd->pipe_num - 1;
 	dup2(fd->pipe[fd->pipe_num - 1][0], STDIN_FILENO);
 	dup2(fd->outfile, STDOUT_FILENO);
 	close_pipes(fd);
-	if (aux->here_doc == 0)
+	if (execve(aux->path[last], aux->exec_param[last], envp) == -1)
 	{
-		if (execve(aux->path[fd->pipe_num],
-				aux->exec_param[fd->pipe_num], envp) == -1)
-		{
-			if (aux->path[fd->pipe_num][0] == '/')
-				write(2, "no such file or directory: ", 28);
-			else
-				write(2, "command not found: ", 20);
-			write(2, aux->path[fd->pipe_num], ft_strlen(aux->path[fd->pipe_num]));
-			write(2, "\n", 1);
-			if (aux->path[fd->pipe_num][0] == '/')
-				exit(EXIT_NO_FILE);
-			else
-				exit(EXIT_NO_COMMAND);
-		}
-	}
-	else if (aux->here_doc == 1)
-	{
-		if (execve(aux->path[fd->pipe_num - 1],
-			aux->exec_param[fd->pipe_num - 1], envp) == -1)
-		{
-			if (aux->path[fd->pipe_num - 1][0] == '/')
-				write(2, "no such file or directory: ", 28);
-			else
-				write(2, "command not found: ", 20);
-			write(2, aux->path[fd->pipe_num - 1], ft_strlen(aux->path[fd->pipe_num - 1]));
-			write(2, "\n", 1);
-			if (aux->path[fd->pipe_num - 1][0] == '/')
-				exit(EXIT_NO_FILE);
-			else
-				exit(EXIT_NO_COMMAND);
-		}
+		if (aux->path[last][0] == '/')
+			write(2, "no such file or directory: ", 28);
+		else
+			write(2, "command not found: ", 20);
+		write(2, aux->path[last], ft_strlen(aux->path[last]));
+		write(2, "\n", 1);
+		if (aux->path[last][0] == '/')
+			exit(EXIT_NO_FILE);
+		else
+			exit(EXIT_NO_COMMAND);
 	}
 }
 

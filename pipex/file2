@@ -1,3 +1,4 @@
+
 Makefile
 file1
 file2
@@ -9,37 +10,5 @@ pipex
 src
 src_bonus
 test_pointer.c
-a
-s
-d
-a
-s
-d
-       3       3       6
-Makefile
-file1
-file2
-include
-libft
-libft.a
-main.c
-pipex
-src
-src_bonus
-test_pointer.c
-Makefile
-file1
-file2
-include
-libft
-libft.a
-main.c
-pipex
-src
-src_bonus
-test_pointer.c
-       3       3       6
-       3       3       6
-       4       4      10
-       3       3       6
-       4       4      10
+asjkdgk
+asldkhasl
