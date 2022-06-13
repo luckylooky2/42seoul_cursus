@@ -43,6 +43,7 @@ bonus :
 	@$(MAKE) WITH_BONUS=1 all
 
 clean :
+	@$(MAKE) clean -C mlx/
 	$(RM) $(OBJECT) $(OBJECT_BONUS)
 
 fclean :
