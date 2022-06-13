@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/16 21:08:52 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 19:42:18 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:49:40 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 static void	check_map_status(int map_status, char *argv[])
 {
-	if (map_status == 1)
+	if (map_status == MAP_SUCCESS)
 		return ;
 	else if (map_status == MAP_FAIL_MALLOC)
 	{

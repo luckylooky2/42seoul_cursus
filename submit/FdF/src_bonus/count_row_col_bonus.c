@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/21 22:51:35 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 19:40:11 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/13 10:49:15 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	count_row_num(char *file, t_aux *aux, t_map *map)
 	map->fd = open(file, O_RDONLY);
 	if (map->fd < 0)
 	{
-		map->map_status = -1;
+		map->map_status = MAP_NO_FILE;
 		return (map->map_status);
 	}
 	while (1)
@@ -33,7 +33,7 @@ int	count_row_num(char *file, t_aux *aux, t_map *map)
 	close(map->fd);
 	if (aux->row_num == 0)
 	{
-		map->map_status = -2;
+		map->map_status = MAP_NO_DATA;
 		return (map->map_status);
 	}
 	map->fd = open(file, O_RDONLY);
@@ -63,8 +63,8 @@ int	check_col_num(int **col_num, int row_num, t_map *map)
 		{
 			if ((*col_num)[i] != (*col_num)[j])
 			{
-				map->map_status = -3;
-				return (-3);
+				map->map_status = MAP_DIFF_COL;
+				return (map->map_status);
 			}
 			j++;
 		}

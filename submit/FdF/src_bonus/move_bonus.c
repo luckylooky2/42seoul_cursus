@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/29 12:10:56 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/05/29 19:43:54 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/13 13:51:08 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ void	move_coordinate(t_aux *aux)
 			aux->axis_data[i][j][0] = floor(aux->axis_data[i][j][0] * ratio)
 				+ WINDOW_WIDTH / 2 + aux->trans_x;
 			aux->axis_data[i][j][1] = floor(aux->axis_data[i][j][1] * ratio)
-				+ WINDOW_WIDTH / 2 + aux->trans_y;
+				+ WINDOW_HEIGHT / 2 + aux->trans_y;
 			j++;
 		}
 		i++;
