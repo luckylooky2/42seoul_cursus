@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/14 10:35:16 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/14 18:49:45 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,8 +19,8 @@ void	execute_parent_process(t_aux *aux, t_fd *fd)
 	int		i;
 
 	i = 0;
-	pid = 0;
 	close_pipes(fd);
+	pid = 0;
 	while (i < aux->fork_num)
 	{
 		comp_pid = aux->pid[i];

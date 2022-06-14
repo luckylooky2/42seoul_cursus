@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/14 17:25:28 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/14 18:49:23 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void	execute_first_child(char *envp[], t_fd *fd, t_aux *aux)
 	line = NULL;
 	if (aux->here_doc == 0)
 	{
+		if (fd->infile < 0)
+			exit(EXIT_SUCCESS);
 		dup2(fd->infile, STDIN_FILENO);
 		dup2(fd->pipe[0][1], STDOUT_FILENO);
 		close_pipes(fd);
