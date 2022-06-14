@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/11 21:03:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/14 10:48:51 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,20 +15,19 @@
 void	execute_parent_process(t_aux *aux, t_fd *fd)
 {
 	pid_t	pid;
-	pid_t	first_pid;
-	pid_t	last_pid;
+	pid_t	comp_pid;
+	int		i;
 
-	pid = 0;
-	first_pid = aux->pid[0];
-	last_pid = aux->pid[aux->fork_num - 1];
+	i = 0;
 	close_pipes(fd);
-	if (aux->here_doc == 1)
+	pid = 0;
+	while (i < aux->fork_num)
 	{
-		while (pid != first_pid)
-			pid = waitpid(first_pid, &aux->status, WNOHANG);
+		comp_pid = aux->pid[i];
+		while (pid != comp_pid)
+			pid = waitpid(comp_pid, &aux->status, WNOHANG);
+		i++;
 	}
-	while (pid != last_pid)
-		pid = waitpid(last_pid, &aux->status, WNOHANG);
 	exit(WEXITSTATUS(aux->status));
 }
 
