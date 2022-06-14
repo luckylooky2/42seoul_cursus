@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:59:29 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/14 10:35:41 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/14 17:25:51 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,10 @@ void	open_files(char *argv[], t_aux *aux, t_fd *fd)
 	{
 		fd->infile = open(argv[1], O_RDONLY);
 		if (fd->infile < 0)
-		{
 			perror(argv[1]);
-			close(STDIN_FILENO);
-		}
-	}
-	if (aux->here_doc == 0)
 		fd->outfile = open(argv[fd->argc - 1],
 				O_RDWR | O_CREAT | O_TRUNC, 0644);
+	}
 	else if (aux->here_doc == 1)
 		fd->outfile = open(argv[fd->argc - 1],
 				O_RDWR | O_CREAT | O_APPEND, 0644);

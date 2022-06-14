@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/14 10:35:02 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/14 17:25:28 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,12 +70,12 @@ void	execute_last_child(char *envp[], t_fd *fd, t_aux *aux)
 void	execute_middle_child(char *envp[], t_fd *fd, t_aux *aux)
 {
 	int	nth;
-	int	path_len;
 
 	nth = check_nth_child_process(aux);
-	path_len = ft_strlen(aux->path[nth - 1]);
 	dup2(fd->pipe[nth - 1][0], STDIN_FILENO);
 	dup2(fd->pipe[nth][1], STDOUT_FILENO);
+	if (aux->here_doc == 1)
+		nth = nth - 1;
 	close_pipes(fd);
-	execve_command(envp, aux, nth - 1);
+	execve_command(envp, aux, nth);
 }
