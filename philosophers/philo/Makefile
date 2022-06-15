@@ -2,12 +2,13 @@ CC=cc
 AR=ar
 ARFLAGS=rcs
 CFLAGS=-Wall -Werror -Wextra
+THREAD=-pthread
 RM=rm -f
 
 NAME=philo
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
-SRC=$(addprefix $(SRC_DIR)/, philosophers.c)
+SRC=$(addprefix $(SRC_DIR)/, philosophers.c ft_split.c philosophers_utils.c)
 SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, pipex_bonus.c pipex_utils_bonus.c \
 	parse_input_bonus.c parse_input_utils_bonus.c open_files_bonus.c \
 	open_pipes_bonus.c fork_child_process_bonus.c execute_process_bonus.c \
@@ -23,10 +24,10 @@ else
 endif
 
 $(NAME) : $(OBJ)
-	$(CC) $(OBJ) -o $(NAME)
+	$(CC) $(OBJ) -g $(THREAD) -o $(NAME)
 
 %.o : %.c
-	$(CC) -c $< -o $@
+	$(CC) -c -g $< $(THREAD) -o $@
 
 all : $(NAME)
 
@@ -37,6 +38,7 @@ clean :
 	$(RM) $(OBJECT) $(OBJECT_BONUS)
 
 fclean :
+	@$(MAKE) clean
 	$(RM) $(NAME)
 
 re :
