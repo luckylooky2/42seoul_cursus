@@ -1,18 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.c                                     :+:      :+:    :+:   */
+/*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/15 11:44:52 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/06/15 11:56:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../include/philosophers.h"
+#ifndef PHILOSOPHER_H
+# define PHILOSOPHER_H
 
-int	main(void)
-{
-	return (0);
-}
+# include <stdlib.h>
+# include <stdio.h>
+# include <fcntl.h>
+
+char	**ft_split(char const *s, char c);
+
+#endif

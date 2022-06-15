@@ -1,16 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers.h                                     :+:      :+:    :+:   */
+/*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/15 11:43:48 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/06/15 11:57:22 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#include "../include/philosophers.h"
 
-# endif PHILOSOPHER_H
+int	main(int argc, char *argv[])
+{
+	if (argc != 5 && argc != 6)
+		return (0);
+	return (0);
+}
