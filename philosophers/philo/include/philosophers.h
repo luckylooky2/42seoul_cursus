@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/16 12:33:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/16 21:36:27 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,11 +22,19 @@
 # include <string.h>
 # include <limits.h>
 
+# define MILLISECOND	1000
+
 # define SUCCESS	0
 # define FAIL_ARGC	-1
 # define FAIL_PARSE_INPUT	-2
 # define FAIL_GET_TIME	-3
 # define FAIL_MALLOC	-4
+
+# define FORK	1
+# define EAT	2
+# define SLEEP	3
+# define THINK	4
+# define DIE	5
 
 typedef struct	s_time
 {
@@ -34,13 +42,15 @@ typedef struct	s_time
 	size_t			time_die;
 	size_t			time_eat;
 	size_t			time_sleep;
-	size_t			must_eat;
+	int				must_eat;
 	struct timeval	start;
+	struct timeval	check;
 	struct timeval	now;
-	int				err_check;
 	size_t			start_in_ms;
+	size_t			check_in_ms;
 	size_t			now_in_ms;
 	size_t			time_total;
+	size_t			check_total;
 }	t_time;
 
 typedef struct	s_philo
