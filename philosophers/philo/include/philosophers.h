@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/16 21:36:27 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/17 00:42:07 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,7 @@ typedef struct	s_philo
 	t_time			*time; // 공유 자원
 	pthread_mutex_t	*fork; // 공유 자원
 	pthread_t		*thread; // 공유 자원
+	size_t			*time_ary;
 }	t_philo;
 
 char		**ft_split(char const *s, char c);
