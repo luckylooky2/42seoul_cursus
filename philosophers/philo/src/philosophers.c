@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 19:32:01 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/17 21:22:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 	}
 	if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
 	{
-		print_status(philo, philo_idx, status); // sleep
+		print_status(philo, philo_idx, status); // think
 		diff = philo->time->time_die - philo->check_total;
 		if (diff < 0)
 			diff = 0;
@@ -291,9 +291,9 @@ int	main(int argc, char *argv[])
 	i = -1;
 	while (++i < philo->time->philo_num)
 	{
-		if (i % 2 == 0)
-			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_odd, (void *)(philo + i));
-		else if (i % 2 == 1)
+		if (!(i % 2)) // if the number of philosophers is even number.
+			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_odd, (void *)(philo + i)); // index 0 is equivalent to the first philosopher.
+		else if (i % 2)
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_even, (void *)(philo + i));
 	}
 	i = -1;

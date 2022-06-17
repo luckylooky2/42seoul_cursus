@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 16:07:34 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/17 21:17:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 # include <string.h>
 # include <limits.h>
 
-# define MILLISECOND	1000
+# define MILLISECOND		1000
 
-# define SUCCESS	0
-# define FAIL_ARGC	-1
+# define SUCCESS			0
+# define FAIL_ARGC			-1
 # define FAIL_PARSE_INPUT	-2
-# define FAIL_GET_TIME	-3
-# define FAIL_MALLOC	-4
+# define FAIL_GET_TIME		-3
+# define FAIL_MALLOC		-4
 
 # define FORK	1
 # define EAT	2
