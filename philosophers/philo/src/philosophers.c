@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 17:15:25 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/17 19:32:01 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,12 +86,34 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 	return (1);
 }
 
+size_t get_now(void)
+{
+	struct	timeval now;
+	int		err_check;
+
+	err_check = gettimeofday(&now, NULL);
+	if (err_check == -1)
+		return (0);
+	return (now.tv_sec * 1000 + now.tv_usec / 1000);
+}
+
+void	wait_time(unsigned int wait)
+{
+	size_t	target;
+	
+	target = wait + get_now();
+	while (target > get_now())
+		usleep(200);
+}
+
 int	thread_routine_odd(void *arg)
 {
 	t_philo *philo;
 	int		philo_idx;
 	int		eat;
-	
+	int		i;
+
+	i = -1;	
 	philo = (t_philo *)arg;
 	philo_idx = philo->index;
 	if (philo->time->must_eat == 0)
@@ -106,11 +128,11 @@ int	thread_routine_odd(void *arg)
 		pthread_mutex_lock(&philo->fork[philo_idx + 1]);
 		print_time(philo, philo_idx + 1, FORK);
 		print_time(philo, philo_idx, EAT);
-		usleep((philo->time->time_eat -1) * MILLISECOND);
+		wait_time(philo->time->time_eat);
 		pthread_mutex_unlock(&philo->fork[philo_idx + 1]);
 		pthread_mutex_unlock(&philo->fork[philo_idx]);
 		print_time(philo, philo_idx, SLEEP);
-		usleep((philo->time->time_sleep -1) * MILLISECOND);
+		wait_time(philo->time->time_sleep);
 		print_time(philo, philo_idx, THINK);
 		if (eat > 0)
 			eat--;
@@ -124,7 +146,9 @@ int	thread_routine_even(void *arg)
 	int		philo_idx;
 	int		is_last;
 	int		eat;
+	int		i;
 	
+	i = -1;
 	philo = (t_philo *)arg;
 	philo_idx = philo->index;
 	if (philo->time->must_eat == 0)
@@ -142,14 +166,14 @@ int	thread_routine_even(void *arg)
 		pthread_mutex_lock(&philo->fork[philo_idx]);
 		print_time(philo, philo_idx, FORK);
 		print_time(philo, philo_idx, EAT);
-		usleep((philo->time->time_eat -1) * MILLISECOND);
+		wait_time(philo->time->time_eat);
 		pthread_mutex_unlock(&philo->fork[philo_idx]);
 		if (philo_idx != philo->time->philo_num)
 			pthread_mutex_unlock(&philo->fork[philo_idx + 1]);
 		else
 			pthread_mutex_unlock(&philo->fork[1]);
 		print_time(philo, philo_idx, SLEEP);
-		usleep((philo->time->time_sleep -1) * MILLISECOND);
+		wait_time(philo->time->time_sleep);
 		print_time(philo, philo_idx, THINK);
 		if (eat > 0)
 			eat--;
@@ -273,13 +297,13 @@ int	main(int argc, char *argv[])
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_even, (void *)(philo + i));
 	}
 	i = -1;
-	while (1)
-	{
-		// 스레드가 죽으면 break;
-	}
-	while (++i < philo->time->philo_num)
-		pthread_detach(philo->thread[i]);
+	// while (1)
+	// {
+	// 	// 스레드가 죽으면 break;
+	// }
 	// while (++i < philo->time->philo_num)
-	// 	pthread_join(philo->thread[i], NULL);
+	// 	pthread_detach(philo->thread[i]);
+	while (++i < philo->time->philo_num)
+		pthread_join(philo->thread[i], NULL);
 	return (SUCCESS);
 }
