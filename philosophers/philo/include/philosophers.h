@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 00:42:07 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/17 16:07:34 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,33 +38,32 @@
 
 typedef struct	s_time
 {
-	size_t			philo_num;
-	size_t			time_die;
-	size_t			time_eat;
-	size_t			time_sleep;
-	int				must_eat;
+	unsigned int	philo_num;
+	unsigned int	time_die;
+	unsigned int	time_eat;
+	unsigned int	time_sleep;
+	unsigned int	must_eat;
 	struct timeval	start;
-	struct timeval	check;
 	struct timeval	now;
 	size_t			start_in_ms;
-	size_t			check_in_ms;
 	size_t			now_in_ms;
 	size_t			time_total;
-	size_t			check_total;
 }	t_time;
 
 typedef struct	s_philo
 {
 	int				index;
+	struct timeval	check;
+	size_t			check_in_ms;
+	size_t			check_total;
 	t_time			*time; // 공유 자원
 	pthread_mutex_t	*fork; // 공유 자원
 	pthread_t		*thread; // 공유 자원
-	size_t			*time_ary;
 }	t_philo;
 
 char		**ft_split(char const *s, char c);
 long long	ft_atoll(const char *nptr);
-size_t	ft_atoull(const char *nptr);
+size_t		ft_atoui(const char *nptr);
 void		*ft_calloc(size_t nmemb, size_t size);
 size_t		ft_strlen(const char *s);
 

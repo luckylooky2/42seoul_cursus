@@ -6,13 +6,13 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:39:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/16 11:44:01 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/17 13:02:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/philosophers.h"
 
-size_t	ft_atoull(const char *nptr)
+size_t	ft_atoui(const char *nptr)
 {
 	int			i;
 	size_t		longlong;
@@ -21,7 +21,7 @@ size_t	ft_atoull(const char *nptr)
 	longlong = 0;
 	if (!nptr)
 		return (0);
-	while ((9 <= nptr[i] && nptr[i] <= 13) || nptr[i] == 32) //18,446,744,073,709,551,615
+	while ((9 <= nptr[i] && nptr[i] <= 13) || nptr[i] == 32)
 		i++;
 	if (nptr[i] == '+')
 		i++;
@@ -30,10 +30,10 @@ size_t	ft_atoull(const char *nptr)
 	while ('0' <= nptr[i] && nptr[i] <= '9')
 	{
 		longlong = longlong * 10 + (nptr[i] - '0');
-		if ((longlong == SIZE_T_MAX / 10) && nptr[i + 1] > ('0' + SIZE_T_MAX % 10 - 1)) // 1844674407370955161
-			return (SIZE_T_MAX);
-		else if (longlong > SIZE_T_MAX / 10 && ('0' <= nptr[i + 1] && nptr[i + 1] <= '9')) // 1844674407370955162
-			return (SIZE_T_MAX);
+		if ((longlong == UINT_MAX / 10) && nptr[i + 1] > ('0' + UINT_MAX % 10))
+			return (4294967296LL);
+		else if (longlong > UINT_MAX / 10 && ('0' <= nptr[i + 1] && nptr[i + 1] <= '9'))
+			return (4294967296LL);
 		i++;
 	}
 	return (longlong);
