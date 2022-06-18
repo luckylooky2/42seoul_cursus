@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 10:12:47 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:34:16 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,10 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 	int	diff;
 	int diff_eat_sleep;
 	
-	err_check = gettimeofday(&philo->time->now, NULL); // 현재 시간 받아오기
+	err_check = gettimeofday(&philo->now, NULL); // 현재 시간 받아오기
 	if (err_check == -1)
 		return (FAIL_GET_TIME);
-	philo->time->now_in_ms = (philo->time->now.tv_sec * 1000) + (philo->time->now.tv_usec / 1000); // 현재 시간 체크
+	philo->now_in_ms = (philo->now.tv_sec * 1000) + (philo->now.tv_usec / 1000); // 현재 시간 체크
 	if (status == EAT)
 	{
 		err_check = gettimeofday(&philo->check, NULL); // 기준 시간 받아오기
@@ -50,8 +50,8 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 		philo->check_total = 0; // 기준 시간 초기화
 		philo->check_in_ms = (philo->check.tv_sec * 1000) + (philo->check.tv_usec / 1000); // 기준 시간 체크
 	}
-	philo->time->time_total = philo->time->now_in_ms - philo->time->start_in_ms;
-	philo->check_total = philo->time->now_in_ms - philo->check_in_ms;
+	philo->time->time_total = philo->now_in_ms - philo->time->start_in_ms; // 시간 차이 계산
+	philo->check_total = philo->now_in_ms - philo->check_in_ms;
 	if (philo->time->time_eat >= philo->time->time_sleep)
 		diff_eat_sleep = philo->time->time_eat - philo->time->time_sleep;
 	else
@@ -203,7 +203,6 @@ int	init_time(t_time *time)
 	if (err_check == -1)
 		return (FAIL_GET_TIME);
 	time->start_in_ms = (time->start.tv_sec * 1000) + (time->start.tv_usec / 1000);
-	time->now_in_ms = 0;
 	time->time_total = 0;
 	return (SUCCESS);
 }

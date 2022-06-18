@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 09:15:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:20:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,7 @@ typedef struct	s_time
 	int				time_sleep;
 	int				must_eat;
 	struct timeval	start;
-	struct timeval	now;
 	size_t			start_in_ms;
-	size_t			now_in_ms;
 	size_t			time_total;
 }	t_time;
 
@@ -56,7 +54,9 @@ typedef struct	s_philo
 {
 	int				index;
 	struct timeval	check;
+	struct timeval	now;
 	size_t			check_in_ms;
+	size_t			now_in_ms;
 	size_t			check_total;
 	int				must_eat;
 	t_time			*time; // 공유 자원
