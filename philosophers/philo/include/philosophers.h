@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 21:17:06 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 09:15:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@
 # include <sys/time.h>
 # include <unistd.h>
 # include <string.h>
-# include <limits.h>
+
+# define INT_MAX		2147483647
+# define OVER_INT_MAX	2147483648LL
 
 # define MILLISECOND		1000
 
@@ -38,11 +40,11 @@
 
 typedef struct	s_time
 {
-	unsigned int	philo_num;
-	unsigned int	time_die;
-	unsigned int	time_eat;
-	unsigned int	time_sleep;
-	unsigned int	must_eat;
+	int				philo_num;
+	int				time_die;
+	int				time_eat;
+	int				time_sleep;
+	int				must_eat;
 	struct timeval	start;
 	struct timeval	now;
 	size_t			start_in_ms;
@@ -56,6 +58,7 @@ typedef struct	s_philo
 	struct timeval	check;
 	size_t			check_in_ms;
 	size_t			check_total;
+	int				must_eat;
 	t_time			*time; // 공유 자원
 	pthread_mutex_t	*fork; // 공유 자원
 	pthread_t		*thread; // 공유 자원
@@ -63,7 +66,7 @@ typedef struct	s_philo
 
 char		**ft_split(char const *s, char c);
 long long	ft_atoll(const char *nptr);
-size_t		ft_atoui(const char *nptr);
+long long	ft_atoi(const char *nptr);
 void		*ft_calloc(size_t nmemb, size_t size);
 size_t		ft_strlen(const char *s);
 

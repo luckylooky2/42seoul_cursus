@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 21:22:17 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 10:12:47 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,18 +38,18 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 	int	diff;
 	int diff_eat_sleep;
 	
-	err_check = gettimeofday(&philo->time->now, NULL);
+	err_check = gettimeofday(&philo->time->now, NULL); // 현재 시간 받아오기
 	if (err_check == -1)
 		return (FAIL_GET_TIME);
+	philo->time->now_in_ms = (philo->time->now.tv_sec * 1000) + (philo->time->now.tv_usec / 1000); // 현재 시간 체크
 	if (status == EAT)
 	{
-		err_check = gettimeofday(&philo->check, NULL);
+		err_check = gettimeofday(&philo->check, NULL); // 기준 시간 받아오기
 		if (err_check == -1)
 			return (FAIL_GET_TIME);
-		philo->check_total = 0;
+		philo->check_total = 0; // 기준 시간 초기화
+		philo->check_in_ms = (philo->check.tv_sec * 1000) + (philo->check.tv_usec / 1000); // 기준 시간 체크
 	}
-	philo->time->now_in_ms = (philo->time->now.tv_sec * 1000) + (philo->time->now.tv_usec / 1000); // 현재 시간 체크
-	philo->check_in_ms = (philo->check.tv_sec * 1000) + (philo->check.tv_usec / 1000); // 기준 시간 체크
 	philo->time->time_total = philo->time->now_in_ms - philo->time->start_in_ms;
 	philo->check_total = philo->time->now_in_ms - philo->check_in_ms;
 	if (philo->time->time_eat >= philo->time->time_sleep)
@@ -110,18 +110,13 @@ int	thread_routine_odd(void *arg)
 {
 	t_philo *philo;
 	int		philo_idx;
-	int		eat;
 	int		i;
 
 	i = -1;	
 	philo = (t_philo *)arg;
 	philo_idx = philo->index;
-	if (philo->time->must_eat == 0)
-		eat = -1;
-	else
-		eat = philo->time->must_eat;
 	usleep(50 * (philo->time->philo_num / 4 + 1));
-	while (eat)
+	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[philo_idx]);
 		print_time(philo, philo_idx, FORK);
@@ -134,8 +129,8 @@ int	thread_routine_odd(void *arg)
 		print_time(philo, philo_idx, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_time(philo, philo_idx, THINK);
-		if (eat > 0)
-			eat--;
+		if (philo->must_eat > 0)
+			philo->must_eat--;
 	}
 	return (SUCCESS);
 }
@@ -145,21 +140,16 @@ int	thread_routine_even(void *arg)
 	t_philo *philo;
 	int		philo_idx;
 	int		is_last;
-	int		eat;
 	int		i;
 	
 	i = -1;
 	philo = (t_philo *)arg;
 	philo_idx = philo->index;
-	if (philo->time->must_eat == 0)
-		eat = -1;
-	else
-		eat = philo->time->must_eat;
 	if (philo_idx != philo->time->philo_num)
 		is_last = philo_idx + 1;
 	else
 		is_last = 1;
-	while (eat)
+	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[is_last]);
 		print_time(philo, is_last, FORK);
@@ -168,15 +158,12 @@ int	thread_routine_even(void *arg)
 		print_time(philo, philo_idx, EAT);
 		wait_time(philo->time->time_eat);
 		pthread_mutex_unlock(&philo->fork[philo_idx]);
-		if (philo_idx != philo->time->philo_num)
-			pthread_mutex_unlock(&philo->fork[philo_idx + 1]);
-		else
-			pthread_mutex_unlock(&philo->fork[1]);
+		pthread_mutex_unlock(&philo->fork[is_last]);
 		print_time(philo, philo_idx, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_time(philo, philo_idx, THINK);
-		if (eat > 0)
-			eat--;
+		if (philo->must_eat > 0)
+			philo->must_eat--;
 	}
 	return (SUCCESS);
 }
@@ -199,6 +186,7 @@ int	init_data(t_philo **philo, t_time *time)
 	while (i < philo_num)
 	{
 		(*philo + i)->index = i + 1;
+		(*philo + i)->must_eat = time->must_eat;
 		(*philo + i)->time = time;
 		(*philo + i)->thread = thread;
 		(*philo + i)->fork = fork;
@@ -239,8 +227,8 @@ static int	check_number(char *argv[])
 				return (0);
 			j++;
 		}
-		check_size_t = ft_atoui(argv[i]);
-		if (check_size_t > 4294967295LL)
+		check_size_t = ft_atoi(argv[i]);
+		if (check_size_t > INT_MAX)
 			return (0);
 		i++;
 	}
@@ -251,11 +239,13 @@ int	parse_input(int argc, char *argv[], t_time *time)
 {
 	if (check_number(argv) == 0)
 		return (FAIL_PARSE_INPUT);
-	time->philo_num = ft_atoui(argv[1]);
-	time->time_die = ft_atoui(argv[2]);
-	time->time_eat = ft_atoui(argv[3]);
-	time->time_sleep = ft_atoui(argv[4]);
-	time->must_eat = ft_atoui(argv[5]);
+	time->philo_num = ft_atoi(argv[1]);
+	time->time_die = ft_atoi(argv[2]);
+	time->time_eat = ft_atoi(argv[3]);
+	time->time_sleep = ft_atoi(argv[4]);
+	time->must_eat = ft_atoi(argv[5]);
+	if (time->must_eat == 0)
+		time->must_eat = -1;
 	return (SUCCESS);
 }
 

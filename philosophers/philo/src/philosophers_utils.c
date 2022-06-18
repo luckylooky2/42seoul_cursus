@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:39:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/17 13:02:39 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 09:30:02 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 # include "../include/philosophers.h"
 
-size_t	ft_atoui(const char *nptr)
+long long	ft_atoi(const char *nptr)
 {
 	int			i;
-	size_t		longlong;
+	long long	longlong;
 
 	i = 0;
 	longlong = 0;
@@ -30,13 +30,13 @@ size_t	ft_atoui(const char *nptr)
 	while ('0' <= nptr[i] && nptr[i] <= '9')
 	{
 		longlong = longlong * 10 + (nptr[i] - '0');
-		if ((longlong == UINT_MAX / 10) && nptr[i + 1] > ('0' + UINT_MAX % 10))
-			return (4294967296LL);
-		else if (longlong > UINT_MAX / 10 && ('0' <= nptr[i + 1] && nptr[i + 1] <= '9'))
-			return (4294967296LL);
+		if ((longlong == INT_MAX / 10) && nptr[i + 1] > ('0' + INT_MAX % 10))
+			return (OVER_INT_MAX);
+		else if (longlong > INT_MAX / 10 && ('0' <= nptr[i + 1] && nptr[i + 1] <= '9'))
+			return (OVER_INT_MAX);
 		i++;
 	}
-	return (longlong);
+	return ((int)longlong);
 }
 
 long long	ft_atoll(const char *nptr)
