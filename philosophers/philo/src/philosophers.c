@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 10:34:16 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 21:39:58 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,13 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 	int	diff;
 	int diff_eat_sleep;
 	
+	// printf("<<idx : %d\n", philo_idx);
+	if (philo_idx == philo->time->philo_num - 1)
+	{
+		// printf("\n\n\n\n\n\n\n\n\n");
+		// printf("%d\n", philo->time->philo_num);
+		philo->flag = 1;
+	}
 	err_check = gettimeofday(&philo->now, NULL); // 현재 시간 받아오기
 	if (err_check == -1)
 		return (FAIL_GET_TIME);
@@ -56,31 +63,66 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 		diff_eat_sleep = philo->time->time_eat - philo->time->time_sleep;
 	else
 		diff_eat_sleep = philo->time->time_sleep - philo->time->time_eat;
-	if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0)
+	// printf("<<%d check_total : %d>>\n", philo->index, philo->check_total);
+	if (philo->is_even == EVEN)
 	{
-		print_status(philo, philo_idx, status); // eat
-		diff = philo->time->time_die - philo->check_total;
-		usleep(diff * MILLISECOND);
-		philo->time->time_total += diff;
-		print_status(philo, philo_idx, DIE);
+		if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0)
+		{
+			print_status(philo, philo_idx, status); // eat
+			diff = philo->time->time_die - philo->check_total;
+			usleep(diff * MILLISECOND);
+			philo->time->time_total += diff;
+			print_status(philo, philo_idx, DIE);
+		}
+		if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
+		{
+			print_status(philo, philo_idx, status); // sleep
+			diff = philo->time->time_die - philo->check_total;
+			usleep(diff * MILLISECOND);
+			philo->time->time_total += diff;
+			print_status(philo, philo_idx, DIE);
+		}
+		if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
+		{
+			print_status(philo, philo_idx, status); // think
+			diff = philo->time->time_die - philo->check_total;
+			if (diff < 0)
+				diff = 0;
+			usleep(diff * MILLISECOND);
+			philo->time->time_total += diff;
+			print_status(philo, philo_idx, DIE);
+		}
 	}
-	if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
+	else if (philo->is_even == ODD)
 	{
-		print_status(philo, philo_idx, status); // sleep
-		diff = philo->time->time_die - philo->check_total;
-		usleep(diff * MILLISECOND);
-		philo->time->time_total += diff;
-		print_status(philo, philo_idx, DIE);
-	}
-	if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
-	{
-		print_status(philo, philo_idx, status); // think
-		diff = philo->time->time_die - philo->check_total;
-		if (diff < 0)
-			diff = 0;
-		usleep(diff * MILLISECOND);
-		philo->time->time_total += diff;
-		print_status(philo, philo_idx, DIE);
+		if (status == EAT && philo->check_total + 2 * philo->time->time_eat + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0 && philo->flag == 1)
+		// if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0 && philo->flag == 1)
+		{
+			print_status(philo, philo_idx, status); // eat
+			diff = philo->time->time_die - philo->check_total;
+			printf("<<diff : %d\n", diff);
+			usleep(diff * MILLISECOND);
+			philo->time->time_total += diff;
+			print_status(philo, philo_idx, DIE);
+		}
+		if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
+		{
+			print_status(philo, philo_idx, status); // sleep
+			diff = philo->time->time_die - philo->check_total;
+			usleep(diff * MILLISECOND);
+			philo->time->time_total += diff;
+			print_status(philo, philo_idx, DIE);
+		}
+		if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
+		{
+			print_status(philo, philo_idx, status); // think
+			diff = philo->time->time_die - philo->check_total;
+			if (diff < 0)
+				diff = 0;
+			usleep(diff * MILLISECOND);
+			philo->time->time_total += diff;
+			print_status(philo, philo_idx, DIE);
+		}	
 	}
 	print_status(philo, philo_idx, status);
 	return (1);
@@ -110,21 +152,26 @@ int	thread_routine_odd(void *arg)
 {
 	t_philo *philo;
 	int		philo_idx;
+	int		is_last;
 	int		i;
 
 	i = -1;	
 	philo = (t_philo *)arg;
 	philo_idx = philo->index;
+	if (philo_idx != philo->time->philo_num)
+		is_last = philo_idx + 1;
+	else
+		is_last = 1;
 	usleep(50 * (philo->time->philo_num / 4 + 1));
 	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[philo_idx]);
 		print_time(philo, philo_idx, FORK);
-		pthread_mutex_lock(&philo->fork[philo_idx + 1]);
-		print_time(philo, philo_idx + 1, FORK);
+		pthread_mutex_lock(&philo->fork[is_last]);
+		print_time(philo, is_last, FORK);
 		print_time(philo, philo_idx, EAT);
 		wait_time(philo->time->time_eat);
-		pthread_mutex_unlock(&philo->fork[philo_idx + 1]);
+		pthread_mutex_unlock(&philo->fork[is_last]);
 		pthread_mutex_unlock(&philo->fork[philo_idx]);
 		print_time(philo, philo_idx, SLEEP);
 		wait_time(philo->time->time_sleep);
@@ -186,6 +233,11 @@ int	init_data(t_philo **philo, t_time *time)
 	while (i < philo_num)
 	{
 		(*philo + i)->index = i + 1;
+		if (philo_num % 2)
+			(*philo + i)->is_even = ODD;
+		else
+			(*philo + i)->is_even = EVEN;
+		(*philo + i)->flag = 0;
 		(*philo + i)->must_eat = time->must_eat;
 		(*philo + i)->time = time;
 		(*philo + i)->thread = thread;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:39:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 09:30:02 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 19:09:58 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,32 +37,6 @@ long long	ft_atoi(const char *nptr)
 		i++;
 	}
 	return ((int)longlong);
-}
-
-long long	ft_atoll(const char *nptr)
-{
-	int			i;
-	int			sign;
-	long long	longlong;
-
-	i = 0;
-	sign = 1;
-	longlong = 0;
-	if (!nptr)
-		return (0);
-	while ((9 <= *nptr && *nptr <= 13) || *nptr == 32)
-		nptr++;
-	if (*nptr == '+' || *nptr == '-')
-	{
-		if (*nptr == '-')
-			sign = -1;
-		nptr++;
-	}
-	while ('0' <= nptr[i] && nptr[i] <= '9')
-		longlong = longlong * 10 + (nptr[i++] - '0');
-	if (sign == -1)
-		longlong *= -1;
-	return (longlong);
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)

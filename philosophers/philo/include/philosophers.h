@@ -3,17 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 10:20:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/18 21:32:33 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PHILOSOPHER_H
-# define PHILOSOPHER_H
+#ifndef PHILOSOPHERS_H
+# define PHILOSOPHERS_H
 
-# include <pthread.h> //Compile and link with -pthread
+# include <pthread.h>
 # include <stdlib.h>
 # include <stdio.h>
 # include <fcntl.h>
@@ -23,6 +23,9 @@
 
 # define INT_MAX		2147483647
 # define OVER_INT_MAX	2147483648LL
+
+# define ODD	1
+# define EVEN	2
 
 # define MILLISECOND		1000
 
@@ -53,6 +56,8 @@ typedef struct	s_time
 typedef struct	s_philo
 {
 	int				index;
+	int				is_even;
+	int				flag;
 	struct timeval	check;
 	struct timeval	now;
 	size_t			check_in_ms;
@@ -65,7 +70,6 @@ typedef struct	s_philo
 }	t_philo;
 
 char		**ft_split(char const *s, char c);
-long long	ft_atoll(const char *nptr);
 long long	ft_atoi(const char *nptr);
 void		*ft_calloc(size_t nmemb, size_t size);
 size_t		ft_strlen(const char *s);
