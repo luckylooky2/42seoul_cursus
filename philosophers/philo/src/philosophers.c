@@ -3,130 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 21:39:58 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/19 23:22:54 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-void	print_status(t_philo *philo, int philo_idx, int status)
-{
-	int	index;
-	
-	index = philo->index;
-	if (status == FORK)
-		printf("%zu %d has taken a fork %d\n", philo->time->time_total, index, philo_idx);
-	else if (status == EAT)
-		printf("%zu %d is eatings\n", philo->time->time_total, index);
-	else if (status == SLEEP)
-		printf("%zu %d is sleeping\n", philo->time->time_total, index);
-	else if (status == THINK)
-		printf("%zu %d is thinking\n", philo->time->time_total,  index);
-	else if (status == DIE)
-	{
-		printf("%zu %d died\n", philo->time->time_total,  index);
-		exit(1);
-	}
-}
-
-int	print_time(t_philo *philo, int philo_idx, int status)
-{
-	int	err_check;
-	int	diff;
-	int diff_eat_sleep;
-	
-	// printf("<<idx : %d\n", philo_idx);
-	if (philo_idx == philo->time->philo_num - 1)
-	{
-		// printf("\n\n\n\n\n\n\n\n\n");
-		// printf("%d\n", philo->time->philo_num);
-		philo->flag = 1;
-	}
-	err_check = gettimeofday(&philo->now, NULL); // 현재 시간 받아오기
-	if (err_check == -1)
-		return (FAIL_GET_TIME);
-	philo->now_in_ms = (philo->now.tv_sec * 1000) + (philo->now.tv_usec / 1000); // 현재 시간 체크
-	if (status == EAT)
-	{
-		err_check = gettimeofday(&philo->check, NULL); // 기준 시간 받아오기
-		if (err_check == -1)
-			return (FAIL_GET_TIME);
-		philo->check_total = 0; // 기준 시간 초기화
-		philo->check_in_ms = (philo->check.tv_sec * 1000) + (philo->check.tv_usec / 1000); // 기준 시간 체크
-	}
-	philo->time->time_total = philo->now_in_ms - philo->time->start_in_ms; // 시간 차이 계산
-	philo->check_total = philo->now_in_ms - philo->check_in_ms;
-	if (philo->time->time_eat >= philo->time->time_sleep)
-		diff_eat_sleep = philo->time->time_eat - philo->time->time_sleep;
-	else
-		diff_eat_sleep = philo->time->time_sleep - philo->time->time_eat;
-	// printf("<<%d check_total : %d>>\n", philo->index, philo->check_total);
-	if (philo->is_even == EVEN)
-	{
-		if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0)
-		{
-			print_status(philo, philo_idx, status); // eat
-			diff = philo->time->time_die - philo->check_total;
-			usleep(diff * MILLISECOND);
-			philo->time->time_total += diff;
-			print_status(philo, philo_idx, DIE);
-		}
-		if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
-		{
-			print_status(philo, philo_idx, status); // sleep
-			diff = philo->time->time_die - philo->check_total;
-			usleep(diff * MILLISECOND);
-			philo->time->time_total += diff;
-			print_status(philo, philo_idx, DIE);
-		}
-		if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
-		{
-			print_status(philo, philo_idx, status); // think
-			diff = philo->time->time_die - philo->check_total;
-			if (diff < 0)
-				diff = 0;
-			usleep(diff * MILLISECOND);
-			philo->time->time_total += diff;
-			print_status(philo, philo_idx, DIE);
-		}
-	}
-	else if (philo->is_even == ODD)
-	{
-		if (status == EAT && philo->check_total + 2 * philo->time->time_eat + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0 && philo->flag == 1)
-		// if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0 && philo->flag == 1)
-		{
-			print_status(philo, philo_idx, status); // eat
-			diff = philo->time->time_die - philo->check_total;
-			printf("<<diff : %d\n", diff);
-			usleep(diff * MILLISECOND);
-			philo->time->time_total += diff;
-			print_status(philo, philo_idx, DIE);
-		}
-		if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
-		{
-			print_status(philo, philo_idx, status); // sleep
-			diff = philo->time->time_die - philo->check_total;
-			usleep(diff * MILLISECOND);
-			philo->time->time_total += diff;
-			print_status(philo, philo_idx, DIE);
-		}
-		if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
-		{
-			print_status(philo, philo_idx, status); // think
-			diff = philo->time->time_die - philo->check_total;
-			if (diff < 0)
-				diff = 0;
-			usleep(diff * MILLISECOND);
-			philo->time->time_total += diff;
-			print_status(philo, philo_idx, DIE);
-		}	
-	}
-	print_status(philo, philo_idx, status);
-	return (1);
-}
 
 size_t get_now(void)
 {
@@ -146,6 +30,120 @@ void	wait_time(unsigned int wait)
 	target = wait + get_now();
 	while (target > get_now())
 		usleep(200);
+}
+
+void	print_status(t_philo *philo, int philo_idx, int status)
+{
+	int	index;
+	
+	index = philo->index;
+	if (status == FORK)
+		printf("%zu %d has taken a fork %d\n", philo->time->time_total, index, philo_idx);
+	else if (status == EAT)
+		printf("%zu %d is eatings\n", philo->time->time_total, index);
+	else if (status == SLEEP)
+		printf("%zu %d is sleeping\n", philo->time->time_total, index);
+	else if (status == THINK)
+		printf("%zu %d is thinking\n", philo->time->time_total,  index);
+	else if (status == DIE)
+	{
+		printf("%zu %d died\n", philo->time->time_total, philo_idx);
+		exit(1);
+	}
+}
+
+int	print_time(t_philo *philo, int philo_idx, int status)
+{
+	int	idx;
+	int	err_check;
+	int	diff;
+	int diff_eat_sleep;
+	
+	// printf("<<ideven : %d\n", philo->is_even);
+	// if (philo->index == philo->time->philo_num - 1)
+	// 	philo->flag = 1;
+	// printf("%d philo_flag : %d\n", philo_idx, philo->flag);
+	idx = philo->index;
+	if (status == EAT)
+	{
+		err_check = gettimeofday(&philo->time->check, NULL); // 기준 시간 받아오기
+		if (err_check == -1)
+			return (FAIL_GET_TIME);
+		philo->time->check_total[idx] = 0; // 기준 시간 초기화
+		philo->time->check_in_ms[idx] = (philo->time->check.tv_sec * 1000) + (philo->time->check.tv_usec / 1000); // 기준 시간 체크
+	}
+	// if (philo->time->time_eat >= philo->time->time_sleep)
+	// 	diff_eat_sleep = philo->time->time_eat - philo->time->time_sleep;
+	// else
+	// 	diff_eat_sleep = philo->time->time_sleep - philo->time->time_eat;
+	// printf("<<%d check_total : %d>>\n", philo->index, philo->check_total);
+	// if (philo->is_even == EVEN)
+	// {
+	// 	if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0)
+	// 	{
+	// 		print_status(philo, philo_idx, status); // eat
+	// 		diff = philo->time->time_die - philo->check_total;
+	// 		usleep(diff * MILLISECOND);
+	// 		philo->time->time_total += diff;
+	// 		print_status(philo, philo_idx, DIE);
+	// 	}
+	// 	if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
+	// 	{
+	// 		print_status(philo, philo_idx, status); // sleep
+	// 		diff = philo->time->time_die - philo->check_total;
+	// 		usleep(diff * MILLISECOND);
+	// 		philo->time->time_total += diff;
+	// 		print_status(philo, philo_idx, DIE);
+	// 	}
+	// 	if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
+	// 	{
+	// 		print_status(philo, philo_idx, status); // think
+	// 		diff = philo->time->time_die - philo->check_total;
+	// 		if (diff < 0)
+	// 			diff = 0;
+	// 		usleep(diff * MILLISECOND);
+	// 		philo->time->time_total += diff;
+	// 		print_status(philo, philo_idx, DIE);
+	// 	}
+	// }
+	// else if (philo->is_even == ODD)
+	// {
+	// 	if (status == EAT && philo->check_total + 2 * philo->time->time_eat + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0 && philo->flag == 1)
+	// 	{
+	// 		print_status(philo, philo_idx, status); // eat
+	// 		wait_time(philo->time->time_eat);
+	// 		pthread_mutex_unlock(&philo->fork[philo_idx]);
+	// 		pthread_mutex_unlock(&philo->fork[philo_idx + 1]);
+	// 		print_time(philo, philo_idx, SLEEP);
+	// 		wait_time(philo->time->time_sleep);
+	// 		print_time(philo, philo_idx, THINK);
+	// 		diff = philo->time->time_die - philo->time->time_eat - philo->time->time_sleep;
+	// 		usleep(diff * MILLISECOND);
+	// 		philo->time->time_total += diff;
+	// 		print_status(philo, philo_idx, DIE);
+	// 	}
+	// 	if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
+	// 	{
+	// 		print_status(philo, philo_idx, status); // sleep
+	// 		diff = philo->time->time_die - philo->check_total;
+	// 		usleep(diff * MILLISECOND);
+	// 		philo->time->time_total += diff;
+	// 		print_status(philo, philo_idx, DIE);
+	// 	}
+	// 	if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
+	// 	{
+	// 		// printf("check_total : %d\n", philo->check_total);
+	// 		print_status(philo, philo_idx, status); // think
+	// 		diff = philo->time->time_die - philo->check_total;
+	// 		if (diff < 0)
+	// 			diff = 0;
+	// 		usleep(diff * MILLISECOND);
+	// 		philo->time->time_total += diff; 
+	// 		print_status(philo, philo_idx, DIE);
+	// 	}	
+	// }
+	print_status(philo, philo_idx, status);
+	return (1);
 }
 
 int	thread_routine_odd(void *arg)
@@ -179,6 +177,7 @@ int	thread_routine_odd(void *arg)
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
+	philo->time->exit_status = 1;
 	return (SUCCESS);
 }
 
@@ -212,10 +211,43 @@ int	thread_routine_even(void *arg)
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
+	philo->time->exit_status = 1;
 	return (SUCCESS);
 }
 
-int	init_data(t_philo **philo, t_time *time)
+int	malloc_time(t_time *time)
+{	
+	size_t	*check_in_ms;
+	size_t	*check_total;
+	size_t	philo_num;
+	int		err_check;
+	int		i;
+
+	i = -1;
+	philo_num = time->philo_num;
+	err_check = gettimeofday(&time->check, NULL);
+	if (err_check == -1)
+		return (FAIL_GET_TIME);
+	check_in_ms = (size_t *)ft_calloc(sizeof(size_t), philo_num + 1);
+	check_total = (size_t *)ft_calloc(sizeof(size_t), philo_num + 1);
+	if (!check_in_ms || !check_total)
+		return (FAIL_MALLOC);
+	while (++i < philo_num + 1)
+	{
+		check_total[i] = 0;
+		check_in_ms[i] = (time->check.tv_sec * 1000) + (time->check.tv_usec / 1000);
+		// printf("%d\n", check_in_ms[i]);
+	}
+	i = -1;
+	while (++i < philo_num)
+	{	
+		time->check_in_ms = check_in_ms;
+		time->check_total = check_total;
+	}
+	return (SUCCESS);
+}
+
+int	malloc_thread(t_philo **philo, t_time *time)
 {
 	pthread_t 		*thread;
 	pthread_mutex_t	*fork;
@@ -232,11 +264,11 @@ int	init_data(t_philo **philo, t_time *time)
 		return (FAIL_MALLOC);
 	while (i < philo_num)
 	{
-		(*philo + i)->index = i + 1;
 		if (philo_num % 2)
 			(*philo + i)->is_even = ODD;
 		else
 			(*philo + i)->is_even = EVEN;
+		(*philo + i)->index = i + 1;
 		(*philo + i)->flag = 0;
 		(*philo + i)->must_eat = time->must_eat;
 		(*philo + i)->time = time;
@@ -255,7 +287,17 @@ int	init_time(t_time *time)
 	if (err_check == -1)
 		return (FAIL_GET_TIME);
 	time->start_in_ms = (time->start.tv_sec * 1000) + (time->start.tv_usec / 1000);
+	time->now_in_ms = 0;
 	time->time_total = 0;
+	time->exit_status = 0;
+	time->start.tv_sec = 0;
+	time->start.tv_usec = 0;
+	time->now.tv_sec = 0;
+	time->now.tv_usec = 0;
+	time->check.tv_sec = 0;
+	time->check.tv_usec = 0;
+	time->check_in_ms = NULL;
+	time->check_total = NULL;
 	return (SUCCESS);
 }
 
@@ -313,10 +355,44 @@ int	put_error(int err_code)
 	return (err_code);
 }
 
+int	check_time_die(t_philo *philo)
+{
+	int	i;
+	int err_check;
+	// int	diff;
+
+	i = 1;
+	err_check = gettimeofday(&philo->time->now, NULL); // 현재 시간 받아오기
+	if (err_check == -1)
+		return (FAIL_GET_TIME);
+	philo->time->now_in_ms = (philo->time->now.tv_sec * 1000) + (philo->time->now.tv_usec / 1000); // 현재 시간 체크
+	philo->time->time_total = philo->time->now_in_ms - philo->time->start_in_ms; // 시간 차이 계산
+	while (i < philo->time->philo_num + 1)
+	{
+		philo->time->check_total[i] = philo->time->now_in_ms - philo->time->check_in_ms[i];
+		// diff = philo->time->time_die - philo->time->check_total[i];
+		// printf("%d %d \n", philo->time->now_in_ms, philo->time->check_in_ms[i]);
+		// if (i == 2)
+		// 	printf("%d : %d\n", i, philo->time->check_total[i]);
+		if (philo->time->check_total[i] >= philo->time->time_die)
+		{
+			print_status(philo, i, DIE);
+			return (0);
+		}
+		if (philo->time->exit_status == 1)
+		{
+			// printf("2222222\n");
+			return (0);
+		}
+		i++;
+	}
+	return (1);
+}
+
 int	main(int argc, char *argv[])
 {
-	t_philo	*philo;
-	t_time	time;
+	t_philo		*philo;
+	t_time		time;
 	int 	i = -1;
 
 	if (argc != 5 && argc != 6)
@@ -325,7 +401,7 @@ int	main(int argc, char *argv[])
 		return (put_error(FAIL_PARSE_INPUT));
 	if (init_time(&time))
 		return (put_error(FAIL_GET_TIME));
-	if (init_data(&philo, &time))
+	if (malloc_time(&time) || malloc_thread(&philo, &time))
 		return (put_error(FAIL_MALLOC));
 	while (++i < philo->time->philo_num + 1)
 		pthread_mutex_init(&philo->fork[i], NULL);
@@ -338,13 +414,9 @@ int	main(int argc, char *argv[])
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_even, (void *)(philo + i));
 	}
 	i = -1;
-	// while (1)
-	// {
-	// 	// 스레드가 죽으면 break;
-	// }
-	// while (++i < philo->time->philo_num)
-	// 	pthread_detach(philo->thread[i]);
+	while (check_time_die(philo) == 1)
+		usleep(MILLISECOND);
 	while (++i < philo->time->philo_num)
-		pthread_join(philo->thread[i], NULL);
+		pthread_detach(philo->thread[i]);
 	return (SUCCESS);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.h                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/18 21:32:33 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/19 22:23:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,8 +49,14 @@ typedef struct	s_time
 	int				time_sleep;
 	int				must_eat;
 	struct timeval	start;
+	struct timeval	now;
+	struct timeval	check;
 	size_t			start_in_ms;
+	size_t			now_in_ms;
+	size_t			*check_in_ms;
+	size_t			*check_total;
 	size_t			time_total;
+	int				exit_status;
 }	t_time;
 
 typedef struct	s_philo
@@ -58,11 +64,6 @@ typedef struct	s_philo
 	int				index;
 	int				is_even;
 	int				flag;
-	struct timeval	check;
-	struct timeval	now;
-	size_t			check_in_ms;
-	size_t			now_in_ms;
-	size_t			check_total;
 	int				must_eat;
 	t_time			*time; // 공유 자원
 	pthread_mutex_t	*fork; // 공유 자원
