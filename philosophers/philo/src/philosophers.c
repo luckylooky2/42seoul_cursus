@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   philosophers.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/19 23:22:54 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/20 14:08:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,13 +23,13 @@ size_t get_now(void)
 	return (now.tv_sec * 1000 + now.tv_usec / 1000);
 }
 
-void	wait_time(unsigned int wait)
+void	wait_time(unsigned int time_wait)
 {
 	size_t	target;
 	
-	target = wait + get_now();
+	target = time_wait + get_now();
 	while (target > get_now())
-		usleep(200);
+		usleep(100);
 }
 
 void	print_status(t_philo *philo, int philo_idx, int status)
@@ -38,7 +38,7 @@ void	print_status(t_philo *philo, int philo_idx, int status)
 	
 	index = philo->index;
 	if (status == FORK)
-		printf("%zu %d has taken a fork %d\n", philo->time->time_total, index, philo_idx);
+		printf("%zu %d has taken a fork\n", philo->time->time_total, index);
 	else if (status == EAT)
 		printf("%zu %d is eatings\n", philo->time->time_total, index);
 	else if (status == SLEEP)
@@ -72,76 +72,6 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 		philo->time->check_total[idx] = 0; // 기준 시간 초기화
 		philo->time->check_in_ms[idx] = (philo->time->check.tv_sec * 1000) + (philo->time->check.tv_usec / 1000); // 기준 시간 체크
 	}
-	// if (philo->time->time_eat >= philo->time->time_sleep)
-	// 	diff_eat_sleep = philo->time->time_eat - philo->time->time_sleep;
-	// else
-	// 	diff_eat_sleep = philo->time->time_sleep - philo->time->time_eat;
-	// printf("<<%d check_total : %d>>\n", philo->index, philo->check_total);
-	// if (philo->is_even == EVEN)
-	// {
-	// 	if (status == EAT && philo->check_total + philo->time->time_eat > philo->time->time_die && philo->check_in_ms != 0)
-	// 	{
-	// 		print_status(philo, philo_idx, status); // eat
-	// 		diff = philo->time->time_die - philo->check_total;
-	// 		usleep(diff * MILLISECOND);
-	// 		philo->time->time_total += diff;
-	// 		print_status(philo, philo_idx, DIE);
-	// 	}
-	// 	if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
-	// 	{
-	// 		print_status(philo, philo_idx, status); // sleep
-	// 		diff = philo->time->time_die - philo->check_total;
-	// 		usleep(diff * MILLISECOND);
-	// 		philo->time->time_total += diff;
-	// 		print_status(philo, philo_idx, DIE);
-	// 	}
-	// 	if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
-	// 	{
-	// 		print_status(philo, philo_idx, status); // think
-	// 		diff = philo->time->time_die - philo->check_total;
-	// 		if (diff < 0)
-	// 			diff = 0;
-	// 		usleep(diff * MILLISECOND);
-	// 		philo->time->time_total += diff;
-	// 		print_status(philo, philo_idx, DIE);
-	// 	}
-	// }
-	// else if (philo->is_even == ODD)
-	// {
-	// 	if (status == EAT && philo->check_total + 2 * philo->time->time_eat + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0 && philo->flag == 1)
-	// 	{
-	// 		print_status(philo, philo_idx, status); // eat
-	// 		wait_time(philo->time->time_eat);
-	// 		pthread_mutex_unlock(&philo->fork[philo_idx]);
-	// 		pthread_mutex_unlock(&philo->fork[philo_idx + 1]);
-	// 		print_time(philo, philo_idx, SLEEP);
-	// 		wait_time(philo->time->time_sleep);
-	// 		print_time(philo, philo_idx, THINK);
-	// 		diff = philo->time->time_die - philo->time->time_eat - philo->time->time_sleep;
-	// 		usleep(diff * MILLISECOND);
-	// 		philo->time->time_total += diff;
-	// 		print_status(philo, philo_idx, DIE);
-	// 	}
-	// 	if (status == SLEEP && philo->check_total + philo->time->time_sleep > philo->time->time_die && philo->check_in_ms != 0)
-	// 	{
-	// 		print_status(philo, philo_idx, status); // sleep
-	// 		diff = philo->time->time_die - philo->check_total;
-	// 		usleep(diff * MILLISECOND);
-	// 		philo->time->time_total += diff;
-	// 		print_status(philo, philo_idx, DIE);
-	// 	}
-	// 	if (status == THINK && philo->check_total + diff_eat_sleep > philo->time->time_die && philo->check_in_ms != 0)
-	// 	{
-	// 		// printf("check_total : %d\n", philo->check_total);
-	// 		print_status(philo, philo_idx, status); // think
-	// 		diff = philo->time->time_die - philo->check_total;
-	// 		if (diff < 0)
-	// 			diff = 0;
-	// 		usleep(diff * MILLISECOND);
-	// 		philo->time->time_total += diff; 
-	// 		print_status(philo, philo_idx, DIE);
-	// 	}	
-	// }
 	print_status(philo, philo_idx, status);
 	return (1);
 }
@@ -160,7 +90,10 @@ int	thread_routine_odd(void *arg)
 		is_last = philo_idx + 1;
 	else
 		is_last = 1;
-	usleep(50 * (philo->time->philo_num / 4 + 1));
+	if (philo->is_even == EVEN)
+		usleep(50 * (philo->time->philo_num / 4 + 1));
+	else
+		wait_time(philo->time->time_eat);
 	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[philo_idx]);
@@ -174,6 +107,44 @@ int	thread_routine_odd(void *arg)
 		print_time(philo, philo_idx, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_time(philo, philo_idx, THINK);
+		if (philo->is_even == ODD && philo->time->time_eat >= philo->time->time_sleep)
+			wait_time(philo->time->time_eat);
+		else if (philo->is_even == ODD && 2 * philo->time->time_eat >= philo->time->time_sleep)
+			wait_time(2 * philo->time->time_eat - philo->time->time_sleep);
+		if (philo->must_eat > 0)
+			philo->must_eat--;
+	}
+	philo->time->exit_status = 1;
+	return (SUCCESS);
+}
+
+int	thread_routine_last(void *arg)
+{
+	t_philo *philo;
+	int		philo_idx;
+	int		i;
+
+	i = -1;	
+	philo = (t_philo *)arg;
+	philo_idx = philo->index;
+	wait_time(philo->time->time_eat * 2);
+	while (philo->must_eat)
+	{
+		pthread_mutex_lock(&philo->fork[philo_idx]);
+		print_time(philo, philo_idx, FORK);
+		pthread_mutex_lock(&philo->fork[1]);
+		print_time(philo, 1, FORK);
+		print_time(philo, philo_idx, EAT);
+		wait_time(philo->time->time_eat);
+		pthread_mutex_unlock(&philo->fork[1]);
+		pthread_mutex_unlock(&philo->fork[philo_idx]);
+		print_time(philo, philo_idx, SLEEP);
+		wait_time(philo->time->time_sleep);
+		print_time(philo, philo_idx, THINK);
+		if (philo->time->time_eat >= philo->time->time_sleep)
+			wait_time(philo->time->time_eat);
+		else if (2 * philo->time->time_eat >= philo->time->time_sleep)
+			wait_time(2 * philo->time->time_eat - philo->time->time_sleep);
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
@@ -208,6 +179,10 @@ int	thread_routine_even(void *arg)
 		print_time(philo, philo_idx, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_time(philo, philo_idx, THINK);
+		if (philo->is_even == ODD && philo->time->time_eat >= philo->time->time_sleep)
+			wait_time(philo->time->time_eat);
+		else if (philo->is_even == ODD && 2 * philo->time->time_eat >= philo->time->time_sleep)
+			wait_time(2 * philo->time->time_eat - philo->time->time_sleep);
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
@@ -236,7 +211,6 @@ int	malloc_time(t_time *time)
 	{
 		check_total[i] = 0;
 		check_in_ms[i] = (time->check.tv_sec * 1000) + (time->check.tv_usec / 1000);
-		// printf("%d\n", check_in_ms[i]);
 	}
 	i = -1;
 	while (++i < philo_num)
@@ -260,7 +234,7 @@ int	malloc_thread(t_philo **philo, t_time *time)
 	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), philo_num);
 	fork = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t)
 			, philo_num + 1);
-	if (!(*philo) || !thread || !fork )
+	if (!(*philo) || !thread || !fork)
 		return (FAIL_MALLOC);
 	while (i < philo_num)
 	{
@@ -269,7 +243,6 @@ int	malloc_thread(t_philo **philo, t_time *time)
 		else
 			(*philo + i)->is_even = EVEN;
 		(*philo + i)->index = i + 1;
-		(*philo + i)->flag = 0;
 		(*philo + i)->must_eat = time->must_eat;
 		(*philo + i)->time = time;
 		(*philo + i)->thread = thread;
@@ -377,12 +350,14 @@ int	check_time_die(t_philo *philo)
 		if (philo->time->check_total[i] >= philo->time->time_die)
 		{
 			print_status(philo, i, DIE);
-			return (0);
+			// return (0);
+			exit(EXIT_SUCCESS);
 		}
 		if (philo->time->exit_status == 1)
 		{
 			// printf("2222222\n");
-			return (0);
+			// return (0);
+			exit(EXIT_SUCCESS);
 		}
 		i++;
 	}
@@ -408,7 +383,9 @@ int	main(int argc, char *argv[])
 	i = -1;
 	while (++i < philo->time->philo_num)
 	{
-		if (!(i % 2)) // if the number of philosophers is even number.
+		if (!(i % 2) && philo->is_even == ODD && i + 1== philo->time->philo_num)
+			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_last, (void *)(philo + i)); // index 0 is equivalent to the first philosopher.
+		else if (!(i % 2)) // if the number of philosophers is even number.
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_odd, (void *)(philo + i)); // index 0 is equivalent to the first philosopher.
 		else if (i % 2)
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_even, (void *)(philo + i));
