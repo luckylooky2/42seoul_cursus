@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/20 21:34:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/20 21:59:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,25 +74,15 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 
 int	thread_routine_odd(t_philo *philo)
 {
-	int		is_last;
-
-	if (philo->index != philo->time->philo_num)
-		is_last = philo->index + 1;
-	else
-		is_last = 1;
-	if (philo->is_even == EVEN)
-		usleep(50 * (philo->time->philo_num / 4 + 1));
-	else
-		wait_time(philo->time->time_eat);
 	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[philo->index]);
 		print_time(philo, philo->index, FORK);
-		pthread_mutex_lock(&philo->fork[is_last]);
-		print_time(philo, is_last, FORK);
+		pthread_mutex_lock(&philo->fork[philo->index + 1]);
+		print_time(philo, philo->index + 1, FORK);
 		print_time(philo, philo->index, EAT);
 		wait_time(philo->time->time_eat);
-		pthread_mutex_unlock(&philo->fork[is_last]);
+		pthread_mutex_unlock(&philo->fork[philo->index + 1]);
 		pthread_mutex_unlock(&philo->fork[philo->index]);
 		print_time(philo, philo->index, SLEEP);
 		wait_time(philo->time->time_sleep);
@@ -110,7 +100,8 @@ int	thread_routine_odd(t_philo *philo)
 
 int	thread_routine_last(t_philo *philo)
 {
-	wait_time(philo->time->time_eat * 2);
+	if (philo->time->philo_num != 1)
+		wait_time(philo->time->time_eat * 2);
 	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[philo->index]);
@@ -143,6 +134,10 @@ int	thread_routine_even(t_philo *philo)
 		is_last = philo->index + 1;
 	else
 		is_last = 1;
+	if (philo->is_even == EVEN)
+		usleep(50 * (philo->time->philo_num / 4 + 1));
+	else
+		wait_time(philo->time->time_eat);
 	while (philo->must_eat)
 	{
 		pthread_mutex_lock(&philo->fork[is_last]);
