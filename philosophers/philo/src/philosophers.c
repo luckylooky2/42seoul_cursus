@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/20 15:14:40 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/20 21:34:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,9 @@ int	print_time(t_philo *philo, int philo_idx, int status)
 		philo->time->check_total[idx] = 0; // 기준 시간 초기화
 		philo->time->check_in_ms[idx] = (philo->time->check.tv_sec * 1000) + (philo->time->check.tv_usec / 1000); // 기준 시간 체크
 	}
+	pthread_mutex_lock(&philo->print);
 	print_status(philo, philo_idx, status);
+	pthread_mutex_unlock(&philo->print);
 	return (1);
 }
 
@@ -331,10 +333,11 @@ int	check_time_die(t_philo *philo)
 
 int	main(int argc, char *argv[])
 {
-	t_philo		*philo;
-	t_time		time;
-	int 	i = -1;
+	t_philo	*philo;
+	t_time	time;
+	int 	i;
 
+	i = -1;
 	if (argc != 5 && argc != 6)
 		return (put_error(FAIL_ARGC));
 	if (parse_input(argc, argv, &time))
@@ -345,6 +348,7 @@ int	main(int argc, char *argv[])
 		return (put_error(FAIL_MALLOC));
 	while (++i < philo->time->philo_num + 1)
 		pthread_mutex_init(&philo->fork[i], NULL);
+	pthread_mutex_init(&philo->print, NULL);
 	i = -1;
 	while (++i < philo->time->philo_num)
 	{

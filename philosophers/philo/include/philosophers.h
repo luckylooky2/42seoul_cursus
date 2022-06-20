@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/20 11:55:37 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/20 21:08:58 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,7 @@ typedef struct	s_philo
 	t_time			*time; // 공유 자원
 	pthread_mutex_t	*fork; // 공유 자원
 	pthread_t		*thread; // 공유 자원
+	pthread_mutex_t	print;
 }	t_philo;
 
 char		**ft_split(char const *s, char c);
