@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:07:03 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/22 07:05:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	print_error(int err_code)
 	else if (err_code == FAIL_MALLOC)
 		write(STDERR_FILENO, "Fail to allocate memory.\n", 26);
 	else if (err_code == FAIL_INIT_MUTEX)
-		write(STDERR_FILENO, "Fail to initiate mutex.\n", 25);
+		write(STDERR_FILENO, "Fail to initialize mutex.\n", 27);
 	else if (err_code == FAIL_CREATE_THREAD)
 		write(STDERR_FILENO, "Fail to create thread.\n", 24);
 	else if (err_code == FAIL_DETACH_THREAD)
