@@ -6,64 +6,45 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:39:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 14:11:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:06:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-# include "../include/philosophers.h"
+#include "../include/philosophers.h"
 
-long long	ft_atoi(const char *nptr)
+size_t	convert_to_millisecond(struct timeval time)
 {
-	int			i;
-	long long	longlong;
-
-	i = 0;
-	longlong = 0;
-	if (!nptr)
-		return (0);
-	while ((9 <= nptr[i] && nptr[i] <= 13) || nptr[i] == 32)
-		i++;
-	if (nptr[i] == '+')
-		i++;
-	while (nptr[i] == '0')
-		i++;
-	while ('0' <= nptr[i] && nptr[i] <= '9')
-	{
-		longlong = longlong * 10 + (nptr[i] - '0');
-		if ((longlong == INT_MAX / 10) && nptr[i + 1] > ('0' + INT_MAX % 10))
-			return (OVER_INT_MAX);
-		else if (longlong > INT_MAX / 10 && ('0' <= nptr[i + 1] && nptr[i + 1] <= '9'))
-			return (OVER_INT_MAX);
-		i++;
-	}
-	return ((int)longlong);
+	return ((time.tv_sec * 1000) + (time.tv_usec / 1000));
 }
 
-void	*ft_calloc(size_t nmemb, size_t size)
+size_t	calculate_time(t_philo *philo, int index, int flag)
 {
-	void	*new_str;
-	size_t	i;
-
-	i = 0;
-	new_str = malloc(nmemb * size);
-	if (!new_str)
-		return (NULL);
+	if (flag == TIME_TOTAL)
+		return (philo->time->now_in_ms - philo->time->start_in_ms);
 	else
-	{
-		while (i < nmemb * size)
-			((unsigned char *)new_str)[i++] = 0;
-		return (new_str);
-	}
+		return (philo->time->now_in_ms - philo->time->check_in_ms[index]);
 }
 
-size_t	ft_strlen(const char *s)
+static size_t	get_now(t_philo *philo)
 {
-	size_t	cnt;
+	struct timeval	now;
+	int				err_check;
 
-	cnt = 0;
-	if (s == NULL)
-		return (0);
-	while (s[cnt])
-		cnt++;
-	return (cnt);
+	err_check = gettimeofday(&now, NULL);
+	if (err_check == -1)
+	{
+		print_error(FAIL_GET_TIME);
+		philo->time->fail = TRUE;
+		return (FAIL_GET_TIME);
+	}
+	return (convert_to_millisecond(now));
+}
+
+void	wait_time(t_philo *philo, unsigned int time_wait)
+{
+	size_t	target;
+
+	target = time_wait + get_now(philo);
+	while (target > get_now(philo))
+		usleep(MILLISECOND / 2);
 }

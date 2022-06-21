@@ -8,11 +8,10 @@ RM=rm -f
 NAME=philo
 SRC_DIR=src
 SRC_BONUS_DIR=src_bonus
-SRC=$(addprefix $(SRC_DIR)/, philosophers.c ft_split.c philosophers_utils.c)
-SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, pipex_bonus.c pipex_utils_bonus.c \
-	parse_input_bonus.c parse_input_utils_bonus.c open_files_bonus.c \
-	open_pipes_bonus.c fork_child_process_bonus.c execute_process_bonus.c \
-	execute_process_utils_bonus.c execute_child_process_bonus.c)
+SRC=$(addprefix $(SRC_DIR)/, philosophers.c ft_split.c philosophers_utils.c \
+	parse_input.c init.c malloc.c print.c thread.c thread_routine.c \
+	monitor.c action.c )
+SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, )
 OBJECT=$(SRC:.c=.o)
 OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 
