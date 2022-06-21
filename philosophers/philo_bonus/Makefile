@@ -5,23 +5,23 @@ CFLAGS=-Wall -Werror -Wextra
 THREAD=-pthread
 RM=rm -f
 
-NAME=philo
-SRC_DIR=src
-SRC=$(addprefix $(SRC_DIR)/, philosophers.c ft_split.c philosophers_utils.c \
+NAME=philo_bonus
+SRC_BONUS_DIR=src_bonus
+SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, philosophers.c ft_split.c philosophers_utils.c \
 	parse_input.c init.c malloc.c print.c thread.c thread_routine.c \
 	monitor.c action.c )
-OBJECT=$(SRC:.c=.o)
+OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 
-$(NAME) : $(OBJECT)
-	$(CC) $(CFLAGS) $(OBJECT) $(THREAD) -o $(NAME)
+$(NAME) : $(OBJECT_BONUS)
+	$(CC) $(OBJECT_BONUS) -g $(THREAD) -o $(NAME)
 
 %.o : %.c
-	$(CC) $(CFLAGS) -c $< $(THREAD) -o $@
+	$(CC) -c -g $< $(THREAD) -o $@
 
 all : $(NAME)
 
 clean :
-	$(RM) $(OBJECT)
+	$(RM) $(OBJECT_BONUS)
 
 fclean :
 	@$(MAKE) clean

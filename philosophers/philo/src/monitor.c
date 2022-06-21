@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:09:58 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:03:08 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:22:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	monitor_time_die(t_philo *philo)
 	while (i < philo->time->philo_num + 1)
 	{
 		philo->time->check_total[i] = calculate_time(philo, i, CHECK_TOTAL);
-		if (philo->time->check_total[i] >= philo->time->time_die)
+		if (philo->time->check_total[i] >= (size_t)philo->time->time_die)
 			return (print_status(philo, i, DIE));
 		if (check_exit_status(philo) == TRUE || philo->time->fail == TRUE)
 			return (EXIT);

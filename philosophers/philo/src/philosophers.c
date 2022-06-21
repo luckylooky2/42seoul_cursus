@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:05:13 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:20:25 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ int	main(int argc, char *argv[])
 
 	if (argc != 5 && argc != 6)
 		return (print_error(FAIL_ARGC));
-	if (parse_input(argc, argv, &time))
+	if (parse_input(argv, &time))
 		return (print_error(FAIL_PARSE_INPUT));
 	if (init_time(&time))
 		return (print_error(FAIL_GET_TIME));

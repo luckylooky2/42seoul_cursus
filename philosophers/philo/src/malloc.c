@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:02:58 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:20:49 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ int	malloc_time(t_time *time)
 {	
 	size_t	*check_in_ms;
 	size_t	*check_total;
-	size_t	philo_num;
+	int		philo_num;
 	int		err_check;
 	int		i;
 

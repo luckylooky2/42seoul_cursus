@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:10:43 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:20:10 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ int			init_time(t_time *time);
 int			init_mutex(t_philo *philo);
 void		init_check_time(t_philo *philo);
 
-int			parse_input(int argc, char *argv[], t_time *time);
+int			parse_input(char *argv[], t_time *time);
 long long	ft_atoi(const char *nptr);
 size_t		ft_strlen(const char *s);
 

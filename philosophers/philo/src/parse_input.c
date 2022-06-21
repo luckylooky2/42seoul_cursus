@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:53:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:04:52 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 19:19:58 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ static int	check_number(char *argv[])
 	return (1);
 }
 
-int	parse_input(int argc, char *argv[], t_time *time)
+int	parse_input(char *argv[], t_time *time)
 {
 	if (check_number(argv) == 0)
 		return (FAIL_PARSE_INPUT);
