@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 13:13:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:42:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,9 @@
 # define ODD	1
 # define EVEN	2
 
+# define FALSE	0
+# define TRUE	1
+
 # define MILLISECOND		1000
 
 # define EXIT				1
@@ -35,6 +38,7 @@
 # define FAIL_PARSE_INPUT	-2
 # define FAIL_GET_TIME		-3
 # define FAIL_MALLOC		-4
+# define FAIL_INIT_MUTEX	-5
 
 # define FORK	1
 # define EAT	2
@@ -57,7 +61,7 @@ typedef struct	s_time
 	size_t			*check_in_ms;
 	size_t			*check_total;
 	size_t			time_total;
-	int				exit_status;
+	int				fail;
 }	t_time;
 
 typedef struct	s_philo
@@ -69,6 +73,7 @@ typedef struct	s_philo
 	pthread_mutex_t	*fork; // 공유 자원
 	pthread_t		*thread; // 공유 자원
 	pthread_mutex_t	*print;
+	int				*exit_status;
 }	t_philo;
 
 char		**ft_split(char const *s, char c);

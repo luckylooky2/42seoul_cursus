@@ -6,11 +6,24 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 13:12:34 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/21 14:43:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
+
+int	put_error(int err_code)
+{
+	if (err_code == FAIL_ARGC)
+		write(STDIN_FILENO, "5 or 6 arguments are needed.\n", 30);
+	else if (err_code == FAIL_PARSE_INPUT)
+		write(STDIN_FILENO, "Some arguments are incorrect.\n", 31);
+	else if (err_code == FAIL_GET_TIME)
+		write(STDIN_FILENO, "Fail to get time.\n", 19);
+	else if (err_code == FAIL_MALLOC)
+		write(STDIN_FILENO, "Fail to allocate memory.\n", 26);
+	return (err_code);
+}
 
 size_t get_now(void)
 {
@@ -55,7 +68,7 @@ int	print_status(t_philo *philo, int philo_idx, int status)
 	return (SUCCESS);
 }
 
-int	init_check_time(t_philo *philo)
+void	init_check_time(t_philo *philo)
 {
 	int	idx;
 	int	err_check;
@@ -63,13 +76,15 @@ int	init_check_time(t_philo *philo)
 	idx = philo->index;
 	err_check = gettimeofday(&philo->time->check, NULL); // 기준 시간 받아오기
 	if (err_check == -1)
-		return (FAIL_GET_TIME);
+	{
+		put_error(FAIL_GET_TIME);
+		philo->time->fail = TRUE;
+	}
 	philo->time->check_total[idx] = 0; // 기준 시간 초기화
 	philo->time->check_in_ms[idx] = (philo->time->check.tv_sec * 1000) + (philo->time->check.tv_usec / 1000); // 기준 시간 체크
-	return (SUCCESS);
 }
 
-int	thread_routine_odd(t_philo *philo)
+void	thread_routine_odd(t_philo *philo)
 {
 	while (philo->must_eat)
 	{
@@ -78,11 +93,12 @@ int	thread_routine_odd(t_philo *philo)
 		pthread_mutex_lock(&philo->fork[philo->index + 1]);
 		print_status(philo, philo->index + 1, FORK);
 		print_status(philo, philo->index, EAT);
-		if (init_check_time(philo) == FAIL_GET_TIME)
-			return (FAIL_GET_TIME);
+		init_check_time(philo);
 		wait_time(philo->time->time_eat);
 		pthread_mutex_unlock(&philo->fork[philo->index + 1]);
 		pthread_mutex_unlock(&philo->fork[philo->index]);
+		if (philo->must_eat == 1)
+			philo->exit_status[philo->index] = TRUE;
 		print_status(philo, philo->index, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_status(philo, philo->index, THINK);
@@ -93,11 +109,9 @@ int	thread_routine_odd(t_philo *philo)
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
-	philo->time->exit_status = 1;
-	return (SUCCESS);
 }
 
-int	thread_routine_last(t_philo *philo)
+void	thread_routine_last(t_philo *philo)
 {
 	if (philo->time->philo_num != 1)
 		wait_time(philo->time->time_eat * 2);
@@ -108,11 +122,12 @@ int	thread_routine_last(t_philo *philo)
 		pthread_mutex_lock(&philo->fork[1]);
 		print_status(philo, 1, FORK);
 		print_status(philo, philo->index, EAT);
-		if (init_check_time(philo) == FAIL_GET_TIME)
-			return (FAIL_GET_TIME);
+		init_check_time(philo);
 		wait_time(philo->time->time_eat);
 		pthread_mutex_unlock(&philo->fork[1]);
 		pthread_mutex_unlock(&philo->fork[philo->index]);
+		if (philo->must_eat == 1)
+			philo->exit_status[philo->index] = TRUE;
 		print_status(philo, philo->index, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_status(philo, philo->index, THINK);
@@ -123,11 +138,9 @@ int	thread_routine_last(t_philo *philo)
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
-	philo->time->exit_status = 1;
-	return (SUCCESS);
 }
 
-int	thread_routine_even(t_philo *philo)
+void	thread_routine_even(t_philo *philo)
 {
 	int		is_last;
 	
@@ -146,11 +159,12 @@ int	thread_routine_even(t_philo *philo)
 		pthread_mutex_lock(&philo->fork[philo->index]);
 		print_status(philo, philo->index, FORK);
 		print_status(philo, philo->index, EAT);
-		if (init_check_time(philo) == FAIL_GET_TIME)
-			return (FAIL_GET_TIME);
+		init_check_time(philo);
 		wait_time(philo->time->time_eat);
 		pthread_mutex_unlock(&philo->fork[philo->index]);
 		pthread_mutex_unlock(&philo->fork[is_last]);
+		if (philo->must_eat == 1)
+			philo->exit_status[philo->index] = TRUE;
 		print_status(philo, philo->index, SLEEP);
 		wait_time(philo->time->time_sleep);
 		print_status(philo, philo->index, THINK);
@@ -161,8 +175,6 @@ int	thread_routine_even(t_philo *philo)
 		if (philo->must_eat > 0)
 			philo->must_eat--;
 	}
-	philo->time->exit_status = 1;
-	return (SUCCESS);
 }
 
 int	malloc_time(t_time *time)
@@ -201,21 +213,21 @@ int	malloc_thread(t_philo **philo, t_time *time)
 	pthread_t 		*thread;
 	pthread_mutex_t	*fork;
 	pthread_mutex_t	*print;
-	size_t			philo_num;
+	int				*exit_status;
 	int				i;
 
 	i = 0;
-	philo_num = time->philo_num;
-	*philo = (t_philo *)ft_calloc(sizeof(t_philo), philo_num);
-	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), philo_num);
+	*philo = (t_philo *)ft_calloc(sizeof(t_philo), time->philo_num);
+	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), time->philo_num);
 	fork = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t)
-			, philo_num + 1);
+			, time->philo_num + 1);
 	print = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t), 1);
-	if (!(*philo) || !thread || !fork || !print)
+	exit_status = (int *)ft_calloc(sizeof(int), time->philo_num + 1);
+	if (!(*philo) || !thread || !fork || !print || !exit_status)
 		return (FAIL_MALLOC);
-	while (i < philo_num)
+	while (i < time->philo_num)
 	{
-		if (philo_num % 2)
+		if (time->philo_num % 2)
 			(*philo + i)->is_even = ODD;
 		else
 			(*philo + i)->is_even = EVEN;
@@ -225,6 +237,7 @@ int	malloc_thread(t_philo **philo, t_time *time)
 		(*philo + i)->thread = thread;
 		(*philo + i)->fork = fork;
 		(*philo + i)->print = print;
+		(*philo + i)->exit_status = exit_status;
 		i++;
 	}
 	return (SUCCESS);
@@ -240,7 +253,6 @@ int	init_time(t_time *time)
 	time->start_in_ms = (time->start.tv_sec * 1000) + (time->start.tv_usec / 1000);
 	time->now_in_ms = 0;
 	time->time_total = 0;
-	time->exit_status = 0;
 	time->start.tv_sec = 0;
 	time->start.tv_usec = 0;
 	time->now.tv_sec = 0;
@@ -249,6 +261,7 @@ int	init_time(t_time *time)
 	time->check.tv_usec = 0;
 	time->check_in_ms = NULL;
 	time->check_total = NULL;
+	time->fail = FALSE;
 	return (SUCCESS);
 }
 
@@ -296,17 +309,18 @@ int	parse_input(int argc, char *argv[], t_time *time)
 	return (SUCCESS);
 }
 
-int	put_error(int err_code)
+int	check_exit_status(t_philo *philo)
 {
-	if (err_code == FAIL_ARGC)
-		write(STDIN_FILENO, "5 or 6 arguments are needed.\n", 30);
-	else if (err_code == FAIL_PARSE_INPUT)
-		write(STDIN_FILENO, "Some arguments are incorrect.\n", 31);
-	else if (err_code == FAIL_GET_TIME)
-		write(STDIN_FILENO, "Fail to get time.\n", 19);
-	else if (err_code == FAIL_MALLOC)
-		write(STDIN_FILENO, "Fail to allocate memory.\n", 26);
-	return (err_code);
+	int	i;
+
+	i = 1;
+	while (i < philo->time->philo_num + 1)
+	{
+		if (philo->exit_status[i] == FALSE)
+			return (FALSE);
+		i++;
+	}
+	return (TRUE);
 }
 
 int	check_time_die(t_philo *philo)
@@ -317,7 +331,10 @@ int	check_time_die(t_philo *philo)
 	i = 1;
 	err_check = gettimeofday(&philo->time->now, NULL); // 현재 시간 받아오기
 	if (err_check == -1)
-		return (FAIL_GET_TIME);
+	{
+		put_error(FAIL_GET_TIME);
+		return (EXIT);
+	}
 	philo->time->now_in_ms = (philo->time->now.tv_sec * 1000) + (philo->time->now.tv_usec / 1000); // 현재 시간 체크
 	philo->time->time_total = philo->time->now_in_ms - philo->time->start_in_ms; // 시간 차이 계산
 	while (i < philo->time->philo_num + 1)
@@ -325,10 +342,31 @@ int	check_time_die(t_philo *philo)
 		philo->time->check_total[i] = philo->time->now_in_ms - philo->time->check_in_ms[i];
 		if (philo->time->check_total[i] >= philo->time->time_die)
 			return (print_status(philo, i, DIE));
-		if (philo->time->exit_status == 1)
+		if (check_exit_status(philo) == TRUE)
 			return (EXIT);
+		if (philo->time->fail == TRUE)
+			return (EXIT); 
 		i++;
 	}
+	return (SUCCESS);
+}
+
+int	init_mutex(t_philo *philo)
+{
+	int	i;
+	int	err_check;
+
+	i = 0;
+	while (i < philo->time->philo_num + 1)
+	{
+		err_check = pthread_mutex_init(&philo->fork[i], NULL);
+		if (err_check != 0)
+			return (FAIL_INIT_MUTEX);
+		i++;
+	}
+	err_check = pthread_mutex_init(philo->print, NULL);
+	if (err_check != 0)
+		return (FAIL_INIT_MUTEX);
 	return (SUCCESS);
 }
 
@@ -347,24 +385,30 @@ int	main(int argc, char *argv[])
 		return (put_error(FAIL_GET_TIME));
 	if (malloc_time(&time) || malloc_thread(&philo, &time))
 		return (put_error(FAIL_MALLOC));
-	while (++i < philo->time->philo_num + 1)
-		pthread_mutex_init(&philo->fork[i], NULL);
-	pthread_mutex_init(philo->print, NULL);
+	if (init_mutex(philo))
+		return (put_error(FAIL_INIT_MUTEX));
 	i = -1;
 	while (++i < philo->time->philo_num)
 	{
-		if (!(i % 2) && philo->is_even == ODD && i + 1 == philo->time->philo_num)
+		if (philo->is_even == ODD && !(i % 2) && i + 1 == philo->time->philo_num)
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_last, (philo + i));
 		else if (!(i % 2))
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_odd, (philo + i));
 		else if (i % 2)
 			pthread_create(&(philo->thread[i]), NULL, (void *)thread_routine_even, (philo + i));
 	}
-	i = -1;
 	while (check_time_die(philo) == SUCCESS)
 		usleep(MILLISECOND / 10);
+	i = -1;
 	while (++i < philo->time->philo_num)
 		pthread_detach(philo->thread[i]);
+	i = -1;
+	while (++i < philo->time->philo_num + 1)
+		pthread_mutex_destroy(&philo->fork[i]);
+	pthread_mutex_destroy(philo->print);
 	// system("leaks philo");
 	return (SUCCESS);
 }
+
+// usleep : 0 / -1
+// 
