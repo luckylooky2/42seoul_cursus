@@ -7,9 +7,9 @@ RM=rm -f
 
 NAME=philo_bonus
 SRC_BONUS_DIR=src_bonus
-SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, philosophers.c ft_split.c philosophers_utils.c \
-	parse_input.c init.c malloc.c print.c thread.c thread_routine.c \
-	monitor.c action.c )
+SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, philosophers_bonus.c parse_input_bonus.c init_bonus.c print_bonus.c)
+# ft_split.c philosophers_utils.c malloc.c print.c thread.c thread_routine.c monitor.c action.c
+
 OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 
 $(NAME) : $(OBJECT_BONUS)
