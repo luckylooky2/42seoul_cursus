@@ -6,30 +6,35 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:51:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 21:14:37 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:36:43 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-void	init_time(t_time *time)
+static void	get_time(t_time *time, int flag)
 {
-	int	err_check;
+	struct timeval	second;
+	int				err_check;
 
-	err_check = gettimeofday(&time->start, NULL);
+	err_check = gettimeofday(&second, NULL);
 	if (err_check == -1)
 		exit(print_error(FAIL_GET_TIME));
-	// time->start_in_ms = convert_to_millisecond(time->start);
+	if (flag == START)
+		time->start_in_ms = convert_to_millisecond(second);
+	else if (flag == NOW)
+		time->now_in_ms = convert_to_millisecond(second);
+	else if (flag == CHECK)
+		time->check_in_ms = convert_to_millisecond(second);
+}
+
+void	init_time(t_time *time)
+{
+	get_time(time, START);
+	get_time(time, CHECK);
 	time->now_in_ms = 0;
+	time->check_total = 0;
 	time->time_total = 0;
-	time->start.tv_sec = 0;
-	time->start.tv_usec = 0;
-	time->now.tv_sec = 0;
-	time->now.tv_usec = 0;
-	time->check.tv_sec = 0;
-	time->check.tv_usec = 0;
-	time->check_in_ms = NULL;
-	time->check_total = NULL;
 	time->fail = FALSE;
 }
 

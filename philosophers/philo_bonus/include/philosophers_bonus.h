@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 21:14:12 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 14:42:43 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,13 @@
 # define ODD	1
 # define EVEN	2
 
+typedef int		t_bool;
 # define FALSE	0
 # define TRUE	1
+
+# define START	1
+# define NOW	2
+# define CHECK	3
 
 # define TIME_TOTAL		1
 # define CHECK_TOTAL	2
@@ -60,13 +65,10 @@ typedef struct s_time
 	int				time_eat;
 	int				time_sleep;
 	int				must_eat;
-	struct timeval	start;
-	struct timeval	now;
-	struct timeval	check;
 	size_t			start_in_ms;
 	size_t			now_in_ms;
-	size_t			*check_in_ms;
-	size_t			*check_total;
+	size_t			check_in_ms;
+	size_t			check_total;
 	size_t			time_total;
 	int				fail;
 }	t_time;
@@ -76,11 +78,10 @@ typedef struct s_philo
 	int				index;
 	int				is_even;
 	int				must_eat;
+	pid_t			*pid;
 	t_time			*time;
-	pthread_mutex_t	*fork;
-	pthread_t		*thread;
-	pthread_mutex_t	*print;
-	int				*exit_status;
+	sem_t			*fork;
+	sem_t			*print;
 }	t_philo;
 
 void	parse_input(char *argv[], t_time *time);
