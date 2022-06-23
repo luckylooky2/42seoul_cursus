@@ -6,18 +6,48 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:33:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 14:44:41 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:17:05 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
+t_bool	check_child_process(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->time->philo_num)
+	{
+		if (philo->pid[i] == 0)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
+}
+
+void	fork_child_process(t_philo *philo)
+{
+	int	i;
+
+	i = 1;
+	philo->pid[0] = fork();
+	if (philo->pid[0] == -1)
+		exit(EXIT_FAILURE);
+	while (i < philo->time->philo_num)
+	{
+		if (check_child_process(philo) == FALSE)
+			philo->pid[i] = fork();
+		if (philo->pid[i] == -1)
+			exit(EXIT_FAILURE);
+		i++;
+	}
+}
+
 int	main(int argc, char *argv[])
 {
 	t_time	time;
-	t_philo	philo;
-	pid_t	pid;
-	sem_t	*sem;
+	t_philo	*philo;
 	int		res = 0;
 	int		sval = 0;
 
@@ -27,23 +57,11 @@ int	main(int argc, char *argv[])
 	parse_input(argv, &time);
 	init_time(&time);
 	malloc_thread(&philo, &time);
-	sem_unlink("philo_bonus");
-	sem = sem_open("philo_bonus", O_CREAT, 0644, ft_atoi(argv[1]));
-	if (sem == SEM_FAILED)
-		exit(EXIT_FAILURE);
-	pid = fork();
-	if (pid == 0)
-	{
-		res = sem_wait(sem);
-		res = sem_wait(sem);
-		printf("child : %p\n", sem);
-	}
+	fork_child_process(philo);
+	if (check_child_process(philo) == TRUE)
+		execute_child_process(philo);
 	else
-	{
-		// res = sem_wait(sem);
-		printf("parent : %p\n", sem);
-		wait(&sval);
-	}
+		execute_parent_process(philo);
 	return (SUCCESS);
 }
 

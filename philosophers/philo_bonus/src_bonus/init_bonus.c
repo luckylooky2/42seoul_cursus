@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:51:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 14:36:43 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 19:27:40 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,37 +38,38 @@ void	init_time(t_time *time)
 	time->fail = FALSE;
 }
 
-int	init_mutex(t_philo *philo)
-{
-	int	i;
-	int	err_check;
+// int	init_mutex(t_philo *philo)
+// {
+// 	int	i;
+// 	int	err_check;
 
-	i = 0;
-	while (i < philo->time->philo_num + 1)
-	{
-		err_check = pthread_mutex_init(&philo->fork[i], NULL);
-		if (err_check != 0)
-			return (FAIL_INIT_MUTEX);
-		i++;
-	}
-	err_check = pthread_mutex_init(philo->print, NULL);
-	if (err_check != 0)
-		return (FAIL_INIT_MUTEX);
-	return (SUCCESS);
-}
+// 	i = 0;
+// 	while (i < philo->time->philo_num + 1)
+// 	{
+// 		err_check = pthread_mutex_init(&philo->fork[i], NULL);
+// 		if (err_check != 0)
+// 			return (FAIL_INIT_MUTEX);
+// 		i++;
+// 	}
+// 	err_check = pthread_mutex_init(philo->print, NULL);
+// 	if (err_check != 0)
+// 		return (FAIL_INIT_MUTEX);
+// 	return (SUCCESS);
+// }
 
 void	init_check_time(t_philo *philo)
 {
 	int	idx;
 	int	err_check;
+	struct timeval	check;
 
-	idx = philo->index;
-	err_check = gettimeofday(&philo->time->check, NULL);
+	idx = check_nth_child_process(philo);
+	err_check = gettimeofday(&check, NULL);
 	if (err_check == -1)
 	{
 		print_error(FAIL_GET_TIME);
 		philo->time->fail = TRUE;
 	}
-	philo->time->check_total[idx] = 0;
-	// philo->time->check_in_ms[idx] = convert_to_millisecond(philo->time->check);
+	philo->time->check_total = 0;
+	philo->time->check_in_ms = convert_to_millisecond(check);
 }

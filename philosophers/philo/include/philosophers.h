@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:20:10 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 21:04:46 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@
 # define ODD	1
 # define EVEN	2
 
+typedef int	t_bool;
 # define FALSE	0
 # define TRUE	1
 

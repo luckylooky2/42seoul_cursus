@@ -9,7 +9,7 @@ NAME=philo
 SRC_DIR=src
 SRC=$(addprefix $(SRC_DIR)/, philosophers.c ft_split.c philosophers_utils.c \
 	parse_input.c init.c malloc.c print.c thread.c thread_routine.c \
-	monitor.c action.c )
+	monitor.c action.c parse_input_utils.c )
 OBJECT=$(SRC:.c=.o)
 
 $(NAME) : $(OBJECT)
