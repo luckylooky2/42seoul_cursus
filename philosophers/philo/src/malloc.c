@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:20:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:10:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	malloc_thread(t_philo **philo, t_time *time)
 	fork = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t),
 			time->philo_num + 1);
 	print = (pthread_mutex_t *)ft_calloc(sizeof(pthread_mutex_t), 1);
-	exit_status = (int *)ft_calloc(sizeof(int), time->philo_num + 1);
+	exit_status = (int *)ft_calloc(sizeof(int), 1);
 	if (!(*philo) || !thread || !fork || !print || !exit_status)
 		return (FAIL_MALLOC);
 	while (++i < time->philo_num)

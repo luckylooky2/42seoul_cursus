@@ -6,25 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:09:58 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:22:19 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:11:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
-
-static int	check_exit_status(t_philo *philo)
-{
-	int	i;
-
-	i = 1;
-	while (i < philo->time->philo_num + 1)
-	{
-		if (philo->exit_status[i] == FALSE)
-			return (FALSE);
-		i++;
-	}
-	return (TRUE);
-}
 
 int	monitor_time_die(t_philo *philo)
 {
@@ -45,7 +31,8 @@ int	monitor_time_die(t_philo *philo)
 		philo->time->check_total[i] = calculate_time(philo, i, CHECK_TOTAL);
 		if (philo->time->check_total[i] >= (size_t)philo->time->time_die)
 			return (print_status(philo, i, DIE));
-		if (check_exit_status(philo) == TRUE || philo->time->fail == TRUE)
+		if (philo->exit_status[0] == philo->time->philo_num
+			|| philo->time->fail == TRUE)
 			return (EXIT);
 		i++;
 	}

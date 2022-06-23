@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 18:57:55 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 19:02:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:11:07 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ void	eat_dinner(t_philo *philo, int first, int second)
 	pthread_mutex_unlock(&philo->fork[first]);
 	pthread_mutex_unlock(&philo->fork[second]);
 	if (philo->must_eat == 1)
-		philo->exit_status[philo->index] = TRUE;
+		philo->exit_status[0] += 1;
 }
 
 void	sleep_on_bed(t_philo *philo)
