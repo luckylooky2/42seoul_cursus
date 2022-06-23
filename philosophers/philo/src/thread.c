@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:05:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/22 06:59:41 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:36:33 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,26 +50,5 @@ int	detach_thread(t_philo *philo)
 			return (FAIL_DETACH_THREAD);
 		i++;
 	}
-	return (SUCCESS);
-}
-
-int	destroy_mutex(t_philo *philo)
-{
-	int	i;
-	int	err_check;
-
-	i = 0;
-	while (i < philo->time->philo_num + 1)
-	{
-		pthread_mutex_unlock(&philo->fork[i]);
-		err_check = pthread_mutex_destroy(&philo->fork[i]);
-		if (err_check != 0)
-			return (FAIL_DESTROY_MUTEX);
-		i++;
-	}
-	pthread_mutex_unlock(philo->print);
-	err_check = pthread_mutex_destroy(philo->print);
-	if (err_check != 0)
-		return (FAIL_DESTROY_MUTEX);
 	return (SUCCESS);
 }

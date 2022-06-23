@@ -6,11 +6,17 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:09:58 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 11:11:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/23 11:39:08 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
+
+static int	lock_mutex(t_philo *philo)
+{
+	pthread_mutex_lock(philo->print);
+	return (EXIT);
+}
 
 int	monitor_time_die(t_philo *philo)
 {
@@ -33,7 +39,7 @@ int	monitor_time_die(t_philo *philo)
 			return (print_status(philo, i, DIE));
 		if (philo->exit_status[0] == philo->time->philo_num
 			|| philo->time->fail == TRUE)
-			return (EXIT);
+			return (lock_mutex(philo));
 		i++;
 	}
 	return (SUCCESS);
