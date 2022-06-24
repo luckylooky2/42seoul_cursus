@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 17:04:13 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:52:09 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,16 +77,10 @@ void	execute_parent_process(t_philo *philo)
 
 int	monitor_time_die(t_philo *philo)
 {
-	int				err_check;
-	int				index;
-	struct timeval	now;
+	int	index;
 
 	index = check_nth_child_process(philo) + 1;
-	err_check = gettimeofday(&now, NULL);
-	if (err_check == -1)
-		exit(print_error(FAIL_GET_TIME));
-	philo->time->now_in_ms = convert_to_millisecond(now);
-	philo->time->time_total = calculate_time(philo, TIME_TOTAL);
+	get_time(philo->time, NOW);
 	philo->time->check_total = calculate_time(philo, CHECK_TOTAL);
 	if (philo->time->check_total >= (size_t)philo->time->time_die)
 		print_status(philo, index, DIE);

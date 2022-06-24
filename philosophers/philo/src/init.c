@@ -6,20 +6,30 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:51:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/21 17:05:02 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:32:55 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers.h"
 
+int	get_time(t_time *time, int flag)
+{
+	struct timeval	second;
+	int				err_check;
+
+	err_check = gettimeofday(&second, NULL);
+	if (err_check == -1)
+		return (print_error(FAIL_GET_TIME));
+	if (flag == START)
+		time->start_in_ms = convert_to_millisecond(second);
+	else if (flag == NOW)
+		time->now_in_ms = convert_to_millisecond(second);
+	return (SUCCESS);
+}
+
 int	init_time(t_time *time)
 {
-	int	err_check;
-
-	err_check = gettimeofday(&time->start, NULL);
-	if (err_check == -1)
-		return (FAIL_GET_TIME);
-	time->start_in_ms = convert_to_millisecond(time->start);
+	get_time(time, START);
 	time->now_in_ms = 0;
 	time->time_total = 0;
 	time->start.tv_sec = 0;

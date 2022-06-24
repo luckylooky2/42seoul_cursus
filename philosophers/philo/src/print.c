@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/22 07:05:49 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:31:01 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,8 @@ int	print_status(t_philo *philo, int philo_idx, int status)
 
 	index = philo->index;
 	pthread_mutex_lock(philo->print);
+	if (get_time(philo->time, NOW) == FAIL_GET_TIME)
+		return (FAIL_GET_TIME);
 	if (status == FORK)
 		printf("%zu %d has taken a fork\n", philo->time->time_total, index);
 	else if (status == EAT)

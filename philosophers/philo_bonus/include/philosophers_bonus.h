@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 15:34:33 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:49:42 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,34 +91,35 @@ typedef struct s_philo
 	int				status;
 }	t_philo;
 
-void	parse_input(char *argv[], t_time *time);
+void		parse_input(char *argv[], t_time *time);
 long long	ft_atoi(const char *nptr);
-size_t	ft_strlen(const char *s);
-void	malloc_thread(t_philo **philo, t_time *time);
+size_t		ft_strlen(const char *s);
+void		malloc_thread(t_philo **philo, t_time *time);
 
-void	init_time(t_time *time);
-void	init_check_time(t_philo *philo);
-int	print_error(int err_code);
-void	print_status(t_philo *philo, int philo_idx, int status);
+void		init_time(t_time *time);
+void		get_time(t_time *time, int flag);
+void		init_check_time(t_philo *philo);
+int			print_error(int err_code);
+void		print_status(t_philo *philo, int philo_idx, int status);
 
-void	parse_input(char *argv[], t_time *time);
-size_t	convert_to_millisecond(struct timeval time);
-size_t	calculate_time(t_philo *philo, int flag);
-void	wait_time(t_philo *philo, unsigned int time_wait);
+void		parse_input(char *argv[], t_time *time);
+size_t		convert_to_millisecond(struct timeval time);
+size_t		calculate_time(t_philo *philo, int flag);
+void		wait_time(t_philo *philo, unsigned int time_wait);
 
-void	*ft_calloc(size_t nmemb, size_t size);
+void		*ft_calloc(size_t nmemb, size_t size);
 
-int	check_nth_child_process(t_philo *philo);
-void	execute_parent_process(t_philo *philo);
-void	execute_child_process(t_philo *philo);
+int			check_nth_child_process(t_philo *philo);
+void		execute_parent_process(t_philo *philo);
+void		execute_child_process(t_philo *philo);
 
-void	execute_odd_child(t_philo *philo);
-void	execute_even_child(t_philo *philo);
-void	execute_last_child(t_philo *philo);
+void		execute_odd_child(t_philo *philo);
+void		execute_even_child(t_philo *philo);
+void		execute_last_child(t_philo *philo);
 
-void	take_fork(t_philo *philo, int index);
-void	eat_dinner(t_philo *philo, int index);
-void	sleep_on_bed(t_philo *philo, int index);
-void	think_for_a_while(t_philo *philo, int index);
+void		take_fork(t_philo *philo, int index);
+void		eat_dinner(t_philo *philo, int index);
+void		sleep_on_bed(t_philo *philo, int index);
+void		think_for_a_while(t_philo *philo, int index);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 16:50:03 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:49:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,4 @@ void	execute_odd_child(t_philo *philo)
 		sleep_on_bed(philo, index);
 		think_for_a_while(philo, index);
 	}
-	while (1);
 }

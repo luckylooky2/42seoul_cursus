@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:43:23 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 11:22:14 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 18:31:25 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,9 @@
 typedef int	t_bool;
 # define FALSE	0
 # define TRUE	1
+
+# define START	1
+# define NOW	2
 
 # define TIME_TOTAL		1
 # define CHECK_TOTAL	2
@@ -88,6 +91,7 @@ char		**ft_split(char const *s, char c);
 int			init_time(t_time *time);
 int			init_mutex(t_philo *philo);
 void		init_check_time(t_philo *philo);
+int			get_time(t_time *time, int flag);
 
 int			parse_input(char *argv[], t_time *time);
 long long	ft_atoi(const char *nptr);

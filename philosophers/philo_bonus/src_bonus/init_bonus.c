@@ -6,13 +6,13 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:51:11 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 13:03:36 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:25:27 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-static void	get_time(t_time *time, int flag)
+void	get_time(t_time *time, int flag)
 {
 	struct timeval	second;
 	int				err_check;
