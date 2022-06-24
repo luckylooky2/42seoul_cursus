@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 21:40:50 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 11:27:35 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,9 @@ typedef int		t_bool;
 # define CHECK_TOTAL	2
 
 # define MILLISECOND		1000
+	
+# define EXIT_TIME_DIE		100
+# define EXIT_MUST_EAT		101
 
 # define EXIT				1
 # define SUCCESS			0

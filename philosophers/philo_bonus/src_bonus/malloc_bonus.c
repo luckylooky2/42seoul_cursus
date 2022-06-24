@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 21:27:15 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 15:30:46 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ void	malloc_thread(t_philo **philo, t_time *time)
 	(*philo)->fork = fork;
 	(*philo)->thread = thread;
 	(*philo)->print = print;
+	(*philo)->exit_status = exit_status;
 	(*philo)->status = 0;
 
 }
