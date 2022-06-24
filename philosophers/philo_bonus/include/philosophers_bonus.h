@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 11:27:35 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 15:34:33 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,7 @@ typedef struct s_philo
 	sem_t			*fork;
 	pthread_t		*thread;
 	sem_t			*print;
-	sem_t			*exit_status;
+	sem_t			*count;
 	int				status;
 }	t_philo;
 

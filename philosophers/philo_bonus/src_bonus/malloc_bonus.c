@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 15:30:46 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 15:46:45 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,21 +30,21 @@ void	malloc_thread(t_philo **philo, t_time *time)
 	sem_t		*fork;
 	pthread_t	*thread;
 	sem_t		*print;
-	sem_t		*exit_status;
+	sem_t		*count;
 
 	*philo = (t_philo *)ft_calloc(sizeof(t_philo), 1);
 	pid = (pid_t *)ft_calloc(sizeof(pid_t), time->philo_num + 1);
-	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 1);
+	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 2);
 	if (!(*philo) || !pid || !thread)
 		exit(print_error(FAIL_MALLOC));
 	init_pid(pid, time->philo_num + 1);
 	sem_unlink("fork");
 	sem_unlink("print");
-	sem_unlink("exit_status");
+	sem_unlink("count");
 	fork = sem_open("fork", O_CREAT, 0600, time->philo_num);
 	print = sem_open("print", O_CREAT, 0600, 1);
-	exit_status = sem_open("exit_status", O_CREAT, 0600, 1);
-	if (fork == SEM_FAILED || print == SEM_FAILED || exit_status == SEM_FAILED)
+	count = sem_open("count", O_CREAT, 0600, 1);
+	if (fork == SEM_FAILED || print == SEM_FAILED || count == SEM_FAILED)
 		exit(print_error(FAIL_SEMAPHORE));
 	if (time->philo_num % 2)
 		(*philo)->is_even = ODD;
@@ -56,7 +56,7 @@ void	malloc_thread(t_philo **philo, t_time *time)
 	(*philo)->fork = fork;
 	(*philo)->thread = thread;
 	(*philo)->print = print;
-	(*philo)->exit_status = exit_status;
+	(*philo)->count = count;
 	(*philo)->status = 0;
 
 }

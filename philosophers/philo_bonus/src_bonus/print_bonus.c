@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 12:54:25 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 17:03:22 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ int	print_error(int err_code)
 
 void	print_status(t_philo *philo, int philo_idx, int status)
 {
+	int i = -1;
+	
 	sem_wait(philo->print);
 	if (status == FORK)
 		printf("%zu %d has taken a fork\n", philo->time->time_total, philo_idx);
@@ -49,6 +51,8 @@ void	print_status(t_philo *philo, int philo_idx, int status)
 	else if (status == DIE)
 	{
 		printf("%zu %d died\n", philo->time->time_total, philo_idx);
+		while (++i < philo->time->philo_num)
+			sem_post(philo->count);
 		exit(EXIT_TIME_DIE);
 	}
 	sem_post(philo->print);

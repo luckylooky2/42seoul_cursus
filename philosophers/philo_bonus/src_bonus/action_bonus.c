@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 18:57:55 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 14:03:38 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/24 16:52:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,10 @@ void	eat_dinner(t_philo *philo, int index)
 	print_status(philo, index, EAT);
 	init_check_time(philo);
 	wait_time(philo, philo->time->time_eat);
+	if (philo->must_eat > 0)
+		philo->must_eat--;
+	if (philo->must_eat == 0)
+		sem_post(philo->count);
 	sem_post(philo->fork);
 	sem_post(philo->fork);
 }
