@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 15:46:45 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 01:20:57 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,20 +24,12 @@ static void	init_pid(pid_t	*pid, int num)
 	}
 }
 
-void	malloc_thread(t_philo **philo, t_time *time)
+static	void	open_semaphore(t_philo **philo, t_time *time)
 {
-	pid_t		*pid;
 	sem_t		*fork;
-	pthread_t	*thread;
 	sem_t		*print;
 	sem_t		*count;
 
-	*philo = (t_philo *)ft_calloc(sizeof(t_philo), 1);
-	pid = (pid_t *)ft_calloc(sizeof(pid_t), time->philo_num + 1);
-	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 2);
-	if (!(*philo) || !pid || !thread)
-		exit(print_error(FAIL_MALLOC));
-	init_pid(pid, time->philo_num + 1);
 	sem_unlink("fork");
 	sem_unlink("print");
 	sem_unlink("count");
@@ -45,7 +37,24 @@ void	malloc_thread(t_philo **philo, t_time *time)
 	print = sem_open("print", O_CREAT, 0600, 1);
 	count = sem_open("count", O_CREAT, 0600, 1);
 	if (fork == SEM_FAILED || print == SEM_FAILED || count == SEM_FAILED)
-		exit(print_error(FAIL_SEMAPHORE));
+		exit(print_error(FAIL_OPEN_SEMAPHORE));
+	(*philo)->fork = fork;
+	(*philo)->print = print;
+	(*philo)->count = count;
+}
+
+void	malloc_philo(t_philo **philo, t_time *time)
+{
+	pid_t		*pid;
+	pthread_t	*thread;
+
+	*philo = (t_philo *)ft_calloc(sizeof(t_philo), 1);
+	pid = (pid_t *)ft_calloc(sizeof(pid_t), time->philo_num + 1);
+	thread = (pthread_t *)ft_calloc(sizeof(pthread_t), 2);
+	if (!(*philo) || !pid || !thread)
+		exit(print_error(FAIL_MALLOC));
+	init_pid(pid, time->philo_num + 1);
+	open_semaphore(philo, time);
 	if (time->philo_num % 2)
 		(*philo)->is_even = ODD;
 	else
@@ -53,10 +62,7 @@ void	malloc_thread(t_philo **philo, t_time *time)
 	(*philo)->must_eat = time->must_eat;
 	(*philo)->time = time;
 	(*philo)->pid = pid;
-	(*philo)->fork = fork;
 	(*philo)->thread = thread;
-	(*philo)->print = print;
-	(*philo)->count = count;
 	(*philo)->status = 0;
 
 }

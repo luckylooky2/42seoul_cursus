@@ -1,31 +1,27 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers_bonus.c                               :+:      :+:    :+:   */
+/*   execute_process_utils_bonus.c                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 20:33:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:26:53 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/06/27 01:37:01 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/06/27 01:37:16 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-int	main(int argc, char *argv[])
+int	check_nth_child_process(t_philo *philo)
 {
-	t_time	time;
-	t_philo	*philo;
+	int	nth;
 
-	if (argc != 5 && argc != 6)
-		exit(print_error(FAIL_ARGC));
-	parse_input(argv, &time);
-	init_time(&time);
-	malloc_philo(&philo, &time);
-	fork_child_process(philo);
-	if (check_child_process(philo) == TRUE)
-		execute_child_process(philo);
-	else
-		execute_parent_process(philo);
-	return (SUCCESS);
+	nth = 0;
+	while (nth < philo->time->philo_num)
+	{
+		if (philo->pid[nth] == 0)
+			return (nth);
+		nth++;
+	}
+	return (0);
 }

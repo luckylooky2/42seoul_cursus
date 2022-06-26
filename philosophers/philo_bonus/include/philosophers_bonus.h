@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 18:49:42 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 01:45:48 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,17 +45,17 @@ typedef int		t_bool;
 # define EXIT_TIME_DIE		100
 # define EXIT_MUST_EAT		101
 
-# define EXIT				1
-# define SUCCESS			0
-# define FAIL_ARGC			-1
-# define FAIL_PARSE_INPUT	-2
-# define FAIL_GET_TIME		-3
-# define FAIL_MALLOC		-4
-# define FAIL_SEMAPHORE		-10
-# define FAIL_INIT_MUTEX	-5
-# define FAIL_CREATE_THREAD	-6
-# define FAIL_DETACH_THREAD	-7
-# define FAIL_DESTROY_MUTEX	-8
+# define EXIT					1
+# define SUCCESS				0
+# define FAIL_ARGC				-1
+# define FAIL_PARSE_INPUT		-2
+# define FAIL_GET_TIME			-3
+# define FAIL_MALLOC			-4
+# define FAIL_OPEN_SEMAPHORE	-5
+# define FAIL_FORK				-6
+# define FAIL_CREATE_THREAD		-7
+# define FAIL_DETACH_THREAD		-8
+# define FAIL_DESTROY_MUTEX		-9
 
 # define FORK	1
 # define EAT	2
@@ -75,7 +75,6 @@ typedef struct s_time
 	size_t			check_in_ms;
 	size_t			check_total;
 	size_t			time_total;
-	int				fail;
 }	t_time;
 
 typedef struct s_philo
@@ -94,24 +93,35 @@ typedef struct s_philo
 void		parse_input(char *argv[], t_time *time);
 long long	ft_atoi(const char *nptr);
 size_t		ft_strlen(const char *s);
-void		malloc_thread(t_philo **philo, t_time *time);
 
-void		init_time(t_time *time);
 void		get_time(t_time *time, int flag);
+void		init_time(t_time *time);
 void		init_check_time(t_philo *philo);
-int			print_error(int err_code);
-void		print_status(t_philo *philo, int philo_idx, int status);
 
-void		parse_input(char *argv[], t_time *time);
+void		malloc_philo(t_philo **philo, t_time *time);
+void		*ft_calloc(size_t nmemb, size_t size);
+
+void		fork_child_process(t_philo *philo);
+
 size_t		convert_to_millisecond(struct timeval time);
 size_t		calculate_time(t_philo *philo, int flag);
 void		wait_time(t_philo *philo, unsigned int time_wait);
+t_bool		check_child_process(t_philo *philo);
 
-void		*ft_calloc(size_t nmemb, size_t size);
-
-int			check_nth_child_process(t_philo *philo);
 void		execute_parent_process(t_philo *philo);
 void		execute_child_process(t_philo *philo);
+
+void	thread_routine_child_process(t_philo *philo);
+void	thread_routine_wait_semaphore(t_philo *philo);
+
+int			check_nth_child_process(t_philo *philo);
+
+int		monitor_time_die(t_philo *philo);
+
+int			print_error(int err_code);
+void		print_status(t_philo *philo, int philo_idx, int status);
+
+
 
 void		execute_odd_child(t_philo *philo);
 void		execute_even_child(t_philo *philo);

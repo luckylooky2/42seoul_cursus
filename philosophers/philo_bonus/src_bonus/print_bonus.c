@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 18:34:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 01:44:12 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,10 +22,10 @@ int	print_error(int err_code)
 		write(STDERR_FILENO, "Fail to get time.\n", 19);
 	else if (err_code == FAIL_MALLOC)
 		write(STDERR_FILENO, "Fail to allocate memory.\n", 26);
-	else if (err_code == FAIL_SEMAPHORE)
-		write(STDERR_FILENO, "Fail to make semaphore.\n", 25);
-	else if (err_code == FAIL_INIT_MUTEX)
-		write(STDERR_FILENO, "Fail to initiate mutex.\n", 25);
+	else if (err_code == FAIL_OPEN_SEMAPHORE)
+		write(STDERR_FILENO, "Fail to open semaphore.\n", 25);
+	else if (err_code == FAIL_FORK)
+		write(STDERR_FILENO, "Fail to fork child process.\n", 29);
 	else if (err_code == FAIL_CREATE_THREAD)
 		write(STDERR_FILENO, "Fail to create thread.\n", 24);
 	else if (err_code == FAIL_DETACH_THREAD)

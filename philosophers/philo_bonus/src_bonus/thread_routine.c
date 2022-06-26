@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   execute_child_process_bonus.c                      :+:      :+:    :+:   */
+/*   thread_routine.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 18:49:44 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 01:34:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-void	execute_odd_child(t_philo *philo)
+
+void	thread_routine_child_process(t_philo *philo)
 {	
 	int	index;
 
@@ -24,4 +25,9 @@ void	execute_odd_child(t_philo *philo)
 		sleep_on_bed(philo, index);
 		think_for_a_while(philo, index);
 	}
+}
+
+void	thread_routine_wait_semaphore(t_philo *philo)
+{
+	sem_wait(philo->count);
 }

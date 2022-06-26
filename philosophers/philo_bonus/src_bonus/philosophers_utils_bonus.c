@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 13:39:06 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 12:38:54 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 01:27:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,11 +32,7 @@ static size_t	get_now(t_philo *philo)
 
 	err_check = gettimeofday(&now, NULL);
 	if (err_check == -1)
-	{
-		print_error(FAIL_GET_TIME);
-		philo->time->fail = TRUE;
-		return (FAIL_GET_TIME);
-	}
+		exit(print_error(FAIL_GET_TIME));
 	return (convert_to_millisecond(now));
 }
 
@@ -47,4 +43,18 @@ void	wait_time(t_philo *philo, unsigned int time_wait)
 	target = time_wait + get_now(philo);
 	while (target > get_now(philo))
 		usleep(MILLISECOND / 2);
+}
+
+t_bool	check_child_process(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->time->philo_num)
+	{
+		if (philo->pid[i] == 0)
+			return (TRUE);
+		i++;
+	}
+	return (FALSE);
 }

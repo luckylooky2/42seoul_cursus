@@ -1,31 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers_bonus.c                               :+:      :+:    :+:   */
+/*   fork_child_process.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 20:33:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:26:53 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/06/27 01:23:28 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/06/27 01:25:03 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-int	main(int argc, char *argv[])
-{
-	t_time	time;
-	t_philo	*philo;
 
-	if (argc != 5 && argc != 6)
-		exit(print_error(FAIL_ARGC));
-	parse_input(argv, &time);
-	init_time(&time);
-	malloc_philo(&philo, &time);
-	fork_child_process(philo);
-	if (check_child_process(philo) == TRUE)
-		execute_child_process(philo);
-	else
-		execute_parent_process(philo);
-	return (SUCCESS);
+void	fork_child_process(t_philo *philo)
+{
+	int	i;
+
+	i = 1;
+	philo->pid[0] = fork();
+	if (philo->pid[0] == -1)
+		exit(FAIL_FORK);
+	while (i < philo->time->philo_num)
+	{
+		if (check_child_process(philo) == FALSE)
+			philo->pid[i] = fork();
+		if (philo->pid[i] == -1)
+			exit(FAIL_FORK);
+		i++;
+	}
 }

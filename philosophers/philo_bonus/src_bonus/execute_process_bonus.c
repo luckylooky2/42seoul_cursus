@@ -6,50 +6,15 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 18:52:09 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 01:46:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-int	check_nth_child_process(t_philo *philo)
-{
-	int	nth;
-
-	nth = 0;
-	while (nth < philo->time->philo_num)
-	{
-		if (philo->pid[nth] == 0)
-			return (nth);
-		nth++;
-	}
-	return (0);
-}
-
-static int	check_index(t_philo *philo, pid_t pid)
-{
-	int	index;
-
-	index = 0;
-	while (index < philo->time->philo_num)
-	{
-		if (philo->pid[index] == pid)
-			return (index);
-		index++;
-	}
-	return (0);
-}
-
-void	thread_routine_wait_semaphore_parent(t_philo *philo)
-{
-	sem_wait(philo->count);
-}
-
 void	execute_parent_process(t_philo *philo)
 {
 	pid_t	pid;
-	pid_t	comp_pid;
-	int		index;
 	int		i;
 	int		j;
 
@@ -63,33 +28,16 @@ void	execute_parent_process(t_philo *philo)
 		kill(philo->pid[i], SIGKILL);
 		while (1)
 		{
+			if (j == philo->time->philo_num)
+				j = 0;
 			pid = waitpid(philo->pid[j], &philo->status, WNOHANG);
 			if (pid > 0)
 				break ;
 			j++;
-			if (j == philo->time->philo_num)
-				j = 0;
 		}
 		i++;
 	}
 	exit(WEXITSTATUS(philo->status));
-}
-
-int	monitor_time_die(t_philo *philo)
-{
-	int	index;
-
-	index = check_nth_child_process(philo) + 1;
-	get_time(philo->time, NOW);
-	philo->time->check_total = calculate_time(philo, CHECK_TOTAL);
-	if (philo->time->check_total >= (size_t)philo->time->time_die)
-		print_status(philo, index, DIE);
-	return (SUCCESS);
-}
-
-void	thread_routine_wait_semaphore(t_philo *philo)
-{
-	sem_wait(philo->count);
 }
 
 void	execute_child_process(t_philo *philo)
@@ -98,7 +46,7 @@ void	execute_child_process(t_philo *philo)
 	int	err_check;
 
 	index = check_nth_child_process(philo);
-	err_check = pthread_create(&philo->thread[0], NULL, (void *)execute_odd_child, philo);
+	err_check = pthread_create(&philo->thread[0], NULL, (void *)thread_routine_child_process, philo);
 	if (err_check != 0)
 		exit(print_error(FAIL_CREATE_THREAD));
 	err_check = pthread_create(&philo->thread[1], NULL, (void *)thread_routine_wait_semaphore, philo);

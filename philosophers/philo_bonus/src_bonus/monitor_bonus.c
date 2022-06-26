@@ -1,31 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   philosophers_bonus.c                               :+:      :+:    :+:   */
+/*   monitor_bonus.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/21 20:33:53 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:26:53 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/06/27 01:35:22 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/06/27 01:35:40 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-int	main(int argc, char *argv[])
+int	monitor_time_die(t_philo *philo)
 {
-	t_time	time;
-	t_philo	*philo;
+	int	index;
 
-	if (argc != 5 && argc != 6)
-		exit(print_error(FAIL_ARGC));
-	parse_input(argv, &time);
-	init_time(&time);
-	malloc_philo(&philo, &time);
-	fork_child_process(philo);
-	if (check_child_process(philo) == TRUE)
-		execute_child_process(philo);
-	else
-		execute_parent_process(philo);
+	index = check_nth_child_process(philo) + 1;
+	get_time(philo->time, NOW);
+	philo->time->check_total = calculate_time(philo, CHECK_TOTAL);
+	if (philo->time->check_total >= (size_t)philo->time->time_die)
+		print_status(philo, index, DIE);
 	return (SUCCESS);
 }
