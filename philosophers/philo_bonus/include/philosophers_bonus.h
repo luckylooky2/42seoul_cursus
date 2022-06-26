@@ -6,12 +6,12 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:45:48 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 02:23:00 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef  PHILOSOPHERS_BONUS_H
-#define PHILOSOPHERS_BONUS_H
+# define PHILOSOPHERS_BONUS_H
 
 # include <pthread.h>
 # include <semaphore.h>
@@ -41,9 +41,6 @@ typedef int		t_bool;
 # define CHECK_TOTAL	2
 
 # define MILLISECOND		1000
-	
-# define EXIT_TIME_DIE		100
-# define EXIT_MUST_EAT		101
 
 # define EXIT					1
 # define SUCCESS				0
@@ -105,31 +102,25 @@ void		fork_child_process(t_philo *philo);
 
 size_t		convert_to_millisecond(struct timeval time);
 size_t		calculate_time(t_philo *philo, int flag);
-void		wait_time(t_philo *philo, unsigned int time_wait);
+void		wait_time(unsigned int time_wait);
 t_bool		check_child_process(t_philo *philo);
 
 void		execute_parent_process(t_philo *philo);
 void		execute_child_process(t_philo *philo);
 
-void	thread_routine_child_process(t_philo *philo);
-void	thread_routine_wait_semaphore(t_philo *philo);
+void		thread_routine_child_process(t_philo *philo);
+void		thread_routine_wait_semaphore(t_philo *philo);
 
 int			check_nth_child_process(t_philo *philo);
 
-int		monitor_time_die(t_philo *philo);
-
-int			print_error(int err_code);
-void		print_status(t_philo *philo, int philo_idx, int status);
-
-
-
-void		execute_odd_child(t_philo *philo);
-void		execute_even_child(t_philo *philo);
-void		execute_last_child(t_philo *philo);
+int			monitor_time_die(t_philo *philo);
 
 void		take_fork(t_philo *philo, int index);
 void		eat_dinner(t_philo *philo, int index);
 void		sleep_on_bed(t_philo *philo, int index);
 void		think_for_a_while(t_philo *philo, int index);
+
+int			print_error(int err_code);
+void		print_status(t_philo *philo, int philo_idx, int status);
 
 #endif

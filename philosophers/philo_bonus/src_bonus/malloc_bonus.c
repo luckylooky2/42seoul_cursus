@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:20:57 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 02:08:50 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,6 @@ void	malloc_philo(t_philo **philo, t_time *time)
 	(*philo)->pid = pid;
 	(*philo)->thread = thread;
 	(*philo)->status = 0;
-
 }
 
 void	*ft_calloc(size_t nmemb, size_t size)

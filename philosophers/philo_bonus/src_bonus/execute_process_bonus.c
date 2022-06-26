@@ -6,13 +6,13 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:46:24 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 02:24:46 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
 
-void	execute_parent_process(t_philo *philo)
+static void	terminate_child_process(t_philo *philo)
 {
 	pid_t	pid;
 	int		i;
@@ -20,8 +20,6 @@ void	execute_parent_process(t_philo *philo)
 
 	i = 0;
 	j = 0;
-	usleep(MILLISECOND);
-	sem_wait(philo->count);
 	while (i < philo->time->philo_num)
 	{
 		pid = 0;
@@ -37,19 +35,26 @@ void	execute_parent_process(t_philo *philo)
 		}
 		i++;
 	}
+}
+
+void	execute_parent_process(t_philo *philo)
+{
+	usleep(MILLISECOND);
+	sem_wait(philo->count);
+	terminate_child_process(philo);
 	exit(WEXITSTATUS(philo->status));
 }
 
 void	execute_child_process(t_philo *philo)
 {
-	int	index;
 	int	err_check;
 
-	index = check_nth_child_process(philo);
-	err_check = pthread_create(&philo->thread[0], NULL, (void *)thread_routine_child_process, philo);
+	err_check = pthread_create(&philo->thread[0], NULL,
+			(void *)thread_routine_child_process, philo);
 	if (err_check != 0)
 		exit(print_error(FAIL_CREATE_THREAD));
-	err_check = pthread_create(&philo->thread[1], NULL, (void *)thread_routine_wait_semaphore, philo);
+	err_check = pthread_create(&philo->thread[1], NULL,
+			(void *)thread_routine_wait_semaphore, philo);
 	if (err_check != 0)
 		exit(print_error(FAIL_CREATE_THREAD));
 	while (monitor_time_die(philo) == SUCCESS)

@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:53:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 00:57:00 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 02:10:41 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,9 +48,9 @@ static t_bool	check_number(char *argv[])
 		j = 0;
 		while (argv[i][j])
 		{
-			if (check_not_number(argv, i, j) || 
-				check_sign_after_number(argv, i, j) ||
-				check_after_plus(argv, i, j))
+			if (check_not_number(argv, i, j)
+				|| check_sign_after_number(argv, i, j)
+				|| check_after_plus(argv, i, j))
 				return (FALSE);
 			j++;
 		}

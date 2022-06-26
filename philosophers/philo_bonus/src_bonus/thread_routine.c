@@ -6,12 +6,11 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:12 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:34:04 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 02:11:25 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../include/philosophers_bonus.h"
-
 
 void	thread_routine_child_process(t_philo *philo)
 {	

@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 01:44:12 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/27 02:20:43 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,20 @@ int	print_error(int err_code)
 	return (err_code);
 }
 
+static void	post_semaphore(t_philo *philo)
+{
+	int	i;
+
+	i = 0;
+	while (i < philo->time->philo_num)
+	{
+		sem_post(philo->count);
+		i++;
+	}
+}
+
 void	print_status(t_philo *philo, int philo_idx, int status)
 {
-	int i;
-	
-	i = 0;
 	sem_wait(philo->print);
 	get_time(philo->time, NOW);
 	philo->time->time_total = calculate_time(philo, TIME_TOTAL);
@@ -54,12 +63,8 @@ void	print_status(t_philo *philo, int philo_idx, int status)
 	else if (status == DIE)
 	{
 		printf("%zu %d died\n", philo->time->time_total, philo_idx);
-		while (i < philo->time->philo_num)
-		{
-			sem_post(philo->count);
-			i++;
-		}
-		exit(EXIT_TIME_DIE);
+		post_semaphore(philo);
+		exit(EXIT_SUCCESS);
 	}
 	sem_post(philo->print);
 }
