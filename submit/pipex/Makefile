@@ -43,11 +43,11 @@ bonus :
 
 clean :
 	@$(MAKE) clean -C ./$(LIBFT_DIR)
-	$(RM) $(OBJECT) $(OBJECT_BONUS)
+	$(RM) $(OBJECT) $(OBJECT_BONUS) $(LIBFT) ./$(LIBFT_DIR)/$(LIBFT)
 
 fclean :
 	@$(MAKE) clean
-	$(RM) $(NAME) $(LIBFT) ./$(LIBFT_DIR)/$(LIBFT)
+	$(RM) $(NAME)
 
 re :
 	@$(MAKE) fclean
