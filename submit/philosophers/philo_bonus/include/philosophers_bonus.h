@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 02:23:00 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/29 16:26:21 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ typedef int		t_bool;
 # define FAIL_FORK				-6
 # define FAIL_CREATE_THREAD		-7
 # define FAIL_DETACH_THREAD		-8
-# define FAIL_DESTROY_MUTEX		-9
 
 # define FORK	1
 # define EAT	2

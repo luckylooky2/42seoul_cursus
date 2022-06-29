@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/15 11:42:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 11:40:05 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/29 18:56:45 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,9 +29,9 @@ int	main(int argc, char *argv[])
 		return (print_error(FAIL_INIT_MUTEX));
 	if (create_thread(philo))
 		return (print_error(FAIL_CREATE_THREAD));
-	while (monitor_time_die(philo) == SUCCESS)
-		usleep(MILLISECOND / 10);
 	if (detach_thread(philo))
 		return (print_error(FAIL_DETACH_THREAD));
+	while (monitor_time_die(philo) == SUCCESS)
+		usleep(MILLISECOND / 10);
 	return (SUCCESS);
 }

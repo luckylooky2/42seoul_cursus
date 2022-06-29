@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 02:24:46 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/29 16:21:04 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,21 @@ static void	terminate_child_process(t_philo *philo)
 	}
 }
 
+static void	detach_thread(t_philo *philo)
+{
+	int	i;
+	int	err_check;
+
+	i = 0;
+	while (i < 2)
+	{
+		err_check = pthread_detach(philo->thread[i]);
+		if (err_check != 0)
+			exit(print_error(FAIL_DETACH_THREAD));
+		i++;
+	}
+}
+
 void	execute_parent_process(t_philo *philo)
 {
 	usleep(MILLISECOND);
@@ -57,6 +72,7 @@ void	execute_child_process(t_philo *philo)
 			(void *)thread_routine_wait_semaphore, philo);
 	if (err_check != 0)
 		exit(print_error(FAIL_CREATE_THREAD));
+	detach_thread(philo);
 	while (monitor_time_die(philo) == SUCCESS)
 		usleep(MILLISECOND / 10);
 }

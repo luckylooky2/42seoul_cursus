@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:05:59 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/23 11:36:33 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/29 16:18:29 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ int	detach_thread(t_philo *philo)
 	int	err_check;
 
 	i = 0;
-	while (++i < philo->time->philo_num)
+	while (i < philo->time->philo_num)
 	{
 		err_check = pthread_detach(philo->thread[i]);
 		if (err_check != 0)

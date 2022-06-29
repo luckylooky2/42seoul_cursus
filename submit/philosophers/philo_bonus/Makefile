@@ -11,7 +11,7 @@ SRC_BONUS=$(addprefix $(SRC_BONUS_DIR)/, philosophers_bonus.c \
 	parse_input_bonus.c init_bonus.c print_bonus.c philosophers_utils_bonus.c \
 	malloc_bonus.c execute_process_bonus.c  action_bonus.c \
 	execute_process_utils_bonus.c parse_input_utils.c fork_child_process.c \
-	monitor_bonus.c thread_routine.c )
+	monitor_bonus.c thread_routine_bonus.c )
 
 OBJECT_BONUS=$(SRC_BONUS:.c=.o)
 

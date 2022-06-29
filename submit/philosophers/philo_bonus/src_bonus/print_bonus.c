@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 02:20:43 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/29 16:26:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,6 @@ int	print_error(int err_code)
 		write(STDERR_FILENO, "Fail to create thread.\n", 24);
 	else if (err_code == FAIL_DETACH_THREAD)
 		write(STDERR_FILENO, "Fail to detach thread.\n", 24);
-	else if (err_code == FAIL_DESTROY_MUTEX)
-		write(STDERR_FILENO, "Fail to destroy mutex.\n", 24);
 	return (err_code);
 }
 
