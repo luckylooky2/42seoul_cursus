@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/29 16:26:17 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/30 13:09:42 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ void	print_status(t_philo *philo, int philo_idx, int status)
 	{
 		printf("%zu %d died\n", philo->time->time_total, philo_idx);
 		post_semaphore(philo);
+		unlink_semaphore();
 		exit(EXIT_SUCCESS);
 	}
 	sem_post(philo->print);

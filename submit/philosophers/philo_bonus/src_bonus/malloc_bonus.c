@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 16:55:03 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/27 02:08:50 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/30 13:08:14 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,7 @@ static	void	open_semaphore(t_philo **philo, t_time *time)
 	sem_t		*print;
 	sem_t		*count;
 
-	sem_unlink("fork");
-	sem_unlink("print");
-	sem_unlink("count");
+	unlink_semaphore();
 	fork = sem_open("fork", O_CREAT, 0600, time->philo_num);
 	print = sem_open("print", O_CREAT, 0600, 1);
 	count = sem_open("count", O_CREAT, 0600, 1);
@@ -81,4 +79,11 @@ void	*ft_calloc(size_t nmemb, size_t size)
 			((unsigned char *)new_str)[i++] = 0;
 		return (new_str);
 	}
+}
+
+void	unlink_semaphore(void)
+{
+	sem_unlink("fork");
+	sem_unlink("print");
+	sem_unlink("count");
 }

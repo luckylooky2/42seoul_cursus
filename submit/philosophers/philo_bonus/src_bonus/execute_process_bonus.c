@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/11 18:33:28 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/29 16:21:04 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/30 13:09:20 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,6 +57,7 @@ void	execute_parent_process(t_philo *philo)
 	usleep(MILLISECOND);
 	sem_wait(philo->count);
 	terminate_child_process(philo);
+	unlink_semaphore();
 	exit(WEXITSTATUS(philo->status));
 }
 

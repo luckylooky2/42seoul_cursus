@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 20:34:50 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/29 16:26:21 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/30 13:09:44 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -96,6 +96,7 @@ void		init_check_time(t_philo *philo);
 
 void		malloc_philo(t_philo **philo, t_time *time);
 void		*ft_calloc(size_t nmemb, size_t size);
+void		unlink_semaphore(void);
 
 void		fork_child_process(t_philo *philo);
 
