@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/24 18:31:01 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/30 20:50:34 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 int	print_error(int err_code)
 {
 	if (err_code == FAIL_ARGC)
-		write(STDERR_FILENO, "5 or 6 arguments are needed.\n", 30);
+		write(STDERR_FILENO, "5 or 6 arguments are needed.\n", 29);
 	else if (err_code == FAIL_PARSE_INPUT)
-		write(STDERR_FILENO, "Some arguments are incorrect.\n", 31);
+		write(STDERR_FILENO, "Some arguments are incorrect.\n", 30);
 	else if (err_code == FAIL_GET_TIME)
-		write(STDERR_FILENO, "Fail to get time.\n", 19);
+		write(STDERR_FILENO, "Fail to get time.\n", 18);
 	else if (err_code == FAIL_MALLOC)
-		write(STDERR_FILENO, "Fail to allocate memory.\n", 26);
+		write(STDERR_FILENO, "Fail to allocate memory.\n", 25);
 	else if (err_code == FAIL_INIT_MUTEX)
-		write(STDERR_FILENO, "Fail to initialize mutex.\n", 27);
+		write(STDERR_FILENO, "Fail to initialize mutex.\n", 26);
 	else if (err_code == FAIL_CREATE_THREAD)
-		write(STDERR_FILENO, "Fail to create thread.\n", 24);
+		write(STDERR_FILENO, "Fail to create thread.\n", 23);
 	else if (err_code == FAIL_DETACH_THREAD)
-		write(STDERR_FILENO, "Fail to detach thread.\n", 24);
+		write(STDERR_FILENO, "Fail to detach thread.\n", 23);
 	else if (err_code == FAIL_DESTROY_MUTEX)
-		write(STDERR_FILENO, "Fail to destroy mutex.\n", 24);
+		write(STDERR_FILENO, "Fail to destroy mutex.\n", 23);
 	return (err_code);
 }
 

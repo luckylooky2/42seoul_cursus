@@ -6,7 +6,7 @@
 /*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/21 17:00:44 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/06/30 13:09:42 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/06/30 21:34:24 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,21 +15,21 @@
 int	print_error(int err_code)
 {
 	if (err_code == FAIL_ARGC)
-		write(STDERR_FILENO, "5 or 6 arguments are needed.\n", 30);
+		write(STDERR_FILENO, "5 or 6 arguments are needed.\n", 29);
 	else if (err_code == FAIL_PARSE_INPUT)
-		write(STDERR_FILENO, "Some arguments are incorrect.\n", 31);
+		write(STDERR_FILENO, "Some arguments are incorrect.\n", 30);
 	else if (err_code == FAIL_GET_TIME)
-		write(STDERR_FILENO, "Fail to get time.\n", 19);
+		write(STDERR_FILENO, "Fail to get time.\n", 18);
 	else if (err_code == FAIL_MALLOC)
-		write(STDERR_FILENO, "Fail to allocate memory.\n", 26);
+		write(STDERR_FILENO, "Fail to allocate memory.\n", 25);
 	else if (err_code == FAIL_OPEN_SEMAPHORE)
-		write(STDERR_FILENO, "Fail to open semaphore.\n", 25);
+		write(STDERR_FILENO, "Fail to open semaphore.\n", 24);
 	else if (err_code == FAIL_FORK)
-		write(STDERR_FILENO, "Fail to fork child process.\n", 29);
+		write(STDERR_FILENO, "Fail to fork child process.\n", 28);
 	else if (err_code == FAIL_CREATE_THREAD)
-		write(STDERR_FILENO, "Fail to create thread.\n", 24);
+		write(STDERR_FILENO, "Fail to create thread.\n", 23);
 	else if (err_code == FAIL_DETACH_THREAD)
-		write(STDERR_FILENO, "Fail to detach thread.\n", 24);
+		write(STDERR_FILENO, "Fail to detach thread.\n", 23);
 	return (err_code);
 }
 
