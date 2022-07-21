@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 15:53:15 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/19 19:55:22 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:51:59 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,6 @@ t_deq	*parse_args(char *input)
 	syntax = syntax_from_input(input, make_meaning(input));
 	if (syntax == NULL)
 		return (NULL);
-#ifdef DEBUG_MODE
-	print_syntax(syntax);
-#endif
 	broken_semicolon = break_semicolon(syntax);
 	delete_t_syntax(syntax);
 	break_linker(broken_semicolon);
@@ -83,6 +80,7 @@ static int	routine(char *input)
 		if (input == NULL)
 			return (0);
 		free_flag = 1;
+		add_history(input);
 	}
 	global_status(SET_INTERACTIVE, 0);
 	parsed_args = parse_args(input);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 20:12:40 by youhan            #+#    #+#             */
-/*   Updated: 2022/07/19 20:54:37 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:40:12 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,107 +24,23 @@
 # include <readline/history.h>
 # include <readline/readline.h>
 # include "libft/libft.h"
-# define READ 0
-# define WRITE 1
+# include "minishell_enums.h"
 
-typedef void	(*t_sig_handler)(int);
-typedef struct dirent	t_dirent;
-
-typedef enum e_delimiter
-{
-	SEMICOLON = 1,
-	AND_AND,
-	OR_OR,
-	PIPE
-}	t_delimiter;
-
-typedef enum e_dir_command
-{
-	INIT_DIR = 0,
-	CLOSE_DIR,
-	GET_DIR
-}	t_dir_cmd;
-
-typedef enum e_env_command
-{
-	CLOSE_ENV = 0,
-	GET_ENV,
-	PUT_ENV,
-	DELETE_ENV,
-	LIST_ENV
-}	t_env_cmd;
-
-typedef enum e_global_command
-{
-	GET_STATUS = 0,
-	SET_STATUS,
-	GET_INTERACTIVE,
-	SET_INTERACTIVE,
-	GET_P_ERROR,
-	SET_P_ERROR
-}	t_global_cmd;
-
-typedef enum e_parsing_error_status
-{
-	NO_ERROR = 0,
-	OPEN_BRACKET = 1,
-	CLOSE_BRACKET,
-	OPEN_QUOTE,
-	INCOMPLETE,
-	NO_COMMAND,
-	MAXIMUM_DEPTH,
-}	t_p_e_status;
-
-typedef enum e_quote_status
-{
-	CLOSED = 0,
-	OPEN_D = 34,
-	OPEN_S = 39
-}	t_q_status;
-
-typedef enum e_link
-{
-	NONE = 0,
-	AND,
-	OR
-}	t_link;
-
+/** parsing structs **/
 typedef struct s_syntax
 {
 	char	*input;
 	char	*meaning;
 }	t_syntax;
 
-typedef struct s_cmd
+typedef struct s_data
 {
-	char	*cmd;
-	char	*cmd_mod;
-	int		*status[2];
-	char	**mod;
-	int		**mod_status;
-	t_link	**link;
-	char	***opr_cmd;
-	int		***opr_status;
-	char	****p_cmd;
-	int		****p_status;
-	char	*****s_cmd;
-	int		*****s_status;
-}	t_cmd;
-
-typedef struct s_result
-{
-	t_deq	*deque;
-}	t_result;
-
-
-typedef struct s_args
-{
-	char	**commands;
-	char	*input_file;
-	char	*output_file;
-}	t_args;
-
-/** (final) parsed args structs **/
+	int		infile_num;
+	int		outfile_num;
+	int		cmd_num;
+	char	*rd_flag;
+	char	check;
+}	t_data;
 
 typedef struct s_command
 {
@@ -146,21 +62,6 @@ typedef struct s_env
 	char	*value;
 }	t_env;
 
-/** builtin enum **/
-typedef enum e_builtin
-{
-	NON_SUPPORTING = 0,
-	BLANK,
-	EXIT,
-	CD,
-	ECHO,
-	ENV,
-	EXPORT,
-	PWD,
-	SUBSHELL,
-	UNSET,
-}	t_builtin;
-
 /** exec struct **/
 typedef struct s_state
 {
@@ -171,65 +72,8 @@ typedef struct s_state
 	char	**path;
 	char	builtin_flag;
 }	t_state;
-
-int				count_char_pointer_2(char **cmd);
-int				count_char_pointer_3(char ***cmd);
-int				count_char_pointer_4(char ****cmd);
-int				count_char_pointer_5(char *****cmd);
-int				bool_conditional_space(char *cmd, int *status, int *bracket, int i);
-int				bool_conditional_pipe(char *cmd, int *status, int *bracket, int i);
-int				bool_conditional(char *cmd, int *status, int *bracket, int i);
-void			init_split(int *i, int *path);
-int				check_bracket(char **cmd, int *status);
-int				move_space(char *cmd, int *status, int i);
-
-// parsing
-int				del_backslash(t_cmd *cmd);
-int				split_move(const char *str, int *status, int i);
-int				split_move_space(const char *str, int *status, int i);
-void			ft_strncpy_int(int *dest, int *src, unsigned int n);
-void			ft_strncpy_char(char *dest, char *src, unsigned int n);
-int				del_semicolon(t_cmd *cmd);
-int				del_quotes(t_cmd *cmd);
-int				count_bracket(char *cmd, int *status);
-int				find_close_bracket(char *cmd, int *status, int i);
-int				init_bracket(char *cmd, int **path, int *status);
-int				del_operator(t_cmd *cmd);
-char			**push_operator(char *cmd, int *status, int ***opr_s, int *bracket);
-int				del_pipe(t_cmd *cmd);
-char			**push_pipe(char *cmd, int *status, int ***p_status, int *bracket);
-char			**push_space(char *cmd, int *status, int ***p_status, int *bracket);
-int				del_space(t_cmd *cmd);
-int				ft_count_split(const char *str, int *status);
-void			delim_bracket(char *cmd, int *status, int **bracket);
-int				count_oprator(char *cmd, int *bracket);
-int				skip_operator(char *cmd, int *status, int start, int *bracket);
-
-// parsing_after
-
-int				del_quotes_after(char **cmd, int **status);
-int				env_expansion(char **cmd, int **status);
-int				del_afer(char ***cmd, int ***cmd_status);
-int				pipe_del_expansion(char ***cmd, int	***cmd_status);
-// parsing error
-int				error_token(t_cmd cmd);
-int				error_token_check(char *cmd, int *status);
-int				error_token_brackets(char *cmd, int *status);
-int				error_token_empty_bracket(char *cmd, int *status);
-
-// print
-void			printf_space(t_cmd *cmd);
-void			printf_token_error();
-void			printf_operator(t_cmd *cmd);
-void			printf_split(char **str);
-void			printf_split_status(int **str, char **s);
-void			printf_data(t_cmd *cmd, int max);
-void			printf_pipe(t_cmd *cmd);
-
 /** functions **/
 void			do_exec(t_deq *commands);
-
-// utils
 void			panic(char *message);
 void			panic_memory(void);
 void			error_exit(char *str, char *flag);
@@ -277,7 +121,7 @@ char			*find_cmd_in_path(t_state *s, char *cmd);
 t_deq			*parse_args(char *input);
 char			*make_meaning(char *input);
 t_syntax		*syntax_from_input(char *input, char *meaning);
-t_syntax		*slice_syntax(t_syntax *s, int i, int length, t_delimiter delimiter);
+t_syntax		*slice_syntax(t_syntax *s, int i, int length, t_delimiter d);
 void			insert_syntax(t_syntax *s1, t_syntax *s2, int i);
 int				error_on(t_deq *broken_semicolon);
 int				parsing_error_on_syntax(t_syntax *syntax);
@@ -288,6 +132,10 @@ t_deq			*break_pipe(t_syntax *s);
 char			**break_space(t_syntax *syntax);
 void			expand_env(t_syntax *s, int i);
 void			expand_asterisk(t_syntax *s, int i);
+void			remove_redirection(t_syntax *syntax, t_command *cmd);
+void			assign_redirection_flag(t_syntax *syn, t_data *data);
+void			remove_character(t_syntax *syn, t_data *data);
+void			parse_redirection(t_syntax *syn, t_data *data, t_command *cmd);
 
 // test modules
 char			***test(char *str);

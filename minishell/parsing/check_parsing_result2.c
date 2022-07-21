@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   check_parsing_result2.c                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 21:03:06 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/19 19:51:37 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:32:28 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,22 +81,19 @@ static int	there_is_a_meaningful_char_near_bracket(t_syntax *syntax)
 	return (0);
 }
 
-static int	there_are_redirection_parsing_error(t_syntax *s)
+static int	there_are_redirection_parsing_error(t_syntax *s, int i)
 {
-	int		i;
-	char	*str;
-
-	i = -1;
 	while (s->input[++i])
 	{
 		if ((s->input[i] == '>' || s->input[i] == '<') && s->meaning[i] == 1)
 		{
-			str = s->input + i;
-			if (!ft_strncmp(str, "<>", 2) || !ft_strncmp(str, "<<>", 3) \
-			|| !ft_strncmp(str, ">>>", 3))
+			if (!ft_strncmp(s->input + i, "<>", 2) || \
+			!ft_strncmp(s->input + i, "<<>", 3) || \
+			!ft_strncmp(s->input + i, ">>>", 3))
 				error_handle("parse error near `>'");
-			else if (!ft_strncmp(str, "><", 2) || !ft_strncmp(str, ">><", 3) \
-			|| !ft_strncmp(str, "<<<", 3))
+			else if (!ft_strncmp(s->input + i, "><", 2) || \
+			!ft_strncmp(s->input + i, ">><", 3) || \
+			!ft_strncmp(s->input + i, "<<<", 3))
 				error_handle("parse error near `<'");
 			else
 			{
@@ -115,7 +112,10 @@ static int	there_are_redirection_parsing_error(t_syntax *s)
 
 int	parsing_error_on_syntax(t_syntax *syntax)
 {
+	int	i;
+
+	i = -1;
 	return (there_are_two_brackets(syntax) || \
 		there_is_a_meaningful_char_near_bracket(syntax) || \
-		there_are_redirection_parsing_error(syntax));
+		there_are_redirection_parsing_error(syntax, i));
 }

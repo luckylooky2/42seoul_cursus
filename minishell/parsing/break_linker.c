@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   break_linker.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/15 19:12:00 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/19 20:50:59 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:48:22 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ static t_deq	*break_specific_linker(t_syntax *s, char *linker)
 			if (ft_deq_push_back(broken_unit, \
 			slice_syntax(s, last, i - last, get_linker_type(linker))) == -1)
 				panic_memory();
-			last = i + 2;
+			last = i++ + 2;
 		}
 		i++;
 	}

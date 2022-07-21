@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_piped_commands.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 21:14:20 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/19 15:22:30 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 16:12:06 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_command	*make_command(t_syntax *syntax)
 		panic_memory();
 	command->input = ft_deq_new();
 	command->output = ft_deq_new();
-	// make redirection(syntax, command)
+	remove_redirection(syntax, command);
 	expand_env(syntax, 0);
 	expand_asterisk(syntax, 0);
 	command->argv = break_space(syntax);

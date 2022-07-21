@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   error_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:59:12 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/18 18:28:15 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:08:19 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ void	error_exit(char *str, char *flag)
 	char	*error_msg;
 
 	error_msg = ft_strjoin(str, flag);
-	ft_putendl_fd(error_msg, 2);
+	ft_putendl_fd(error_msg, STDERR_FILENO);
 	free(error_msg);
 	if (!ft_strncmp("command not found: ", str, 20))
 		exit(127);
@@ -29,7 +29,9 @@ void	error_exit(char *str, char *flag)
 
 void	error_handle(char *message)
 {
-	printf("[ERROR] %s\n", message);
+	write(STDERR_FILENO, "[ERROR] ", 8);
+	write(STDERR_FILENO, message, ft_strlen(message));
+	write(STDERR_FILENO, "\n", 1);
 }
 
 void	error_errno(void)
@@ -39,7 +41,7 @@ void	error_errno(void)
 
 void	panic(char *message)
 {
-	printf("[ERROR] %s\n", message);
+	error_handle(message);
 	exit(1);
 }
 

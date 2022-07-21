@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_syntax.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/16 16:24:57 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/19 17:05:56 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:48:27 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,9 @@ static int	there_are_only_space(char *input, int len)
 	return (len == -1 || *input == 0);
 }
 
-static int	check_before_slice(t_syntax *s, int i, int length, t_delimiter delimiter)
+static int	check_before_slice(t_syntax *s, int i, int length, t_delimiter d)
 {
-	if (delimiter == SEMICOLON)
+	if (d == SEMICOLON)
 	{
 		if (i == 0)
 			return (0);
@@ -55,14 +55,14 @@ static int	check_before_slice(t_syntax *s, int i, int length, t_delimiter delimi
 	length != (int)ft_strlen(s->input)));
 }
 
-t_syntax	*slice_syntax(t_syntax *s, int i, int length, t_delimiter delimiter)
+t_syntax	*slice_syntax(t_syntax *s, int i, int length, t_delimiter delim)
 {
 	t_syntax	*syntax;
 
-	if (check_before_slice(s, i, length, delimiter))
+	if (check_before_slice(s, i, length, delim))
 	{
 		if (global_status(GET_P_ERROR, 0) == 0)
-			global_status(SET_P_ERROR, delimiter);
+			global_status(SET_P_ERROR, delim);
 		return (NULL);
 	}
 	if (length == 0)

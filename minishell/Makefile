@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+         #
+#    By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/27 19:18:22 by youhan            #+#    #+#              #
-#    Updated: 2022/07/20 12:31:08 by hangokim         ###   ########.fr        #
+#    Updated: 2022/07/20 20:34:50 by chanhyle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= minishell
 CC			:= 	cc
-CFLAGS		= 	-g3 -Wall -Wextra -Werror -DDEBUG_MODE
+CFLAGS		:= 	-g3 -Wall -Wextra -Werror -DDEBUG_MODE
 LFT_DIR		:= 	./libft
 LRL_DIR		:= 	/Users/$(shell users)/.brew/opt/readline
 BT_DIR		:= 	./builtins
@@ -28,11 +28,9 @@ EC_SRCS		:=	do_exec.c make_proc_pipe.c path.c play_cmd.c
 PARSE_SRCS	:=	break_semicolon.c break_linker.c break_pipe.c break_space.c \
 				make_meaning.c make_syntax.c make_piped_commands.c \
 				make_expansion_env.c make_expansion_asterisk.c \
-				check_parsing_result1.c check_parsing_result2.c
-				# del_quotes.c count_bracket.c init_bracket.c del_semicolon.c \
-				# parsing_utils.c parsing_utils_2.c del_operator.c push_operator.c \
-				# del_pipe.c push_pipe.c push_space.c del_space.c parsing_utils_3.c \
-				# parsing_error_check.c parsing_error.c del_backslash.c parsing_error_check_2.c
+				check_parsing_result1.c check_parsing_result2.c \
+				remove_redirection.c assign_redirection_flag.c remove_character.c \
+				parse_redirection.c
 SRCS		:=	minishell.c \
 				test_module.c \
 				$(BT_SRCS:%.c=$(BT_DIR)/do_builtin_%.c) \
@@ -40,7 +38,6 @@ SRCS		:=	minishell.c \
 				$(PARSE_SRCS:%.c=$(PARSE_DIR)/%.c) \
 				$(EC_SRCS:%.c=$(EC_DIR)/%.c) \
 				$(UTIL_SRCS:%.c=$(UTIL_DIR)/%.c)
-				# parsing_after/del_quotes_after.c parsing_after/env_expansion.c
 OBJS		:= $(SRCS:%.c=%.o)
 
 all : $(NAME)

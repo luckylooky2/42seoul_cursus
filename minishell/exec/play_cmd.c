@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   play_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:59:53 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/17 21:39:31 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/20 20:41:39 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,9 +16,6 @@ static void	input_redirection(t_state *s, int pid_num)
 {
 	if (0 < pid_num)
 	{
-#ifdef DEBUG_MODE
-		print_fd_status(pid_num - 1, s->pipes[pid_num - 1][READ], READ);
-#endif
 		if (dup2(s->pipes[pid_num - 1][READ], STDIN_FILENO) == -1)
 			panic(strerror(errno));
 	}
@@ -28,9 +25,6 @@ static void	output_redirection(t_state *s, int pid_num)
 {
 	if (pid_num < s->pipe_cnt)
 	{
-#ifdef DEBUG_MODE
-		print_fd_status(pid_num, s->pipes[pid_num][WRITE], WRITE);
-#endif
 		if (dup2(s->pipes[pid_num][WRITE], STDOUT_FILENO) == -1)
 			panic(strerror(errno));
 	}
