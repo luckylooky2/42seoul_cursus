@@ -49,3 +49,12 @@ void	delete_t_state(void *arg)
 	delete_str_array(state->path);
 	state->path = NULL;
 }
+
+void	delete_temp_file(void *str)
+{
+	char	*file_name;
+
+	file_name = str;
+	unlink(file_name);
+	free(file_name);
+}

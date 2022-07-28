@@ -14,17 +14,14 @@
 
 void	error_exit(char *command)
 {
-	char	*command_with_colon;
 	char	*error_msg;
 
-	command_with_colon = ft_strjoin(command, ": ");
-	if (errno != ENOENT)
-		error_msg = ft_strjoin(command_with_colon, strerror(errno));
+	if (errno == ENOENT)
+		error_msg = make_message(command, ": ", "command not found.");
 	else
-		error_msg = ft_strjoin(command_with_colon, "command not found.");
+		error_msg = make_message(command, ": ", strerror(errno));
 	error_handle(error_msg);
 	free(error_msg);
-	free(command_with_colon);
 	if (errno == ENOENT)
 		exit(127);
 	else
@@ -35,21 +32,18 @@ void	error_handle(char *message)
 {
 	char	*error_msg;
 
-	error_msg = ft_strjoin("minishell: ", message);
-	ft_putendl_fd(error_msg, STDERR_FILENO);
+	error_msg = make_message("minishell: ", message, "\n");
+	ft_putstr_fd(error_msg, STDERR_FILENO);
 	free(error_msg);
 }
 
 void	error_errno(char *prefix)
 {
-	char	*prefix_with_colon;
 	char	*error_msg;
 
-	prefix_with_colon = ft_strjoin(prefix, ": ");
-	error_msg = ft_strjoin(prefix_with_colon, strerror(errno));
+	error_msg = make_message(prefix, ": ", strerror(errno));
 	error_handle(error_msg);
 	free(error_msg);
-	free(prefix_with_colon);
 }
 
 void	panic(char *message)
@@ -60,5 +54,6 @@ void	panic(char *message)
 
 void	panic_memory(void)
 {
-	panic("Failed to allocate memory.");
+	write(STDERR_FILENO, "minishell: Failed to allocate memory.\n", 39);
+	exit(1);
 }

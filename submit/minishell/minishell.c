@@ -6,13 +6,13 @@
 /*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 15:53:15 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/24 17:27:53 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/28 16:10:18 by hangokim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-t_deq	*parse_args(char *input)
+t_deq	*parse_args(char *input, t_subject subject)
 {
 	t_syntax	*syntax;
 	t_deq		*broken_semicolon;
@@ -23,6 +23,11 @@ t_deq	*parse_args(char *input)
 		delete_t_syntax(syntax);
 		return (NULL);
 	}
+	if (subject == MAIN)
+	{
+		global_status(SET_INTERACTIVE, HEREDOC);
+		process_heredoc(syntax);
+	}
 	broken_semicolon = break_semicolon(syntax);
 	break_linker(broken_semicolon);
 	break_pipe(broken_semicolon);
@@ -32,7 +37,6 @@ t_deq	*parse_args(char *input)
 		ft_deq_delete(&broken_semicolon, delete_linked_commands);
 		return (NULL);
 	}
-	process_heredoc(broken_semicolon);
 	return (broken_semicolon);
 }
 
@@ -61,11 +65,17 @@ static void	do_commands(t_deq *broken_semicolon)
 	t_gnode	*semicolon_unit;
 
 	semicolon_unit = broken_semicolon->tail->next;
-	while (semicolon_unit != broken_semicolon->tail)
+	if (global_status(GET_INTERACTIVE, 0) != INTERACTIVE)
 	{
-		do_command(semicolon_unit->data);
-		semicolon_unit = semicolon_unit->next;
+		global_status(SET_INTERACTIVE, NOT_INTERACTIVE);
+		while (semicolon_unit != broken_semicolon->tail)
+		{
+			do_command(semicolon_unit->data);
+			semicolon_unit = semicolon_unit->next;
+		}
 	}
+	else
+		global_status(SET_STATUS, 1);
 	ft_deq_delete(&broken_semicolon, delete_linked_commands);
 }
 
@@ -84,13 +94,14 @@ static int	routine(char *input)
 		add_history(input);
 	}
 	global_status(SET_P_ERROR, 0);
-	parsed_args = parse_args(input);
-	global_status(SET_INTERACTIVE, 0);
+	global_status(SET_INTERACTIVE, NOT_INTERACTIVE);
+	parsed_args = parse_args(input, MAIN);
 	if (parsed_args != NULL)
 		do_commands(parsed_args);
 	else
 		global_status(SET_STATUS, 258);
-	global_status(SET_INTERACTIVE, 1);
+	heredoc_manager(CLOSE_HEREDOC, NULL);
+	global_status(SET_INTERACTIVE, INTERACTIVE);
 	if (free_flag)
 		free(input);
 	return (1);
@@ -105,14 +116,11 @@ int	main(int argc, char **argv, char **envp)
 	{
 		routine(argv[1]);
 		env_commands(CLOSE_ENV, NULL);
-		heredoc_manager(CLOSE_HEREDOC, NULL);
 		exit(global_status(GET_STATUS, 0));
 	}
 	while (routine(NULL))
 		;
-	printf("exit\n");
+	ft_printf("exit\n");
 	env_commands(CLOSE_ENV, NULL);
-	heredoc_manager(CLOSE_HEREDOC, NULL);
-	system("leaks minishell");
 	return (0);
 }

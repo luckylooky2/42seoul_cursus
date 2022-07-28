@@ -16,17 +16,15 @@ static void	exit_with_status(char *num_str)
 {
 	int		n;
 	char	flag;
-	char	*temp;
 	char	*message;
 
 	n = atoi_s(num_str, &flag);
 	if (flag)
 	{
-		temp = ft_strjoin(num_str, ": numeric argument required.");
-		message = ft_strjoin("exit: ", temp);
+		message = make_message("exit: ", num_str, \
+		": numeric argument required.");
 		error_handle(message);
 		free(message);
-		free(temp);
 		exit(255);
 	}
 	else

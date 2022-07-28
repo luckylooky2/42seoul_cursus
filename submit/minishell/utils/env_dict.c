@@ -65,23 +65,22 @@ static void	put_env(t_deq *env_list, char **env_str_list)
 	while (*env_str_list)
 	{
 		value = ft_strchr(*env_str_list, '=');
-		if (value == 0)
+		if (value == NULL)
 		{
 			env_str_list++;
 			continue ;
 		}
 		*value++ = 0;
-		if (get_env(env_list, *env_str_list) != NULL)
-		{
-			buffer[0] = *env_str_list;
-			del_env(env_list, buffer);
-		}
+		buffer[0] = *env_str_list;
+		del_env(env_list, buffer);
 		new_env = (t_env *)malloc(sizeof(t_env));
-		if (new_env == 0)
+		if (new_env == NULL)
 			panic_memory();
 		new_env->key = ft_strdup(*env_str_list++);
 		new_env->value = ft_strdup(value);
-		ft_deq_push_back(env_list, new_env);
+		if (new_env->key == NULL || new_env->value == NULL || \
+		ft_deq_push_back(env_list, new_env) == -1)
+			panic_memory();
 	}
 }
 
@@ -103,6 +102,7 @@ static void	del_env(t_deq *env_list, char **keys)
 				cur->prev->next = cur->next;
 				cur->next->prev = cur->prev;
 				delete_t_env(env);
+				free(cur);
 				env_list->size--;
 				break ;
 			}
@@ -117,18 +117,18 @@ static char	**list_env(t_deq *env_list)
 	char	**result;
 	char	*env_str;
 	t_env	*env;
-	int		i;
+	size_t	i;
 
 	result = (char **)malloc((env_list->size + 1) * sizeof(char *));
-	if (result == 0)
+	if (result == NULL)
 		panic_memory();
 	i = 0;
-	while (i < (int)env_list->size)
+	while (i < env_list->size)
 	{
 		env = ft_deq_get(env_list, i)->data;
 		env_str = (char *)malloc((ft_strlen(env->key) + ft_strlen(\
 		env->value) + 2) * sizeof(char));
-		if (env_str == 0)
+		if (env_str == NULL)
 			panic_memory();
 		ft_strlcpy(env_str, env->key, ft_strlen(env->key) + 1);
 		env_str[ft_strlen(env->key)] = '=';

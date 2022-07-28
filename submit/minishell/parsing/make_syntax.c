@@ -45,6 +45,8 @@ static int	there_are_only_space(char *input, int len)
 
 static int	check_before_slice(t_syntax *s, int i, int length, t_delimiter d)
 {
+	if (d == NO_DELIM)
+		return (0);
 	if (d == SEMICOLON)
 	{
 		if (i == 0)
@@ -62,7 +64,10 @@ t_syntax	*slice_syntax(t_syntax *s, int i, int length, t_delimiter delim)
 	if (check_before_slice(s, i, length, delim))
 	{
 		if (global_status(GET_P_ERROR, 0) != PRINTED)
-			global_status(SET_P_ERROR, delim);
+		{
+			parsing_error(s, NULL, i);
+			global_status(SET_P_ERROR, PRINTED);
+		}
 		return (NULL);
 	}
 	if (length == 0)
@@ -91,6 +96,8 @@ t_syntax	*syntax_from_input(char *input, char *meaning)
 	if (syntax == NULL)
 		panic_memory();
 	syntax->input = ft_strdup(input);
+	if (syntax->input == NULL)
+		panic_memory();
 	syntax->meaning = meaning;
 	return (syntax);
 }

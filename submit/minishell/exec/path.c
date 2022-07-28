@@ -6,7 +6,7 @@
 /*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:59:43 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/22 21:48:28 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/28 15:33:18 by hangokim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ char	*find_cmd_in_path(t_state *s, char *cmd)
 	while (path_stat == -1 && s->path[i])
 	{
 		path_cmd = ft_strjoin(s->path[i++], cmd);
+		if (path_cmd == NULL)
+			panic_memory();
 		path_stat = stat(path_cmd, &full_name);
 	}
 	if (path_stat == -1)

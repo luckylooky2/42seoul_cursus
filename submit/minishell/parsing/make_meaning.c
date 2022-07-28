@@ -93,7 +93,7 @@ static int	decide_meaning_bracket(char *input, char *meaning)
 				return (error_on_parsing(meaning, CLOSE_BRACKET));
 			meaning[i] += depth;
 		}
-		else if (depth)
+		else if (depth && meaning[i])
 			meaning[i] = 1 + depth;
 		i++;
 		if (depth == 127)

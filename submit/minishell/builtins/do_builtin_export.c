@@ -56,11 +56,9 @@ static void	print_declare_x_list(void)
 	int		i;
 
 	list = (char **)env_commands(LIST_ENV, NULL);
-	if (list == NULL)
-		panic_memory();
 	i = 0;
 	while (list[i])
-		printf("declare -x %s\n", list[i++]);
+		ft_printf("declare -x %s\n", list[i++]);
 	delete_str_array(list);
 }
 
@@ -68,7 +66,6 @@ void	do_builtin_export(char **argv)
 {
 	int		i;
 	char	*delim;
-	char	*temp;
 	char	*message;
 
 	if (count_str_array(argv) == 1)
@@ -77,11 +74,12 @@ void	do_builtin_export(char **argv)
 	while (argv[++i])
 	{
 		delim = ft_strchr(argv[i], '=');
-		if (delim == NULL || !is_valid(argv[i], delim - argv[i]))
+		if (delim == NULL)
+			continue ;
+		if (!is_valid(argv[i], delim - argv[i]))
 		{
-			temp = ft_strjoin("export: `", argv[i]);
-			message = ft_strjoin(temp, "': not a valid identifier.");
-			free(temp);
+			message = make_message("export: `", argv[i], \
+			"': not a valid identifier.");
 			error_handle(message);
 			free(message);
 			shift_str_array(argv, i);

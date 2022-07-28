@@ -23,8 +23,8 @@ t_deq	*cleanup_deque(t_deq *deq, void del(void *))
 	while (!ft_deq_is_empty(deq))
 	{
 		data = ft_deq_pop_front(deq);
-		if (data != NULL)
-			ft_deq_push_back(new_deq, data);
+		if (data != NULL && ft_deq_push_back(new_deq, data) == -1)
+			panic_memory();
 	}
 	ft_deq_delete(&deq, del);
 	return (new_deq);

@@ -6,11 +6,18 @@
 /*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/22 00:45:34 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/22 21:59:12 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/26 20:48:41 by hangokim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
+
+static char	*get_name(char *str)
+{
+	if (str[1] != '<' && str[1] != '>')
+		return (str + 2);
+	return (str + 3);
+}
 
 static int	input_redirection_helper(char *str)
 {
@@ -31,18 +38,19 @@ int	input_redirection(t_state *s, t_deq *input_files, int n)
 		fd = s->pipes[n - 1][READ];
 	while (i < input_files->size)
 	{
-		close(fd);
+		if (fd != -1)
+			close(fd);
 		fd = input_redirection_helper(ft_deq_get(input_files, i)->data);
 		if (fd == -1)
 		{
-			error_errno(ft_deq_get(input_files, i)->data);
+			error_errno(get_name(ft_deq_get(input_files, i)->data));
 			return (-1);
 		}
 		i++;
 	}
-	if (fd != -1 && dup2(fd, STDIN_FILENO) == -1 && close(fd) == -1)
+	if (fd != -1 && (dup2(fd, STDIN_FILENO) == -1 || close(fd) == -1))
 	{
-		error_errno("dup2");
+		error_errno("redirection");
 		return (-1);
 	}
 	return (0);
@@ -69,18 +77,19 @@ int	output_redirection(t_state *s, t_deq *output_files, int n)
 		fd = s->pipes[n][WRITE];
 	while (i < output_files->size)
 	{
-		close(fd);
+		if (fd != -1)
+			close(fd);
 		fd = output_redirection_helper(ft_deq_get(output_files, i)->data);
 		if (fd == -1)
 		{
-			error_errno(ft_deq_get(output_files, i)->data);
+			error_errno(get_name(ft_deq_get(output_files, i)->data));
 			return (-1);
 		}
 		i++;
 	}
-	if (fd != -1 && dup2(fd, STDOUT_FILENO) == -1 && close(fd) == -1)
+	if (fd != -1 && (dup2(fd, STDOUT_FILENO) == -1 || close(fd) == -1))
 	{
-		error_errno("dup2");
+		error_errno("redirection");
 		return (-1);
 	}
 	return (0);

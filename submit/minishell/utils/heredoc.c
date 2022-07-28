@@ -12,106 +12,141 @@
 
 #include "../minishell.h"
 
-static int	here_doc(char *str)
+static int	heredoc(char *filename, char *delimiter)
 {
 	char	*input;
-	int		here_doc[2];
+	int		fd;
 
-	if (pipe(here_doc) == -1)
-		panic("Failed to create pipe.");
-	while (1)
+	fd = open(filename, O_WRONLY | O_CREAT | O_TRUNC, S_IRUSR | S_IWUSR);
+	if (fd == -1)
 	{
-		ft_putstr_fd("> ", STDIN_FILENO);
-		input = ft_gnl(STDIN_FILENO);
-		if (input == NULL)
-			break ;
-		if (!ft_strncmp(str + 3, input, ft_strlen(str + 3)) && \
-		input[ft_strlen(input) - 1] == '\n')
+		error_errno(filename);
+		return (-1);
+	}
+	while (global_status(GET_INTERACTIVE, 0) == HEREDOC)
+	{
+		input = readline("> ");
+		if (input == NULL || \
+		(!ft_strncmp(input, delimiter, ft_strlen(delimiter)) && \
+		ft_strlen(delimiter) == ft_strlen(input)))
 		{
 			free(input);
 			break ;
 		}
-		ft_putstr_fd(input, here_doc[WRITE]);
+		ft_putendl_fd(input, fd);
 		free(input);
 	}
-	close(here_doc[WRITE]);
-	return (here_doc[READ]);
+	close(fd);
+	control_in_and_out(RESTORE_STDIO);
+	return (0);
 }
 
-static void	close_fd(void *n)
+char	*heredoc_manager(t_heredoc_cmd cmd, char *delimiter)
 {
-	close((int)(long)n);
-}
+	static char		*path = "./heredoc-temp-";
+	static t_deq	*files = NULL;
+	static int		id = 0;
 
-int	heredoc_manager(t_heredoc_cmd cmd, char *delimiter)
-{
-	static t_deq	*fds = NULL;
-	int				id;
-
-	if (fds == NULL)
+	if (files == NULL)
 	{
-		fds = ft_deq_new();
-		if (fds == NULL)
+		files = ft_deq_new();
+		if (files == NULL)
 			panic_memory();
+		id = 0;
 	}
 	if (cmd == CLOSE_HEREDOC)
-		ft_deq_delete(&fds, close_fd);
+		ft_deq_delete(&files, delete_temp_file);
 	else if (cmd == PUT_HEREDOC)
 	{
-		id = here_doc(delimiter);
-		if (ft_deq_push_back(fds, (void *)(long)id) == -1)
+		control_in_and_out(BACKUP_STDIO);
+		if (ft_deq_push_back(files, make_temp_file_name(path, id++)) == -1)
 			panic_memory();
-		return (id);
+		if (heredoc(files->tail->prev->data, delimiter) == -1)
+			return (NULL);
+		return (files->tail->prev->data);
 	}
 	return (0);
 }
 
-static void	do_heredoc(t_deq *piped_commands)
+static void	do_heredoc(t_syntax *s, int i, int j, int len)
 {
-	t_gnode		*piped_unit;
-	t_gnode		*input_unit;
-	t_command	*command;
-	char		*input_file;
-	int			id;
+	int			l;
+	char		*filename;
+	char		*delimiter;
+	t_syntax	*new_syntax;
 
-	piped_unit = piped_commands->tail->next;
-	while (piped_unit != piped_commands->tail)
-	{
-		command = piped_unit->data;
-		input_unit = command->input->tail->next;
-		while (input_unit != command->input->tail)
-		{
-			input_file = input_unit->data;
-			if (input_file[1] == '<')
-			{
-				id = heredoc_manager(PUT_HEREDOC, input_file);
-				free(input_file);
-				input_unit->data = ft_itoa(id);
-			}
-			input_unit = input_unit->next;
-		}
-		piped_unit = piped_unit->next;
-	}
+	ft_memmove(s->input + i, s->input + j, ft_strlen(s->input + j) + 1);
+	ft_memmove(s->meaning + i, s->meaning + j, ft_strlen(s->input + j));
+	delimiter = ft_substr(s->input, i, len);
+	if (delimiter == NULL)
+		panic_memory();
+	l = ft_strlen(s->input + i + len) + 1;
+	ft_memmove(s->input + i, s->input + i + len, l);
+	ft_memmove(s->meaning + i, s->meaning + i + len, l - 1);
+	filename = heredoc_manager(PUT_HEREDOC, delimiter);
+	free(delimiter);
+	if (filename == NULL)
+		return ;
+	new_syntax = syntax_from_input(filename, make_meaning(filename));
+	if (new_syntax == NULL)
+		return ;
+	insert_syntax(s, new_syntax, i);
+	delete_t_syntax(new_syntax);
 }
 
-void	process_heredoc(t_deq *broken_semicolon)
+static void	replace_heredoc(t_syntax *s, int i)
 {
-	t_deq		*linked_commands;
-	t_gnode		*semicolon_unit;
-	t_gnode		*linked_unit;
-	t_commands	*commands;
+	int		first;
+	int		start;
+	int		len;
 
-	semicolon_unit = broken_semicolon->tail->next;
-	while (semicolon_unit != broken_semicolon->tail)
+	first = i - 1;
+	while (s->input[i] == ' ')
+		i++;
+	start = i;
+	while (s->input[i])
 	{
-		linked_commands = semicolon_unit->data;
-		linked_unit = linked_commands->tail->next;
-		while (linked_unit != linked_commands->tail)
+		if (1 <= s->meaning[i] && \
+		(s->input[i] == '\"' || s->input[i] == '\'' || s->input[i] == '\\'))
 		{
-			commands = linked_unit->data;
-			do_heredoc(commands->piped_commands);
-			linked_unit = linked_unit->next;
+			len = ft_strlen(s->input + i);
+			ft_memmove(s->input + i, s->input + i + 1, len);
+			ft_memmove(s->meaning + i, s->meaning + i + 1, len - 1);
+			continue ;
 		}
-		semicolon_unit = semicolon_unit->next;
+		else if (1 <= s->meaning[i] && (s->input[i] == ' ' || \
+		s->input[i] == '&' || s->input[i] == '|' || s->input[i] == ';' || \
+		s->input[i] == ')'))
+			break ;
+		i++;
+	}
+	do_heredoc(s, first, start, i - start);
+}
+
+void	process_heredoc(t_syntax *syntax)
+{
+	int			i;
+	int			j;
+	int			len;
+	t_syntax	*subshell_syntax;
+
+	i = -1;
+	while (syntax->input[++i] && global_status(GET_INTERACTIVE, 0) == HEREDOC)
+	{
+		if (!ft_strncmp("<<", syntax->input + i, 2) && syntax->meaning[i])
+			replace_heredoc(syntax, i + 2);
+		else if (syntax->input[i] == '(' && syntax->meaning[i] == 1)
+		{
+			j = i++ + 1;
+			while (syntax->input[j] != ')' || syntax->meaning[j] != 1)
+				j++;
+			subshell_syntax = slice_syntax(syntax, i, j - i, NO_DELIM);
+			process_heredoc(subshell_syntax);
+			len = ft_strlen(syntax->input + j);
+			ft_memmove(syntax->input + i, syntax->input + j, len + 1);
+			ft_memmove(syntax->meaning + i, syntax->meaning + j, len);
+			insert_syntax(syntax, subshell_syntax, i);
+			delete_t_syntax(subshell_syntax);
+		}
 	}
 }

@@ -6,28 +6,39 @@
 /*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/17 01:14:16 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/24 17:27:16 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/26 19:21:46 by hangokim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static int	slice_error(void)
+static void	check_subshell_error(t_syntax *s)
 {
-	int	error;
+	t_syntax	*s_t;
+	char		**argv;
+	int			i;
 
-	error = global_status(GET_P_ERROR, 0);
-	if (error == SEMICOLON)
-		parsing_error(NULL, ";;", 0);
-	else if (error == AND_AND)
-		parsing_error(NULL, "&&", 0);
-	else if (error == OR_OR)
-		parsing_error(NULL, "||", 0);
-	else if (error == PIPE)
-		parsing_error(NULL, "|", 0);
-	else
-		return (0);
-	return (1);
+	argv = break_space_const(s);
+	i = -1;
+	while (argv[++i] && argv[i + 1])
+	{
+		s_t = syntax_from_input(argv[i + 1], ft_strdup(argv[i + 1]));
+		if (s_t == NULL)
+			panic_memory();
+		if (is_command_subshell(argv[i]))
+			parsing_error(s_t, NULL, 0);
+		else if (is_command_subshell(argv[i + 1]))
+			parsing_error(s_t, NULL, 1);
+		else
+		{
+			delete_t_syntax(s_t);
+			continue ;
+		}
+		delete_t_syntax(s_t);
+		global_status(SET_P_ERROR, PRINTED);
+		break ;
+	}
+	delete_str_array(argv);
 }
 
 static void	make_command(t_deq *piped_commands)
@@ -45,8 +56,11 @@ static void	make_command(t_deq *piped_commands)
 			panic_memory();
 		command->input = ft_deq_new();
 		command->output = ft_deq_new();
+		if (command->input == NULL || command->output == NULL)
+			panic_memory();
 		command->syntax = syntax;
 		remove_redirection(syntax, command);
+		check_subshell_error(syntax);
 		broken_unit->data = command;
 		broken_unit = broken_unit->next;
 	}
@@ -96,13 +110,9 @@ void	break_pipe(t_deq *broken_semicolon)
 		{
 			commands = linked_unit->data;
 			commands->piped_commands = break_each_pipe(commands->syntax);
-			if (global_status(GET_P_ERROR, 0) != PRINTED && slice_error())
-				global_status(SET_P_ERROR, PRINTED);
 			make_command(commands->piped_commands);
 			linked_unit = linked_unit->next;
 		}
 		semicolon_unit = semicolon_unit->next;
 	}
-	if (slice_error())
-		global_status(SET_P_ERROR, PRINTED);
 }

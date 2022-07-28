@@ -6,7 +6,7 @@
 /*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 20:12:40 by youhan            #+#    #+#             */
-/*   Updated: 2022/07/24 16:35:48 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/26 19:37:10 by hangokim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@
 # include <dirent.h>
 # include <sys/wait.h>
 # include <sys/stat.h>
+# include <sys/ioctl.h>
 # include <readline/history.h>
 # include <readline/readline.h>
 # include "libft/libft.h"
@@ -85,12 +86,14 @@ void			error_errno(char *prefix);
 char			*env_commands(t_env_cmd cmd, char **argv);
 int				global_status(t_global_cmd cmd, int value);
 int				regex_matcher(char *input, char *regex);
-void			process_heredoc(t_deq *broken_semicolon);
-int				heredoc_manager(t_heredoc_cmd cmd, char *delimiter);
+void			process_heredoc(t_syntax *syntax);
+char			*heredoc_manager(t_heredoc_cmd cmd, char *delimiter);
 void			control_in_and_out(t_control c);
 t_deq			*cleanup_deque(t_deq *deq, void del(void *));
 t_dirent		*get_next_dir(t_dir_cmd cmd);
 int				atoi_s(const char *str, char *flag);
+char			*make_message(char *prefix, char *message, char *suffix);
+char			*make_temp_file_name(char *path, int id);
 
 // delete functions
 void			delete_linked_commands(void *l_cmd);
@@ -100,6 +103,7 @@ void			delete_t_commands(void *cmd);
 void			delete_t_env(void *arg);
 void			delete_t_syntax(void *arg);
 void			delete_t_state(void *arg);
+void			delete_temp_file(void *str);
 
 // signals
 t_sig_handler	ft_signal(int signum, t_sig_handler handler);
@@ -127,36 +131,29 @@ int				input_redirection(t_state *s, t_deq *output_files, int n);
 int				output_redirection(t_state *s, t_deq *output_files, int n);
 
 // parsing functions
-void			parsing_error(char *input, char *token, int i);
-t_deq			*parse_args(char *input);
+t_deq			*parse_args(char *input, t_subject subject);
 char			*make_meaning(char *input);
 t_syntax		*syntax_from_input(char *input, char *meaning);
 t_syntax		*slice_syntax(t_syntax *s, int i, int length, t_delimiter d);
 void			insert_syntax(t_syntax *s1, t_syntax *s2, int i);
-int				error_on(t_deq *broken_semicolon);
-int				parsing_error_on_syntax(t_syntax *syntax);
-int				_parsing_error_on_syntax(t_syntax *syntax);
 t_deq			*break_semicolon(t_syntax *s);
 void			break_linker(t_deq *broken_semicolon);
 void			break_pipe(t_deq *broken_semicolon);
 char			**break_space(t_syntax *syntax);
+char			**break_space_const(t_syntax *s);
 t_deq			*make_expansions(t_deq	*piped_commands);
 void			expand_env(t_syntax *s, int i);
 void			expand_asterisk(t_syntax *s, int i);
 void			remove_redirection(t_syntax *syntax, t_command *cmd);
 void			assign_redirection_flag(t_syntax *syn, t_data *data);
-void			remove_character(t_syntax *syn, t_data *data);
 void			parse_redirection(t_syntax *syn, t_data *data, t_command *cmd);
 
-// test modules
-char			***test(char *str);
-void			print_parsed_arg(t_deq *parsed_arg);
-void			print_fd_status(int n, int fd, int flag);
-void			print_debug_message(char *str);
-void			print_deq_of_syntax(t_deq *deq);
-void			print_argv(char **argv);
-void			print_piped_commands(t_deq *piped_commands);
-void			print_syntax(t_syntax *s);
-void			foo(void);
+// parsing checking, error functions
+int				parsing_error_on_syntax(t_syntax *syntax);
+void			parsing_error(t_syntax *syntax, char *token, int i);
+int				there_is_only_one_ampersand(t_syntax *s);
+int				there_are_redirection_parsing_error(t_syntax *s);
+int				there_are_subshell_parsing_error(t_syntax *syntax);
+int				there_are_parse_error_in_subshell(t_syntax *s);
 
 #endif

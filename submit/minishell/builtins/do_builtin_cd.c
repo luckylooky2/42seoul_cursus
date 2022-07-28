@@ -18,7 +18,12 @@ void	do_builtin_cd(char **argv)
 
 	if (chdir(argv[1]) == -1)
 	{
-		prefix = ft_strjoin("cd: ", argv[1]);
+		if (argv[1] == NULL)
+			prefix = ft_strdup("cd");
+		else
+			prefix = ft_strjoin("cd: ", argv[1]);
+		if (prefix == NULL)
+			panic_memory();
 		error_errno(prefix);
 		free(prefix);
 		global_status(SET_STATUS, 1);

@@ -15,12 +15,23 @@
 # define READ 0
 # define WRITE 1
 
+typedef enum e_interactive_status
+{
+	NOT_INTERACTIVE,
+	INTERACTIVE,
+	HEREDOC
+}	t_int_status;
+
+typedef enum e_subject
+{
+	MAIN,
+	SUB
+}	t_subject;
+
 typedef enum e_control
 {
-	BACKUP_IN,
-	BACKUP_OUT,
-	RESTORE_IN,
-	RESTORE_OUT
+	BACKUP_STDIO,
+	RESTORE_STDIO
 }	t_control;
 
 typedef enum e_heredoc_command
@@ -35,6 +46,7 @@ typedef enum e_delimiter
 	AND_AND,
 	OR_OR,
 	PIPE,
+	NO_DELIM,
 	PRINTED
 }	t_delimiter;
 

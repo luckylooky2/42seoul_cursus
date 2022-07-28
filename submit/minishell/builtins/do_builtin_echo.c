@@ -50,8 +50,8 @@ void	do_builtin_echo(char **argv)
 	j = i;
 	while (argv[i])
 	{
-		if ((i == j && printf("%s", argv[i]) == -1) || \
-		(i != j && printf(" %s", argv[i]) == -1))
+		if ((i == j && ft_printf("%s", argv[i]) == -1) || \
+		(i != j && ft_printf(" %s", argv[i]) == -1))
 		{
 			error_errno("echo");
 			global_status(SET_STATUS, 1);
@@ -59,7 +59,7 @@ void	do_builtin_echo(char **argv)
 		}
 		i++;
 	}
-	if (new_line && printf("\n") == -1)
+	if (new_line && ft_printf("\n") == -1)
 	{
 		error_errno("echo");
 		global_status(SET_STATUS, 1);

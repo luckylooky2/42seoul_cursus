@@ -22,7 +22,7 @@ void	do_builtin_env(char **argv)
 	i = 0;
 	while (result[i])
 	{
-		if (printf("%s\n", result[i++]) == -1)
+		if (ft_printf("%s\n", result[i++]) == -1)
 		{
 			error_errno("env");
 			global_status(SET_STATUS, 1);

@@ -2,7 +2,7 @@ NAME=libft.a
 AR=ar
 ARFLAGS=rcus
 CC=cc
-CFLAGS=-g -Wall -Wextra -Werror
+CFLAGS=-Wall -Wextra -Werror
 HEADERS=-include libft_utils.h -include libft.h
 SOURCES:=isalpha isdigit isalnum isascii isprint \
 		 strlen strlcpy strlcat strchr strrchr strncmp strnstr strdup strjoin strtrim strmapi striteri substr\

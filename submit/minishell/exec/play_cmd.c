@@ -6,7 +6,7 @@
 /*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/08 17:59:53 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/22 21:45:14 by hangokim         ###   ########.fr       */
+/*   Updated: 2022/07/28 15:35:38 by hangokim         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static void	child_proc(t_state *s, char **env, t_command *cmd, int order)
 {
+	char	*command;
+
 	if (input_redirection(s, cmd->input, order) == -1 || \
 	output_redirection(s, cmd->output, order) == -1)
 		exit(1);
@@ -22,8 +24,18 @@ static void	child_proc(t_state *s, char **env, t_command *cmd, int order)
 		do_builtin(cmd->argv);
 		exit(global_status(GET_STATUS, 0));
 	}
-	else if (execve(find_cmd_in_path(s, cmd->argv[0]), cmd->argv, env) == -1)
-		error_exit(cmd->argv[0]);
+	else
+	{
+		command = find_cmd_in_path(s, cmd->argv[0]);
+		if (strchr(command, '/') != NULL && \
+		execve(find_cmd_in_path(s, cmd->argv[0]), cmd->argv, env) == -1)
+			error_exit(cmd->argv[0]);
+		else
+		{
+			errno = ENOENT;
+			error_exit(cmd->argv[0]);
+		}
+	}
 }
 
 static void	play_one_cmd(t_state *s, char **env, t_command *cmd, int order)
@@ -33,19 +45,16 @@ static void	play_one_cmd(t_state *s, char **env, t_command *cmd, int order)
 	{
 		if (order != 0)
 		{
-			control_in_and_out(BACKUP_IN);
-			control_in_and_out(BACKUP_OUT);
+			s->builtin_flag = 1;
+			control_in_and_out(BACKUP_STDIO);
 			if (input_redirection(s, cmd->input, 0) == -1 || \
 			output_redirection(s, cmd->output, 0) == -1)
 			{
-				control_in_and_out(RESTORE_IN);
-				control_in_and_out(RESTORE_OUT);
+				global_status(SET_STATUS, 1);
 				return ;
 			}
 			do_builtin(cmd->argv);
-			control_in_and_out(RESTORE_IN);
-			control_in_and_out(RESTORE_OUT);
-			s->builtin_flag = 1;
+			control_in_and_out(RESTORE_STDIO);
 		}
 		else
 			exit(0);
