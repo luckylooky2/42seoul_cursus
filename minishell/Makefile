@@ -3,16 +3,16 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+         #
+#    By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/06/27 19:18:22 by youhan            #+#    #+#              #
-#    Updated: 2022/07/20 20:34:50 by chanhyle         ###   ########.fr        #
+#    Updated: 2022/07/26 23:32:21 by chanhyle         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME		:= minishell
 CC			:= 	cc
-CFLAGS		:= 	-g3 -Wall -Wextra -Werror -DDEBUG_MODE
+CFLAGS		:= 	-g3 -DDEBUG_MODE #-Wall -Wextra -Werror
 LFT_DIR		:= 	./libft
 LRL_DIR		:= 	/Users/$(shell users)/.brew/opt/readline
 BT_DIR		:= 	./builtins
@@ -21,19 +21,12 @@ EC_DIR		:=	./exec
 PARSE_DIR	:= ./parsing
 LIBS		:= 	-L$(LRL_DIR)/lib -lreadline -L$(LFT_DIR) -lft
 INCS		:= 	-I$(LRL_DIR)/include -I$(LFT_DIR) -I.
-BT_SRCS		:= 	.c cd.c echo.c env.c export.c pwd.c unset.c subshell.c
-UTIL_SRCS	:= 	env_dict.c error_exit.c signal.c delete_funcs1.c delete_funcs2.c \
-				global_status.c directory.c regex_matcher.c cleanup_deque.c
-EC_SRCS		:=	do_exec.c make_proc_pipe.c path.c play_cmd.c
-PARSE_SRCS	:=	break_semicolon.c break_linker.c break_pipe.c break_space.c \
-				make_meaning.c make_syntax.c make_piped_commands.c \
-				make_expansion_env.c make_expansion_asterisk.c \
-				check_parsing_result1.c check_parsing_result2.c \
-				remove_redirection.c assign_redirection_flag.c remove_character.c \
-				parse_redirection.c
+BT_SRCS		:=	
+UTIL_SRCS	:= 	signal.c
+PARSE_SRCS	:=	
 SRCS		:=	minishell.c \
 				test_module.c \
-				$(BT_SRCS:%.c=$(BT_DIR)/do_builtin_%.c) \
+				$(BT_SRCS:%.c=$(BT_DIR)/%.c) \
 				$(ENV_SRCS:%.c=$(ENV_DIR)/%.c) \
 				$(PARSE_SRCS:%.c=$(PARSE_DIR)/%.c) \
 				$(EC_SRCS:%.c=$(EC_DIR)/%.c) \

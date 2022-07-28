@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell_enums.h                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/20 20:36:34 by chanhyle          #+#    #+#             */
-/*   Updated: 2022/07/20 20:41:03 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/07/27 23:34:59 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,27 @@
 # define READ 0
 # define WRITE 1
 
+typedef enum e_control
+{
+	BACKUP_IN,
+	BACKUP_OUT,
+	RESTORE_IN,
+	RESTORE_OUT
+}	t_control;
+
+typedef enum e_heredoc_command
+{
+	CLOSE_HEREDOC = 0,
+	PUT_HEREDOC
+}	t_heredoc_cmd;
+
 typedef enum e_delimiter
 {
 	SEMICOLON = 1,
 	AND_AND,
 	OR_OR,
-	PIPE
+	PIPE,
+	PRINTED
 }	t_delimiter;
 
 typedef enum e_dir_command

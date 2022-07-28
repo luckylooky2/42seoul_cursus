@@ -3,64 +3,45 @@
 /*                                                        :::      ::::::::   */
 /*   play_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/08 17:59:53 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/20 20:41:39 by chanhyle         ###   ########.fr       */
+/*   Created: 2022/07/28 15:07:57 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/07/29 01:07:17 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
-static void	input_redirection(t_state *s, int pid_num)
+static void	child_proc(t_state *s, char **env, t_command *cmd, int order)
 {
-	if (0 < pid_num)
+	input_redirection(s, cmd->input, order);
+	output_redirection(s, cmd->output, order);
+	if (get_builtin_enum(cmd->argv) != NON_SUPPORTING)
 	{
-		if (dup2(s->pipes[pid_num - 1][READ], STDIN_FILENO) == -1)
-			panic(strerror(errno));
+		do_builtin(cmd->argv);
+		exit(global_status(GET_STATUS, 0));
 	}
-}
-
-static void	output_redirection(t_state *s, int pid_num)
-{
-	if (pid_num < s->pipe_cnt)
-	{
-		if (dup2(s->pipes[pid_num][WRITE], STDOUT_FILENO) == -1)
-			panic(strerror(errno));
-	}
-}
-
-static void	child_proc(t_state *s, char **env, char **cmd, int pid_num)
-{
-	if (s->pid_cnt != 1)
-	{
-		input_redirection(s, pid_num);
-		output_redirection(s, pid_num);
-	}
-	if (get_builtin_enum(cmd) != NON_SUPPORTING)
-	{
-		do_builtin(cmd);
-		exit(0);
-	}
-	else if (execve(find_cmd_in_path(s, cmd[0]), cmd, env) == -1)
-		error_exit("command not found: ", cmd[0]);
+	else if (execve(find_cmd_in_path(s, cmd->argv[0]), cmd->argv, env) == -1)
+		error_exit(cmd->argv[0]);
 }
 
 static void	play_one_cmd(t_state *s, char **env, t_command *cmd, int order)
 {
+	// subshell이면 execve를 해야하기 때문에 
 	if (get_builtin_enum(cmd->argv) != NON_SUPPORTING && \
-	get_builtin_enum(cmd->argv) != SUBSHELL)
+	get_builtin_enum(cmd->argv) != SUBSHELL && get_builtin_enum(cmd->argv) != BLANK)
 	{
 		if (order != 0)
 		{
-			do_builtin(cmd->argv);
-			s->builtin_flag = 1;
+			control_in_and_out(BACKUP_IN);
+			control_in_and_out(BACKUP_OUT);
 		}
 		else
 			exit(0);
 	}
+	// 
 	else if (order == 0)
-		child_proc(s, env, cmd->argv, order);
+		child_proc(s, env, cmd, order);
 }
 
 void	play_cmd(t_state *s, char **env, t_deq *commands)
@@ -69,6 +50,7 @@ void	play_cmd(t_state *s, char **env, t_deq *commands)
 	t_command	*cmd;
 
 	order = 0;
+	// 몇 번째 자식인지?
 	while (order < s->pid_cnt && s->pid[order] != 0)
 		order++;
 	if (s->pid_cnt == 1)
@@ -79,7 +61,7 @@ void	play_cmd(t_state *s, char **env, t_deq *commands)
 	else if (order < s->pid_cnt)
 	{
 		cmd = ft_deq_get(commands, order)->data;
-		child_proc(s, env, cmd->argv, order);
+		child_proc(s, env, cmd, order);
 	}
 	delete_str_array(env);
 }

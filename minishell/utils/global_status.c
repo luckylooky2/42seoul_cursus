@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   global_status.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/06 20:46:38 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/18 18:17:48 by hangokim         ###   ########.fr       */
+/*   Created: 2022/07/27 14:47:10 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/07/27 14:50:32 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// 전역 변수를 관리하는 함수 (getter, setter)
 int	global_status(t_global_cmd cmd, int value)
 {
 	static int	last_exit_status = 0;
@@ -24,6 +25,8 @@ int	global_status(t_global_cmd cmd, int value)
 		return (interactive);
 	else if (cmd == GET_P_ERROR)
 		return (parsing_error);
+	else if (cmd == GET_INTERACTIVE)
+		return (interactive);
 	else if (cmd == SET_STATUS)
 		last_exit_status = value;
 	else if (cmd == SET_INTERACTIVE)
