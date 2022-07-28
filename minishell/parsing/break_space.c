@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   break_space.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/17 16:41:22 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/17 19:49:24 by hangokim         ###   ########.fr       */
+/*   Created: 2022/07/28 14:39:45 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/07/28 14:51:28 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,15 +38,16 @@ char	**break_space(t_syntax *s)
 	i = 0;
 	while (s->input[i])
 	{
+		// 의미 없는 공백은 -1로 치환 : split을 피하기 위해
 		if (s->input[i] == ' ' && s->meaning[i] != 1)
 			s->input[i] = -1;
-		else if (s->meaning[i] == 1 && \
-		(s->input[i] == '\"' || s->input[i] == '\'' || s->input[i] == '\\'))
+		// 의미없는 문자들은 삭제(앞으로 당김)
+		else if (s->meaning[i] == 1 && (s->input[i] == '\"' || s->input[i] == '\'' || s->input[i] == '\\'))
 		{
 			len = ft_strlen(s->input + i);
 			ft_memmove(s->input + i, s->input + i + 1, len);
-			ft_memmove(s->meaning + i, s->meaning + i + 1, len - 1);
-			continue ;
+			ft_memmove(s->meaning + i, s->meaning + i + 1, len -1);
+			continue;
 		}
 		i++;
 	}

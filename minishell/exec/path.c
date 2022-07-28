@@ -3,21 +3,24 @@
 /*                                                        :::      ::::::::   */
 /*   path.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/06/08 17:59:43 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/17 20:44:31 by hangokim         ###   ########.fr       */
+/*   Created: 2022/07/28 15:00:13 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/07/28 15:03:51 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+// path로 env_list에서 검색한 결과 : env
 char	**path_check(char *env)
 {
 	int		i;
 	char	**path;
 	char	*temp;
 
+	if (env == NULL)
+		env = "";
 	path = ft_split(env, ':');
 	if (path == NULL)
 		panic_memory();
@@ -32,25 +35,4 @@ char	**path_check(char *env)
 		i++;
 	}
 	return (path);
-}
-
-char	*find_cmd_in_path(t_state *s, char *cmd)
-{
-	int		i;
-	int		ac;
-	char	*path_cmd;
-
-	i = 0;
-	ac = -1;
-	while (ac == -1 && s->path[i])
-	{
-		path_cmd = ft_strjoin(s->path[i++], cmd);
-		ac = access(path_cmd, F_OK);
-	}
-	if (ac == -1)
-	{
-		free(path_cmd);
-		return (cmd);
-	}
-	return (path_cmd);
 }

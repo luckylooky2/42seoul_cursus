@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: chanhyle <chanhyle@student.42.fr>          +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/07/01 20:12:40 by youhan            #+#    #+#             */
-/*   Updated: 2022/07/20 20:40:12 by chanhyle         ###   ########.fr       */
+/*   Updated: 2022/07/27 22:46:56 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,16 @@ typedef struct s_data
 
 typedef struct s_command
 {
-	char	**argv;
-	t_deq	*input;
-	t_deq	*output;
+	t_syntax	*syntax;
+	char		**argv;
+	t_deq		*input;
+	t_deq		*output;
 }	t_command;
 
 typedef struct s_commands
 {
 	t_syntax	*syntax;
+	t_deq		*piped_commands;
 	t_link		prev;
 }	t_commands;
 

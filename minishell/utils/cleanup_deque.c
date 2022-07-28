@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   cleanup_deque.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr      +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/20 00:12:50 by hangokim          #+#    #+#             */
-/*   Updated: 2022/07/20 00:12:51 by hangokim         ###   ########.fr       */
+/*   Created: 2022/07/27 16:57:24 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/07/27 16:59:38 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
 
+//
 t_deq	*cleanup_deque(t_deq *deq, void del(void *))
 {
 	void	*data;

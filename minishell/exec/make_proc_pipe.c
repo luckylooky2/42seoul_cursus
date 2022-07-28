@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   make_proc_pipe.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: hangokim <hangokim@student.42seoul.kr>     +#+  +:+       +#+        */
+/*   By: chanhyle <chanhyle@student.42seoul.kr>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/07/04 16:27:29 by gyyu              #+#    #+#             */
-/*   Updated: 2022/07/10 19:20:38 by hangokim         ###   ########.fr       */
+/*   Created: 2022/07/28 16:43:52 by chanhyle          #+#    #+#             */
+/*   Updated: 2022/07/28 16:55:26 by chanhyle         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,31 +27,6 @@ static void	make_pipe(t_state *s)
 	}
 }
 
-static void	make_proc(t_state *s)
-{
-	int	i;
-	int	j;
-	int	is_child;
-
-	i = -1;
-	while (s->pid_cnt > ++i)
-	{
-		is_child = 0;
-		j = -1;
-		while (s->pid_cnt > ++j)
-		{
-			if (s->pid[j] == 0)
-				is_child = 1;
-		}
-		if (!is_child)
-		{
-			s->pid[i] = fork();
-			if (s->pid[i] == -1)
-				panic("Failed to create process.");
-		}
-	}
-}
-
 static void	close_unused_pipe(t_state *s)
 {
 	int	i;
@@ -59,11 +34,13 @@ static void	close_unused_pipe(t_state *s)
 	i = 0;
 	while (i < s->pipe_cnt)
 	{
+		// 이전 프로세스로부터 읽을 pipe는 닫지 않음
 		if (s->pid[i + 1] != 0)
 			close(s->pipes[i][READ]);
+		// 현재 프로세스에서 write할 pipe는 닫지 않음
 		if (s->pid[i] != 0)
 			close(s->pipes[i][WRITE]);
-		i++;
+		i++; 
 	}
 }
 
@@ -71,7 +48,7 @@ void	make_proc_pipe(t_state *s)
 {
 	int	i;
 
-	s->pipes = NULL;
+	s->pipes-> NULL;
 	s->pid = NULL;
 	if (s->pipe_cnt != 0)
 	{
